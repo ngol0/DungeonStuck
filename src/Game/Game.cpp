@@ -1,0 +1,122 @@
+#include "Game.h"
+#include <iostream>
+#include <SDL2/SDL_image.h>
+#include <glm/glm.hpp>
+#include <spdlog/spdlog.h>
+
+Game::Game()
+{
+    b_running = false;
+    spdlog::info("Game Created!");
+
+    m_window_height = 600;
+    m_window_width = 800;
+}
+
+Game::~Game()
+{
+    spdlog::info("Game Quit!");
+}
+
+void Game::InitWindow()
+{
+    // sdl_init returns 0 when there's no error
+    if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+    {
+        spdlog::error("Error Init SDL");
+        return;
+    }
+
+    // create a window
+    window = SDL_CreateWindow(
+        NULL, 
+        SDL_WINDOWPOS_CENTERED, 
+        SDL_WINDOWPOS_CENTERED, 
+        m_window_width, 
+        m_window_height,
+        SDL_WINDOW_BORDERLESS);
+
+    if (!window)
+    {
+        spdlog::error("Error Create SDL Window");
+        return;
+    }
+
+    // create sdl renderer
+    renderer = SDL_CreateRenderer(
+        window, 
+        -1, 
+        SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    if (!renderer)
+    {
+        spdlog::error("Error Create SDL Renderer");
+        return;
+    }
+
+    //SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+    b_running = true;
+}
+
+void Game::Setup()
+{
+    //TODO: Create Entity
+}
+
+void Game::Run()
+{
+    Setup();
+    while (b_running)
+    {
+        ProcessInput();
+        Update();
+        Render();
+    }
+}
+
+void Game::ProcessInput()
+{
+    SDL_Event e; //event handler
+    while (SDL_PollEvent(&e))
+    {
+        switch(e.type)
+        {
+            case SDL_QUIT:
+                b_running = false;
+                break;
+            case SDL_KEYDOWN:
+                if (e.key.keysym.sym==SDLK_ESCAPE)
+                {
+                    b_running = false;
+                }
+                break;
+        }
+    }
+}
+
+void Game::Update()
+{
+    Uint32 currentTime = SDL_GetTicks();
+	float deltaTime = (currentTime - m_last_update_frame) / 1000.0f;
+
+    m_last_update_frame = currentTime;
+
+    // TODO: Update System
+}
+
+void Game::Render()
+{
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+
+    //todo: render game objects
+    
+
+    SDL_RenderPresent(renderer);
+}
+
+void Game::Destroy()
+{
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+}
