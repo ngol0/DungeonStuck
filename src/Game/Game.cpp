@@ -4,6 +4,8 @@
 #include <glm/glm.hpp>
 #include <spdlog/spdlog.h>
 
+#include "../ECS/ECS.h"
+
 Game::Game()
 {
     b_running = false;
@@ -28,7 +30,7 @@ void Game::InitWindow()
     }
 
     // create a window
-    window = SDL_CreateWindow(
+    m_window = SDL_CreateWindow(
         NULL, 
         SDL_WINDOWPOS_CENTERED, 
         SDL_WINDOWPOS_CENTERED, 
@@ -36,18 +38,18 @@ void Game::InitWindow()
         m_window_height,
         SDL_WINDOW_BORDERLESS);
 
-    if (!window)
+    if (!m_window)
     {
         spdlog::error("Error Create SDL Window");
         return;
     }
 
     // create sdl renderer
-    renderer = SDL_CreateRenderer(
-        window, 
+    m_renderer = SDL_CreateRenderer(
+        m_window, 
         -1, 
         SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if (!renderer)
+    if (!m_renderer)
     {
         spdlog::error("Error Create SDL Renderer");
         return;
@@ -60,6 +62,7 @@ void Game::InitWindow()
 void Game::Setup()
 {
     //TODO: Create Entity
+    
 }
 
 void Game::Run()
@@ -105,18 +108,18 @@ void Game::Update()
 
 void Game::Render()
 {
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
+    SDL_RenderClear(m_renderer);
 
     //todo: render game objects
     
 
-    SDL_RenderPresent(renderer);
+    SDL_RenderPresent(m_renderer);
 }
 
 void Game::Destroy()
 {
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
+    SDL_DestroyRenderer(m_renderer);
+    SDL_DestroyWindow(m_window);
     SDL_Quit();
 }

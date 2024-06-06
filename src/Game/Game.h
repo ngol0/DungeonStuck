@@ -6,8 +6,8 @@
 class Game
 {
 private:
-    SDL_Window* window;
-    SDL_Renderer* renderer;
+    SDL_Window* m_window;
+    SDL_Renderer* m_renderer;
 
     bool b_running;
     int m_window_width;
