@@ -6,17 +6,17 @@
 
 inline std::size_t GetUniqueId()
 {
-    static std::size_t lastId{ 0u };
-    return lastId++; //return the value first, then increment
+    static std::size_t lastId{0u};
+    return lastId++; // return the value first, then increment
 }
 
-template<typename T>
+template <typename T>
 struct Component
 {
     static int GetId()
     {
-        //only got init once at first, will skip this line after the first call
-        static std::size_t typeId = GetUniqueId(); 
+        // only got init once at first, will skip this line after the first call
+        static std::size_t typeId = GetUniqueId();
         return typeId;
     }
 };
@@ -30,15 +30,17 @@ public:
     Entity(int id);
     int GetId() const { return m_id; }
 
-    bool operator == (const Entity& other) const
+    bool operator==(const Entity &other) const
     {
         return m_id == other.m_id;
     }
 };
 
 /////////////////////////////////////////////////////////////////////////////////
+//--System
+/////////////////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------//
-//The system processes entities that contain a specific signature
+// The system processes entities that contain a specific signature
 //-----------------------------------------------------------------------------//
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -58,27 +60,71 @@ public:
     System() = default;
     ~System() = default;
 
-    void AddEntityToSystem(const Entity& entity);
-    void RemoveEntityFromSystem(const Entity& entity);
+    void AddEntityToSystem(const Entity &entity);
+    void RemoveEntityFromSystem(const Entity &entity);
 
-    const std::vector<Entity>& GetSystemEntities() const { return m_entities; }
-    const Signature& GetComponentSignature() const { return m_component_signature; }
+    const std::vector<Entity> &GetSystemEntities() const { return m_entities; }
+    const Signature &GetComponentSignature() const { return m_component_signature; }
 
     // define the component type T that entities must have to be considered by the system
-    template <typename TComponent> 
+    template <typename TComponent>
     void RequireComponent();
 };
 
 template <typename TComponent>
 void System::RequireComponent()
 {
-    const auto typeId = Component<TComponent>::GetId(); 
+    const auto typeId = Component<TComponent>::GetId();
     m_component_signature.set(typeId);
 }
 
+/////////////////////////////////////////////////////////////////////////////////
+//--Pool
+/////////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------//
+//A pool is (a wrapper for) a vector of contiguous data of object of type T
+//-----------------------------------------------------------------------------//
+/////////////////////////////////////////////////////////////////////////////////
+class IPool
+{
+public:
+    virtual ~IPool();
+};
+
+template <typename T>
+class Pool : public IPool
+{
+private:
+    std::vector<T> data;
+
+public:
+    Pool(int size = 100) : data(size) {}
+    virtual ~Pool();
+
+    bool IsEmpty() const { return data.empty(); }
+    int GetSize() const { return data.size(); }
+    
+};
+
+/////////////////////////////////////////////////////////////////////////////////
+//--Registry
+/////////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------//
+// The registry manages the entity creation & destruction, add systems,
+// add components, etc.
+//(other name: World, Entity Manager)
+//-----------------------------------------------------------------------------//
+/////////////////////////////////////////////////////////////////////////////////
 class Registry
 {
+private:
+    // keep track of all the entities in the scene
+    std::size_t m_numberOfEntitnes = 0;
 
+    // vector of component pools, each pool contains all the data for a certain component type
+    std::vector<IPool*> componentPools;
+
+public:
 };
 
 #endif

@@ -1,14 +1,13 @@
 #include "ECS.h"
 
-/// @brief Entity
-/// @param Implementatin of Entity 
+//-------Entity-----------------//
 Entity::Entity(int id) : m_id(id)
 {   
 
 }
 
 
-/// @brief System
+//-------------System-------------//
 void System::AddEntityToSystem(const Entity& entity)
 {
     m_entities.push_back(entity);
