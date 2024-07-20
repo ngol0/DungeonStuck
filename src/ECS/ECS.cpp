@@ -19,3 +19,23 @@ void System::RemoveEntityFromSystem(const Entity& entity)
         [&](const Entity& other) { return other == entity; });
     m_entities.erase(iter, m_entities.end());
 }
+
+//--------------Registry------------//
+void Registry::Update()
+{
+
+}
+
+Entity Registry::CreateEntity()
+{
+    int id = m_numberOfEntitnes++;
+    Entity e(id);
+    m_entitesToBeAdded.insert(e);
+
+    return e;
+}
+
+void Registry::AddEntityToSystem(const Entity& entity)
+{
+    
+}

@@ -22,4 +22,4 @@ run:
 
 # Clean up build files
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -f $(TARGET)
