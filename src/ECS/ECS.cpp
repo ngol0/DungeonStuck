@@ -35,7 +35,7 @@ Entity Registry::CreateEntity()
     return e;
 }
 
-void Registry::AddEntityToSystem(const Entity& entity)
-{
-    
-}
+// void Registry::AddEntityToSystem(const Entity& entity)
+// {
+
+// }

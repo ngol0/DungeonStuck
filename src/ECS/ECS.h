@@ -37,6 +37,11 @@ public:
     {
         return m_id == other.m_id;
     }
+
+    bool operator<(const Entity &other) const
+    {
+        return m_id < other.m_id;
+    }
 };
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -120,7 +125,7 @@ public:
 
     T &operator[](unsigned int index)
     {
-        if (index >= size)
+        if (index >= data.size())
         {
             throw std::out_of_range("Index out of range");
         }
@@ -129,7 +134,7 @@ public:
 
     const T &operator[](unsigned int index) const
     {
-        if (index >= size)
+        if (index >= data.size())
         {
             throw std::out_of_range("Index out of range");
         }
@@ -162,7 +167,7 @@ private:
     std::vector<Signature> m_entityComponentSignatures;
 
     // keeping track of all systems
-    std::unordered_map<std::type_index, System*> m_systems;
+    std::unordered_map<std::type_index, System *> m_systems;
 
     // temporary sets to stored entites that are flagged to be added/removed in the next frame
     std::set<Entity> m_entitesToBeAdded;
@@ -170,10 +175,83 @@ private:
 
 public:
     Registry() = default;
+    ~Registry();
 
     void Update();
+
+    //Entity Managements
     Entity CreateEntity();
-    void AddEntityToSystem(const Entity& entity);
+    // void AddEntityToSystem(const Entity& entity);
+
+    //Component Management
+    template <typename TComponent, typename... TArgs> void AddComponent(const Entity &e, TArgs &&...args);
+    template <typename TComponent> void RemoveComponent(const Entity &e);
+    template <typename TComponent> bool HasComponent(const Entity &e) const;
+    template <typename TComponent> TComponent& GetComponent(const Entity &e);
+
+    //System Management
+    template <typename TSystem, typename... TArgs> void AddSystem(TArgs &&...args);
+    template <typename TSystem> void RemoveSystem();
+    template <typename TSystem> bool HasSystem() const;
+    template <typename TSystem> TSystem& GetSystem();
 };
+
+//---Component Management implementation
+template <typename TComponent, typename... TArgs>
+void Registry::AddComponent(const Entity &e, TArgs &&...args)
+{
+    // get component && entity id
+    const auto componentId = Component<TComponent>::GetId();
+    const auto entityId = e.GetId();
+
+    // allocate memory for the new pool
+    if (componentId >= m_componentPools.size())
+    {
+        m_componentPools.resize(componentId + 1, nullptr);
+    }
+    // create a new component pool (vector) of type TComponent (i.e: Transform/BoxCollider/etc.)
+    // put it in the vector of component pools
+    if (m_componentPools[componentId] == nullptr)
+    {
+        m_componentPools[componentId] = new Pool<TComponent>();
+    }
+
+    // create concrete component and assign it to the entity
+    // and turn the component signature on for that entity
+    TComponent newComponent(std::forward<TArgs>(args)...);
+    m_componentPools[componentId]->Set(entityId, newComponent); // set the component to the entity at index id
+    m_entityComponentSignatures[entityId].set(componentId);
+}
+
+template <typename TComponent>
+void Registry::RemoveComponent(const Entity &e)
+{
+    const auto componentId = Component<TComponent>::GetId();
+    const auto entityId = e.GetId();
+
+    m_entityComponentSignatures[entityId].reset(componentId);
+}
+
+template <typename TComponent>
+bool Registry::HasComponent(const Entity &e) const
+{
+    const auto componentId = Component<TComponent>::GetId();
+    return m_entityComponentSignatures[e.GetId()].test(componentId);
+}
+
+template <typename TComponent>
+TComponent& Registry::GetComponent(const Entity &e)
+{
+    const auto componentId = Component<TComponent>::GetId();
+    const auto entityId = e.GetId();
+
+    if (!m_entityComponentSignatures[entityId].test(componentId))
+        return nullptr;
+
+    return m_componentPools[componentId].Get(entityId);
+}
+
+//---System Management implementation
+
 
 #endif
