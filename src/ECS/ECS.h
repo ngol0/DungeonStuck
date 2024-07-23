@@ -121,7 +121,7 @@ public:
 
     const T &Get(unsigned int index) const { return this[index]; }
     T &Get(unsigned int index) { return this[index]; }
-    void Set(unsigned int index, T object) { this[index] = object; }
+    void Set(unsigned int index, T& object) { this[index] = object; }
 
     T &operator[](unsigned int index)
     {
@@ -258,7 +258,7 @@ template <typename TSystem, typename... TArgs>
 void Registry::AddSystem(TArgs &&...args)
 {
     //create a new system
-    TSystem* newSystem = new TSystem<TArgs>(std::forward(args)...);
+    TSystem* newSystem = new TSystem(std::forward<TArgs>(args)...);
 
     //make_pair move the val instead of copying it
     m_systems.insert(std::make_pair(std::type_index(typeid(TSystem)), newSystem));

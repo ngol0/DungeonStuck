@@ -2,12 +2,15 @@
 #define GAME_H
 
 #include <SDL2/SDL.h>
+#include "../ECS/ECS.h"
 
 class Game
 {
 private:
     SDL_Window* m_window;
     SDL_Renderer* m_renderer;
+
+    Registry registry;
 
     bool b_running;
     int m_window_width;

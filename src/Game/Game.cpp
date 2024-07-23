@@ -4,8 +4,6 @@
 #include <glm/glm.hpp>
 #include <spdlog/spdlog.h>
 
-#include "../ECS/ECS.h"
-
 Game::Game()
 {
     b_running = false;
@@ -62,7 +60,7 @@ void Game::InitWindow()
 void Game::Setup()
 {
     //TODO: Create Entity
-    
+    auto test = registry.CreateEntity();
 }
 
 void Game::Run()

@@ -1,4 +1,5 @@
 #include "ECS.h"
+#include <spdlog/spdlog.h>
 
 //-------Entity-----------------//
 Entity::Entity(int id) : m_id(id)
@@ -21,15 +22,39 @@ void System::RemoveEntityFromSystem(const Entity& entity)
 }
 
 //--------------Registry------------//
+Registry::~Registry()
+{
+    for (auto& s : m_systems)
+    {
+        delete s.second;
+    }
+}
+
 void Registry::Update()
 {
+    //add entity
+    for (const auto& e : m_entitesToBeAdded)
+    {
+        AddEntityToSystem(e);
+    }
+    m_entitesToBeAdded.clear();
 
+    //remove entity
 }
 
 Entity Registry::CreateEntity()
 {
-    int id = m_numberOfEntitnes++;
+    auto id = m_numberOfEntitnes++;
     Entity e(id);
+
+    //todo: figure out why this is implemented this way???
+    if (id >= m_entityComponentSignatures.size())
+    {
+        m_entityComponentSignatures.resize(id + 1);
+    }
+
+    spdlog::info("Entity Created with id: " + std::to_string(id));
+
     m_entitesToBeAdded.insert(e);
 
     return e;
