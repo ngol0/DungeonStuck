@@ -181,7 +181,7 @@ public:
 
     //Entity Managements
     Entity CreateEntity();
-    // void AddEntityToSystem(const Entity& entity);
+    void AddEntityToSystem(const Entity& entity);
 
     //Component Management
     template <typename TComponent, typename... TArgs> void AddComponent(const Entity &e, TArgs &&...args);
@@ -252,6 +252,40 @@ TComponent& Registry::GetComponent(const Entity &e)
 }
 
 //---System Management implementation
+
+//todo: look up type_index(typeid) & why use unordered_map.find(type_index)
+template <typename TSystem, typename... TArgs> 
+void Registry::AddSystem(TArgs &&...args)
+{
+    //create a new system
+    TSystem* newSystem = new TSystem<TArgs>(std::forward(args)...);
+
+    //make_pair move the val instead of copying it
+    m_systems.insert(std::make_pair(std::type_index(typeid(TSystem)), newSystem));
+}
+
+template <typename TSystem> 
+void Registry::RemoveSystem()
+{
+    //erase by key
+    m_systems.erase(std::type_index(typeid(TSystem)));
+}
+
+template <typename TSystem> 
+bool Registry::HasSystem() const
+{
+    return m_systems.find(std::type_index(typeid(TSystem))) != m_systems.end();
+}
+
+template <typename TSystem>
+TSystem& Registry::GetSystem()
+{
+    auto iter = m_systems.find(std::type_index(typeid(TSystem)));
+
+    //iter->second returns a pointer to a System
+    //cast System to a specific system and dereference it
+    return *(std::static_pointer_cast<TSystem>(iter->second));
+}
 
 
 #endif

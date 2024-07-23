@@ -35,7 +35,23 @@ Entity Registry::CreateEntity()
     return e;
 }
 
-// void Registry::AddEntityToSystem(const Entity& entity)
-// {
+void Registry::AddEntityToSystem(const Entity& entity)
+{
+    const auto entityId = entity.GetId();
 
-// }
+    //get entity component signature
+    const Signature& entityComponentSignature = m_entityComponentSignatures[entityId];
+    
+    //loop through all systems and get each system signature
+    for (const auto& s : m_systems)
+    {
+        const Signature& systemSignature = s.second->GetComponentSignature();
+
+        bool isInterested = (systemSignature & entityComponentSignature) == systemSignature;
+
+        if (isInterested)
+        {
+            s.second->AddEntityToSystem(entity);
+        }
+    }
+}
