@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <typeindex>
 #include <set>
+#include <spdlog/spdlog.h>
 
 inline std::size_t GetUniqueId()
 {
@@ -16,7 +17,7 @@ inline std::size_t GetUniqueId()
 template <typename T>
 struct Component
 {
-    static int GetId()
+    static std::size_t GetId()
     {
         // only got init once at first, will skip this line after the first call
         static std::size_t typeId = GetUniqueId();
@@ -53,7 +54,7 @@ public:
 /////////////////////////////////////////////////////////////////////////////////
 
 const unsigned int MAX_COMPONENTS = 32;
-typedef std::bitset<MAX_COMPONENTS> Signature;
+using Signature = std::bitset<MAX_COMPONENTS>;
 
 class System
 {
@@ -106,7 +107,14 @@ private:
     std::vector<T> data;
 
 public:
-    Pool(int size = 100) : data(size) {}
+    Pool(int size = 100) 
+    {
+        //if use resize > data will init the members and call its default constructor of TComponent
+        data.resize(size);
+
+        //todo: what does reserve do??
+        //data.reserve(size); //this will not init the members and doesnot need default constructor for TComponent
+    }
     virtual ~Pool() {}
 
     bool IsEmpty() const { return data.empty(); }
@@ -119,9 +127,9 @@ public:
         data.push_back(object);
     }
 
-    const T &Get(unsigned int index) const { return this[index]; }
-    T &Get(unsigned int index) { return this[index]; }
-    void Set(unsigned int index, T& object) { this[index] = object; }
+    const T &Get(unsigned int index) const { return (*this)[index]; }
+    T &Get(unsigned int index) { return (*this)[index]; }
+    void Set(unsigned int index, T& object) { data[index] = object; spdlog::info(data.size()); }
 
     T &operator[](unsigned int index)
     {
@@ -160,7 +168,8 @@ private:
     // vector of component pools, each pool contains all the data for a certain component type
     //[vector index = component id]
     //[pool index = entity id]
-    std::vector<IPool *> m_componentPools;
+    //std::vector<std::shared_ptr<IPool>> m_componentPools; //uncomment this for smart pointer
+    std::vector<IPool*> m_componentPools;
 
     // vector of component signatures per entity, saying which component is "on" for each entity
     //[vector index = entity id]
@@ -188,12 +197,14 @@ public:
     template <typename TComponent> void RemoveComponent(const Entity &e);
     template <typename TComponent> bool HasComponent(const Entity &e) const;
     template <typename TComponent> TComponent& GetComponent(const Entity &e);
+    template <typename TComponent> const TComponent& GetComponent(const Entity &e) const;
 
     //System Management
     template <typename TSystem, typename... TArgs> void AddSystem(TArgs &&...args);
     template <typename TSystem> void RemoveSystem();
     template <typename TSystem> bool HasSystem() const;
     template <typename TSystem> TSystem& GetSystem();
+    template <typename TSystem> const TSystem& GetSystem() const;
 };
 
 //---Component Management implementation
@@ -201,7 +212,7 @@ template <typename TComponent, typename... TArgs>
 void Registry::AddComponent(const Entity &e, TArgs &&...args)
 {
     // get component && entity id
-    const auto componentId = Component<TComponent>::GetId();
+    auto componentId = Component<TComponent>::GetId();
     const auto entityId = e.GetId();
 
     // allocate memory for the new pool
@@ -213,14 +224,29 @@ void Registry::AddComponent(const Entity &e, TArgs &&...args)
     // put it in the vector of component pools
     if (m_componentPools[componentId] == nullptr)
     {
+        //--if use smart pointer:
+        //m_componentPools[componentId] = std::make_shared<Pool<TComponent>>();
+
+        //--if use raw ptrs: 
         m_componentPools[componentId] = new Pool<TComponent>();
     }
+
+    //--if use smart pointer:
+    //m_componentPools[componentId] returns a shared_ptr<IPool>
+    //thus, we cast it to Pool<TComponent> shared_ptr and store it in pool
+    //std::shared_ptr<Pool<TComponent>> pool = std::static_pointer_cast<Pool<TComponent>>(m_componentPools[componentId]); //uncomment this for smart pointer
+
+    //--if use raw ptrs:
+    auto pool = static_cast<Pool<TComponent>*>(m_componentPools[componentId]);
 
     // create concrete component and assign it to the entity
     // and turn the component signature on for that entity
     TComponent newComponent(std::forward<TArgs>(args)...);
-    m_componentPools[componentId]->Set(entityId, newComponent); // set the component to the entity at index id
+    
+    pool->Set(entityId, newComponent); // set the component to the entity at index id
     m_entityComponentSignatures[entityId].set(componentId);
+
+    spdlog::info("Component id " + std::to_string(componentId) + " was added to entity id " + std::to_string(entityId));
 }
 
 template <typename TComponent>
@@ -248,7 +274,19 @@ TComponent& Registry::GetComponent(const Entity &e)
     if (!m_entityComponentSignatures[entityId].test(componentId))
         return nullptr;
 
-    return m_componentPools[componentId].Get(entityId);
+    return std::static_pointer_cast<Pool<TComponent>>(m_componentPools[componentId])->Get(entityId);
+}
+
+template <typename TComponent>
+const TComponent& Registry::GetComponent(const Entity &e) const
+{
+    const auto componentId = Component<TComponent>::GetId();
+    const auto entityId = e.GetId();
+
+    if (!m_entityComponentSignatures[entityId].test(componentId))
+        return nullptr;
+
+    return std::static_pointer_cast<Pool<TComponent>>(m_componentPools[componentId])->Get(entityId);
 }
 
 //---System Management implementation
@@ -260,7 +298,10 @@ void Registry::AddSystem(TArgs &&...args)
     //create a new system
     TSystem* newSystem = new TSystem(std::forward<TArgs>(args)...);
 
-    //make_pair move the val instead of copying it
+    //question: do we need to make sure TSystem is a derived class of System before adding??
+
+    //make_pair move the val instead of copying it: https://cplusplus.com/reference/unordered_map/unordered_map/insert/
+    //but newSystem pointer is copied instead?
     m_systems.insert(std::make_pair(std::type_index(typeid(TSystem)), newSystem));
 }
 
@@ -279,6 +320,16 @@ bool Registry::HasSystem() const
 
 template <typename TSystem>
 TSystem& Registry::GetSystem()
+{
+    auto iter = m_systems.find(std::type_index(typeid(TSystem)));
+
+    //iter->second returns a pointer to a System
+    //cast System to a specific system and dereference it
+    return *(static_cast<TSystem*>(iter->second));
+}
+
+template <typename TSystem>
+const TSystem& Registry::GetSystem() const
 {
     auto iter = m_systems.find(std::type_index(typeid(TSystem)));
 

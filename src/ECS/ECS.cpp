@@ -1,5 +1,4 @@
 #include "ECS.h"
-#include <spdlog/spdlog.h>
 
 //-------Entity-----------------//
 Entity::Entity(int id) : m_id(id)
@@ -24,9 +23,14 @@ void System::RemoveEntityFromSystem(const Entity& entity)
 //--------------Registry------------//
 Registry::~Registry()
 {
-    for (auto& s : m_systems)
+    for (auto& pair : m_systems)
     {
-        delete s.second;
+        delete pair.second;
+    }
+
+    for (auto& pool : m_componentPools)
+    {
+        delete pool;
     }
 }
 
@@ -53,7 +57,7 @@ Entity Registry::CreateEntity()
         m_entityComponentSignatures.resize(id + 1);
     }
 
-    spdlog::info("Entity Created with id: " + std::to_string(id));
+    //spdlog::info("Entity Created with id: " + std::to_string(id));
 
     m_entitesToBeAdded.insert(e);
 

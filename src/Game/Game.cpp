@@ -3,6 +3,7 @@
 #include <SDL2/SDL_image.h>
 #include <glm/glm.hpp>
 #include <spdlog/spdlog.h>
+#include "../Entity/EntityFactory.h"
 
 Game::Game()
 {
@@ -60,7 +61,7 @@ void Game::InitWindow()
 void Game::Setup()
 {
     //TODO: Create Entity
-    auto test = registry.CreateEntity();
+    EntityFactory::CreatePlayer(registry);
 }
 
 void Game::Run()
