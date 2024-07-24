@@ -1,7 +1,7 @@
 #include "ECS.h"
 
 //-------Entity-----------------//
-Entity::Entity(int id) : m_id(id)
+Entity::Entity(int id, Registry& registry) : m_id(id), m_registry(&registry)
 {   
 
 }
@@ -49,7 +49,7 @@ void Registry::Update()
 Entity Registry::CreateEntity()
 {
     auto id = m_numberOfEntitnes++;
-    Entity e(id);
+    Entity e(id, *this);
 
     //todo: figure out why this is implemented this way???
     if (id >= m_entityComponentSignatures.size())

@@ -3,7 +3,6 @@
 #include <SDL2/SDL_image.h>
 #include <glm/glm.hpp>
 #include <spdlog/spdlog.h>
-#include "../Entity/EntityFactory.h"
 
 Game::Game()
 {
@@ -60,8 +59,7 @@ void Game::InitWindow()
 
 void Game::Setup()
 {
-    //TODO: Create Entity
-    EntityFactory::CreatePlayer(registry);
+    m_scene.Init();
 }
 
 void Game::Run()
@@ -102,7 +100,8 @@ void Game::Update()
 
     m_last_update_frame = currentTime;
 
-    // TODO: Update System
+    //Update System
+    m_scene.Update(deltaTime);
 }
 
 void Game::Render()
@@ -110,14 +109,16 @@ void Game::Render()
     SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
     SDL_RenderClear(m_renderer);
 
-    //todo: render game objects
-    
+    //render game objects
+    m_scene.Render();
 
     SDL_RenderPresent(m_renderer);
 }
 
 void Game::Destroy()
 {
+    m_scene.Shutdown();
+
     SDL_DestroyRenderer(m_renderer);
     SDL_DestroyWindow(m_window);
     SDL_Quit();

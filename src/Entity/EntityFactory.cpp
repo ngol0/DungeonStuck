@@ -4,10 +4,12 @@
 
 namespace EntityFactory
 {
-    void CreatePlayer(Registry& registry)
+    Entity CreatePlayer(Registry& registry)
     {
-        auto e = registry.CreateEntity();
-        registry.AddComponent<TransformComponent>(e, glm::vec2(0.f, 0.f), glm::vec2(0.f, 0.f), 20.f);
-        registry.AddComponent<BoxColliderComponent>(e);
+        Entity e = registry.CreateEntity();
+        e.AddComponent<TransformComponent>(glm::vec2(0.f, 0.f), glm::vec2(0.f, 0.f), 20.f);
+        e.AddComponent<BoxColliderComponent>();
+
+        return e;
     }
 }

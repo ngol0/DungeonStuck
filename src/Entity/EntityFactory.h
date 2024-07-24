@@ -5,7 +5,7 @@
 
 namespace EntityFactory
 {
-    void CreatePlayer(Registry& registry);
+    Entity CreatePlayer(Registry& registry);
 }
 
 #endif

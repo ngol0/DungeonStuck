@@ -29,11 +29,20 @@ class Entity
 {
 private:
     int m_id;
+    class Registry* m_registry;
 
 public:
-    Entity(int id);
+    Entity(int id, Registry& registry);
+    
     int GetId() const { return m_id; }
 
+    template <typename TComponent, typename... TArgs> void AddComponent(TArgs &&...args);
+    template <typename TComponent> void RemoveComponent();
+    template <typename TComponent> bool HasComponent() const;
+    template <typename TComponent> TComponent& GetComponent();
+    template <typename TComponent> const TComponent& GetComponent() const;
+
+    //operator overload
     bool operator==(const Entity &other) const
     {
         return m_id == other.m_id;
@@ -208,6 +217,7 @@ public:
 };
 
 //---Component Management implementation
+//Registry
 template <typename TComponent, typename... TArgs>
 void Registry::AddComponent(const Entity &e, TArgs &&...args)
 {
@@ -274,7 +284,8 @@ TComponent& Registry::GetComponent(const Entity &e)
     if (!m_entityComponentSignatures[entityId].test(componentId))
         return nullptr;
 
-    return std::static_pointer_cast<Pool<TComponent>>(m_componentPools[componentId])->Get(entityId);
+    //return std::static_pointer_cast<Pool<TComponent>>(m_componentPools[componentId])->Get(entityId); //for smart pointer
+    return static_cast<Pool<TComponent>*>(m_componentPools[componentId])->Get(entityId);
 }
 
 template <typename TComponent>
@@ -286,7 +297,7 @@ const TComponent& Registry::GetComponent(const Entity &e) const
     if (!m_entityComponentSignatures[entityId].test(componentId))
         return nullptr;
 
-    return std::static_pointer_cast<Pool<TComponent>>(m_componentPools[componentId])->Get(entityId);
+    return static_cast<Pool<TComponent>*>(m_componentPools[componentId])->Get(entityId);
 }
 
 //---System Management implementation
@@ -338,5 +349,36 @@ const TSystem& Registry::GetSystem() const
     return *(std::static_pointer_cast<TSystem>(iter->second));
 }
 
+//---Component Management implementation
+//Entity
+template <typename TComponent, typename... TArgs>
+void Entity::AddComponent(TArgs &&...args)
+{
+    m_registry->AddComponent<TComponent>(*this, std::forward<TArgs>(args)...);
+}
+
+template <typename TComponent>
+void Entity::RemoveComponent()
+{
+    m_registry->RemoveComponent<TComponent>(*this);
+}
+
+template <typename TComponent>
+bool Entity::HasComponent() const
+{
+    m_registry->HasComponent<TComponent>(*this);
+}
+
+template <typename TComponent>
+TComponent& Entity::GetComponent()
+{
+    m_registry->GetComponent<TComponent>(*this);
+}
+
+template <typename TComponent>
+const TComponent& Entity::GetComponent() const
+{
+    m_registry->GetComponent<TComponent>(*this);
+}
 
 #endif
