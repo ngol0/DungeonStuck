@@ -36,12 +36,6 @@ Registry::~Registry()
 
 void Registry::Update(float dt)
 {
-    //update all systems
-    for (const auto& pair : m_systems)
-    {
-        pair.second->Update(dt);
-    }
-
     //add entity
     for (const auto& e : m_entitesToBeAdded)
     {
@@ -50,6 +44,12 @@ void Registry::Update(float dt)
     m_entitesToBeAdded.clear();
 
     //remove entity
+    
+    //update all systems
+    for (const auto& pair : m_systems)
+    {
+        pair.second->Update(dt);
+    }
 }
 
 void Registry::Render(SDL_Renderer* renderer)

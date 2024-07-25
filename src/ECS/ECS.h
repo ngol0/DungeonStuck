@@ -198,6 +198,8 @@ private:
     // temporary sets to stored entites that are flagged to be added/removed in the next frame
     std::set<Entity> m_entitesToBeAdded;
     std::set<Entity> m_entitiesToBeRemoved;
+    
+    void AddEntityToSystem(const Entity& entity);
 
 public:
     Registry() = default;
@@ -208,7 +210,6 @@ public:
 
     //Entity Managements
     Entity CreateEntity();
-    void AddEntityToSystem(const Entity& entity);
 
     //Component Management
     template <typename TComponent, typename... TArgs> void AddComponent(const Entity &e, TArgs &&...args);
