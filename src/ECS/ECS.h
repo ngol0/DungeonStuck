@@ -8,6 +8,8 @@
 #include <set>
 #include <spdlog/spdlog.h>
 
+struct SDL_Renderer;
+
 inline std::size_t GetUniqueId()
 {
     static std::size_t lastId{0u};
@@ -79,6 +81,7 @@ public:
     virtual ~System() = default;
 
     virtual void Update(float dt) {}
+    virtual void Render(SDL_Renderer* renderer) {}
 
     void AddEntityToSystem(const Entity &entity);
     void RemoveEntityFromSystem(const Entity &entity);
@@ -201,6 +204,7 @@ public:
     ~Registry();
 
     void Update(float dt);
+    void Render(SDL_Renderer* renderer);
 
     //Entity Managements
     Entity CreateEntity();

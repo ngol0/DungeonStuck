@@ -52,6 +52,14 @@ void Registry::Update(float dt)
     //remove entity
 }
 
+void Registry::Render(SDL_Renderer* renderer)
+{
+    for (const auto& pair : m_systems)
+    {
+        pair.second->Render(renderer);
+    }
+}
+
 Entity Registry::CreateEntity()
 {
     auto id = m_numberOfEntitnes++;

@@ -19,9 +19,9 @@ void Scene::Update(float deltaTime)
     registry.Update(deltaTime); //entities in m_added added to relevant system
 }
 
-void Scene::Render()
+void Scene::Render(SDL_Renderer* renderer)
 {
-
+    registry.Render(renderer);
 }
 
 void Scene::Shutdown()

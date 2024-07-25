@@ -3,6 +3,8 @@
 
 #include "../Entity/EntityFactory.h"
 
+struct SDL_Renderer;
+
 class Scene
 {
 private:
@@ -11,7 +13,7 @@ private:
 public:
     void Init();
     void Update(float deltaTime);
-    void Render();
+    void Render(SDL_Renderer* renderer);
     void Shutdown();
 };
 

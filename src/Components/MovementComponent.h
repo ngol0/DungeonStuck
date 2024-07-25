@@ -8,9 +8,7 @@ struct MovementComponent
     glm::vec2 moveDirection;
     float speed;
 
-    MovementComponent() {}
-
-    MovementComponent(float speed) : moveDirection(glm::vec2(1.0f, 0.0f)), speed(speed)
+    MovementComponent(float speed = 0) : moveDirection(glm::vec2(1.0f, 0.0f)), speed(speed)
     {
         
     }

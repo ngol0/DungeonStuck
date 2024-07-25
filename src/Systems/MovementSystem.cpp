@@ -22,6 +22,6 @@ void MovementSystem::Update(float dt)
 
         transform->position += movement->moveDirection * movement->speed * dt;
 
-        spdlog::info("Position x: " + std::to_string(transform->position.x) + " , y: " + std::to_string(transform->position.y));
+        //spdlog::info("Position x: " + std::to_string(transform->position.x) + " , y: " + std::to_string(transform->position.y));
     }
 }

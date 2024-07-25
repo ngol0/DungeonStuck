@@ -1,7 +1,7 @@
 # Flag
 CXX := g++
 LANGUAGE_FLAG := -std=c++20 
-COMPILER_FLAG := -Wall -Wextra -Wno-deprecated-volatile
+COMPILER_FLAG := -Wall -Wextra -Wno-deprecated-volatile -Wno-unused-parameter
 LINKER_FLAG := `sdl2-config --libs --cflags` -lSDL2_image -llua
 INCLUDE_FLAG := -I./libs
 

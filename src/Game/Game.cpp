@@ -110,7 +110,7 @@ void Game::Render()
     SDL_RenderClear(m_renderer);
 
     //render game objects
-    m_scene.Render();
+    m_scene.Render(m_renderer);
 
     SDL_RenderPresent(m_renderer);
 }
