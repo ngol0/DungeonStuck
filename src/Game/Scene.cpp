@@ -14,7 +14,7 @@ void Scene::Init()
     registry.AddSystem<RenderSystem>();
 
     //Create entity
-    auto player = EntityFactory::CreatePlayer(registry); //when create entity > entity added to m_added
+    EntityFactory::CreatePlayer(registry); //when create entity > entity added to m_added
 }
 
 void Scene::Update(float deltaTime)

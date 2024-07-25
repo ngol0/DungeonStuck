@@ -41,8 +41,8 @@ public:
     template <typename TComponent, typename... TArgs> void AddComponent(TArgs &&...args);
     template <typename TComponent> void RemoveComponent();
     template <typename TComponent> bool HasComponent() const;
-    template <typename TComponent> TComponent* GetComponent();
-    //template <typename TComponent> const TComponent& GetComponent() const;
+    template <typename TComponent> TComponent* GetComponentPtr();
+    template <typename TComponent> TComponent& GetComponent();
 
     //operator overload
     bool operator==(const Entity &other) const
@@ -215,8 +215,8 @@ public:
     template <typename TComponent, typename... TArgs> void AddComponent(const Entity &e, TArgs &&...args);
     template <typename TComponent> void RemoveComponent(const Entity &e);
     template <typename TComponent> bool HasComponent(const Entity &e) const;
-    template <typename TComponent> TComponent* GetComponent(const Entity &e);
-    //template <typename TComponent> const TComponent& GetComponent(const Entity &e) const;
+    template <typename TComponent> TComponent* GetComponentPtr(const Entity &e);
+    template <typename TComponent> TComponent& GetComponent(const Entity &e);
 
     //System Management
     template <typename TSystem, typename... TArgs> void AddSystem(TArgs &&...args);
@@ -286,7 +286,7 @@ bool Registry::HasComponent(const Entity &e) const
 }
 
 template <typename TComponent>
-TComponent* Registry::GetComponent(const Entity &e)
+TComponent* Registry::GetComponentPtr(const Entity &e)
 {
     if (!HasComponent<TComponent>(e))
     {
@@ -298,6 +298,17 @@ TComponent* Registry::GetComponent(const Entity &e)
 
     return &static_cast<Pool<TComponent>*>(m_componentPools[componentId])->Get(entityId);    
     //return std::static_pointer_cast<Pool<TComponent>>(m_componentPools[componentId])->Get(entityId); //for smart pointer
+}
+
+template <typename TComponent> 
+TComponent& Registry::GetComponent(const Entity &e)
+{
+    assert (HasComponent<TComponent>(e));
+
+    auto componentId = Component<TComponent>::GetId();
+    const auto entityId = e.GetId();
+
+    return static_cast<Pool<TComponent>*>(m_componentPools[componentId])->Get(entityId); 
 }
 
 //---System Management implementation
@@ -370,7 +381,13 @@ bool Entity::HasComponent() const
 }
 
 template <typename TComponent>
-TComponent* Entity::GetComponent()
+TComponent* Entity::GetComponentPtr()
+{
+    return m_registry->GetComponentPtr<TComponent>(*this);
+}
+
+template <typename TComponent>
+TComponent& Entity::GetComponent()
 {
     return m_registry->GetComponent<TComponent>(*this);
 }
