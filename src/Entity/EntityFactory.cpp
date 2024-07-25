@@ -1,6 +1,6 @@
 #include "EntityFactory.h"
 #include "../Components/TransformComponent.h"
-#include "../Components/BoxColliderComponent.h"
+#include "../Components/MovementComponent.h"
 
 namespace EntityFactory
 {
@@ -8,7 +8,7 @@ namespace EntityFactory
     {
         Entity e = registry.CreateEntity();
         e.AddComponent<TransformComponent>(glm::vec2(0.f, 0.f), glm::vec2(0.f, 0.f), 20.f);
-        //e.AddComponent<BoxColliderComponent>();
+        e.AddComponent<MovementComponent>(2.f);
 
         return e;
     }

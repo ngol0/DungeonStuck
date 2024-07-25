@@ -2,26 +2,21 @@
 #include "../Entity/EntityFactory.h"
 #include "../Components/TransformComponent.h"
 #include "../Components/BoxColliderComponent.h"
+#include "../Systems/MovementSystem.h"
 #include <spdlog/spdlog.h>
 
 void Scene::Init()
 {
-    auto player = EntityFactory::CreatePlayer(registry);
-    auto trform = player.GetComponent<TransformComponent>();
-    BoxColliderComponent* box = player.GetComponent<BoxColliderComponent>();
+    //Create system
+    registry.AddSystem<MovementSystem>();
 
-    if (box == nullptr)
-    {
-        spdlog::info("Box is null");
-    }
-    spdlog::info("Transform: " + std::to_string(trform->rotation));
-    trform->rotation = 50.f;
-    spdlog::info("Transform: " + std::to_string(trform->rotation));
+    //Create entity
+    auto player = EntityFactory::CreatePlayer(registry); //when create entity > entity added to m_added
 }
 
 void Scene::Update(float deltaTime)
 {
-
+    registry.Update(deltaTime); //entities in m_added added to relevant system
 }
 
 void Scene::Render()

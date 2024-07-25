@@ -34,8 +34,14 @@ Registry::~Registry()
     }
 }
 
-void Registry::Update()
+void Registry::Update(float dt)
 {
+    //update all systems
+    for (const auto& pair : m_systems)
+    {
+        pair.second->Update(dt);
+    }
+
     //add entity
     for (const auto& e : m_entitesToBeAdded)
     {

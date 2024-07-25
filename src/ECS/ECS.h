@@ -76,11 +76,14 @@ private:
 
 public:
     System() = default;
-    ~System() = default;
+    virtual ~System() = default;
+
+    virtual void Update(float dt) {}
 
     void AddEntityToSystem(const Entity &entity);
     void RemoveEntityFromSystem(const Entity &entity);
 
+    std::vector<Entity> &GetSystemEntities() { return m_entities; }
     const std::vector<Entity> &GetSystemEntities() const { return m_entities; }
     const Signature &GetComponentSignature() const { return m_component_signature; }
 
@@ -197,7 +200,7 @@ public:
     Registry() = default;
     ~Registry();
 
-    void Update();
+    void Update(float dt);
 
     //Entity Managements
     Entity CreateEntity();
