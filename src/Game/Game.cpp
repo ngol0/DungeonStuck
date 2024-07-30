@@ -1,6 +1,5 @@
 #include "Game.h"
 #include <iostream>
-#include <SDL2/SDL_image.h>
 #include <glm/glm.hpp>
 #include <spdlog/spdlog.h>
 
@@ -59,7 +58,7 @@ void Game::InitWindow()
 
 void Game::Setup()
 {
-    m_scene.Init();
+    m_scene.Init(m_renderer);
 }
 
 void Game::Run()
@@ -110,7 +109,7 @@ void Game::Render()
     SDL_RenderClear(m_renderer);
 
     //render game objects
-    m_scene.Render(m_renderer);
+    m_scene.Render();
 
     SDL_RenderPresent(m_renderer);
 }

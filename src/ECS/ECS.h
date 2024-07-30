@@ -38,7 +38,7 @@ public:
     
     int GetId() const { return m_id; }
 
-    template <typename TComponent, typename... TArgs> void AddComponent(TArgs &&...args);
+    template <typename TComponent, typename... TArgs> TComponent& AddComponent(TArgs &&...args);
     template <typename TComponent> void RemoveComponent();
     template <typename TComponent> bool HasComponent() const;
     template <typename TComponent> TComponent* GetComponentPtr();
@@ -80,6 +80,7 @@ public:
     System() = default;
     virtual ~System() = default;
 
+    virtual void Init() {}
     virtual void Update(float dt) {}
     virtual void Render(SDL_Renderer* renderer) {}
 
@@ -142,8 +143,8 @@ public:
         data.push_back(object);
     }
 
-    const T &Get(unsigned int index) const { return (*this)[index]; }
-    T &Get(unsigned int index) { return (*this)[index]; }
+    const T& Get(unsigned int index) const { return (*this)[index]; }
+    T& Get(unsigned int index) { return (*this)[index]; }
     void Set(unsigned int index, T& object) { data[index] = object; }
 
     T &operator[](unsigned int index)
@@ -212,7 +213,7 @@ public:
     Entity CreateEntity();
 
     //Component Management
-    template <typename TComponent, typename... TArgs> void AddComponent(const Entity &e, TArgs &&...args);
+    template <typename TComponent, typename... TArgs> TComponent& AddComponent(const Entity &e, TArgs &&...args);
     template <typename TComponent> void RemoveComponent(const Entity &e);
     template <typename TComponent> bool HasComponent(const Entity &e) const;
     template <typename TComponent> TComponent* GetComponentPtr(const Entity &e);
@@ -229,7 +230,7 @@ public:
 //---Component Management implementation
 //Registry
 template <typename TComponent, typename... TArgs>
-void Registry::AddComponent(const Entity &e, TArgs &&...args)
+TComponent& Registry::AddComponent(const Entity &e, TArgs &&...args)
 {
     // get component && entity id
     auto componentId = Component<TComponent>::GetId();
@@ -267,6 +268,8 @@ void Registry::AddComponent(const Entity &e, TArgs &&...args)
     m_entityComponentSignatures[entityId].set(componentId);
 
     spdlog::info("Component id " + std::to_string(componentId) + " was added to entity id " + std::to_string(entityId));
+
+    return pool->Get(entityId);
 }
 
 template <typename TComponent>
@@ -363,9 +366,9 @@ const TSystem& Registry::GetSystem() const
 //---Component Management implementation
 //Entity
 template <typename TComponent, typename... TArgs>
-void Entity::AddComponent(TArgs &&...args)
+TComponent& Entity::AddComponent(TArgs &&...args)
 {
-    m_registry->AddComponent<TComponent>(*this, std::forward<TArgs>(args)...);
+    return m_registry->AddComponent<TComponent>(*this, std::forward<TArgs>(args)...);
 }
 
 template <typename TComponent>

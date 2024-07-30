@@ -1,30 +1,34 @@
 #include "Scene.h"
 #include "../Entity/EntityFactory.h"
-#include "../Components/TransformComponent.h"
-#include "../Components/BoxColliderComponent.h"
 #include "../Systems/MovementSystem.h"
 #include "../Systems/RenderSystem.h"
 
+#include "../Global/AssetManager.h"
+
 #include <spdlog/spdlog.h>
 
-void Scene::Init()
+void Scene::Init(SDL_Renderer* renderer)
 {
+    m_renderer = renderer;
+
+    AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::PLAYER_TANK, "./assets/images/tank-panther-right.png");
+
     //Create system
-    registry.AddSystem<MovementSystem>();
-    registry.AddSystem<RenderSystem>();
+    m_registry.AddSystem<MovementSystem>();
+    m_registry.AddSystem<RenderSystem>();
 
     //Create entity
-    EntityFactory::CreatePlayer(registry); //when create entity > entity added to m_added
+    EntityFactory::CreatePlayer(m_registry); //when create entity > entity added to m_added
 }
 
 void Scene::Update(float deltaTime)
 {
-    registry.Update(deltaTime); //entities in m_added added to relevant system
+    m_registry.Update(deltaTime); //entities in m_added added to relevant system
 }
 
-void Scene::Render(SDL_Renderer* renderer)
+void Scene::Render()
 {
-    registry.Render(renderer);
+    m_registry.Render(m_renderer);
 }
 
 void Scene::Shutdown()

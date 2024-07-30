@@ -91,6 +91,7 @@
         "thread": "cpp",
         "cinttypes": "cpp",
         "typeindex": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "filesystem": "cpp"
     }
 }
