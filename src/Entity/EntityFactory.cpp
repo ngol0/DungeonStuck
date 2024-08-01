@@ -15,7 +15,7 @@ namespace EntityFactory
         e.AddComponent<TransformComponent>(glm::vec2(300.f, 1.f), glm::vec2(1.f, 1.f), 0.f);
         e.AddComponent<MovementComponent>(-50.f);
         auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::TANK);
-        e.AddComponent<BoxColliderComponent>("tank", sprite.srcRect.w, sprite.srcRect.h);
+        e.AddComponent<BoxColliderComponent>("tank", sprite.srcRect.w - 5, sprite.srcRect.h, glm::vec2(4.f, 0.f));
 
         return e;
     }
@@ -27,7 +27,7 @@ namespace EntityFactory
         e.AddComponent<MovementComponent>(50.f);
         auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::CHOPPER);
         e.AddComponent<AnimationComponent>(2, 10);
-        e.AddComponent<BoxColliderComponent>("chopper", sprite.srcRect.w, sprite.srcRect.h);
+        e.AddComponent<BoxColliderComponent>("chopper", sprite.srcRect.w/2, sprite.srcRect.h);
 
         return e;
     }

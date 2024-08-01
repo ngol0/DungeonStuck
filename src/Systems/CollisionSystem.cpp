@@ -31,14 +31,14 @@ void CollisionSystem::Update(float dt)
             if (firstBox.tag == secondBox.tag) continue;
 
             SDL_Rect firstRect = {
-                static_cast<int>(firstTransform.position.x),
-                static_cast<int>(firstTransform.position.y),
+                static_cast<int>(firstTransform.position.x + firstBox.offset.x),
+                static_cast<int>(firstTransform.position.y + firstBox.offset.y),
                 static_cast<int>(firstBox.width),
                 static_cast<int>(firstBox.height)};
 
             SDL_Rect secondRect = {
-                static_cast<int>(secondTransform.position.x),
-                static_cast<int>(secondTransform.position.y),
+                static_cast<int>(secondTransform.position.x + secondBox.offset.x),
+                static_cast<int>(secondTransform.position.y + secondBox.offset.y),
                 static_cast<int>(secondBox.width),
                 static_cast<int>(secondBox.height)};
 

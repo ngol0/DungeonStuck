@@ -4,6 +4,7 @@
 #include "../Systems/RenderSystem.h"
 #include "../Systems/AnimationSystem.h"
 #include "../Systems/CollisionSystem.h"
+#include "../Systems/DebugColliderSystem.h"
 
 #include "../Global/AssetManager.h"
 
@@ -22,6 +23,7 @@ void Scene::Init(SDL_Renderer* renderer)
     Registry::GetInstance().AddSystem<AnimationSystem>();
     Registry::GetInstance().AddSystem<RenderSystem>();
     Registry::GetInstance().AddSystem<CollisionSystem>();
+    Registry::GetInstance().AddSystem<DebugColliderSystem>();
    
     //Create entity
     EntityFactory::CreateTank(); //when create entity > entity added to m_added
