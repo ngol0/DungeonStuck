@@ -5,7 +5,7 @@
 
 namespace EntityFactory
 {
-    Entity CreatePlayer();
+    Entity CreateTank();
     Entity CreateChopper();
 }
 

@@ -3,6 +3,7 @@
 #include "../Systems/MovementSystem.h"
 #include "../Systems/RenderSystem.h"
 #include "../Systems/AnimationSystem.h"
+#include "../Systems/CollisionSystem.h"
 
 #include "../Global/AssetManager.h"
 
@@ -20,9 +21,10 @@ void Scene::Init(SDL_Renderer* renderer)
     Registry::GetInstance().AddSystem<MovementSystem>();
     Registry::GetInstance().AddSystem<AnimationSystem>();
     Registry::GetInstance().AddSystem<RenderSystem>();
+    Registry::GetInstance().AddSystem<CollisionSystem>();
    
     //Create entity
-    EntityFactory::CreatePlayer(); //when create entity > entity added to m_added
+    EntityFactory::CreateTank(); //when create entity > entity added to m_added
     EntityFactory::CreateChopper();
 }
 
