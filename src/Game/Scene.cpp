@@ -2,6 +2,7 @@
 #include "../Entity/EntityFactory.h"
 #include "../Systems/MovementSystem.h"
 #include "../Systems/RenderSystem.h"
+#include "../Systems/AnimationSystem.h"
 
 #include "../Global/AssetManager.h"
 
@@ -11,24 +12,28 @@ void Scene::Init(SDL_Renderer* renderer)
 {
     m_renderer = renderer;
 
-    AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::PLAYER_TANK, "./assets/images/tank-panther-right.png");
+    //load asset??
+    //todo: figure out where should assets be loaded and when?
+    AssetManager::GetInstance().LoadTextureAsset(renderer);
 
     //Create system
-    m_registry.AddSystem<MovementSystem>();
-    m_registry.AddSystem<RenderSystem>();
-
+    Registry::GetInstance().AddSystem<MovementSystem>();
+    Registry::GetInstance().AddSystem<AnimationSystem>();
+    Registry::GetInstance().AddSystem<RenderSystem>();
+   
     //Create entity
-    EntityFactory::CreatePlayer(m_registry); //when create entity > entity added to m_added
+    EntityFactory::CreatePlayer(); //when create entity > entity added to m_added
+    EntityFactory::CreateChopper();
 }
 
 void Scene::Update(float deltaTime)
 {
-    m_registry.Update(deltaTime); //entities in m_added added to relevant system
+    Registry::GetInstance().Update(deltaTime); //entities in m_added added to relevant system
 }
 
 void Scene::Render()
 {
-    m_registry.Render(m_renderer);
+    Registry::GetInstance().Render(m_renderer);
 }
 
 void Scene::Shutdown()

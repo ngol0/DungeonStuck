@@ -5,7 +5,8 @@
 
 namespace EntityFactory
 {
-    Entity CreatePlayer(Registry& registry);
+    Entity CreatePlayer();
+    Entity CreateChopper();
 }
 
 #endif

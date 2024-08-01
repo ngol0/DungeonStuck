@@ -4,8 +4,6 @@
 #include "../Components/MovementComponent.h"
 #include "../ECS/ECS.h"
 
-#include <spdlog/spdlog.h>
-
 MovementSystem::MovementSystem()
 {
     RequireComponent<TransformComponent>();

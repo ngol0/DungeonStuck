@@ -9,7 +9,8 @@ struct SDL_Texture;
 
 namespace SpriteId
 {
-	const static std::string PLAYER_TANK = "player_tank";
+	const static std::string TANK = "tank";
+    const static std::string CHOPPER = "chopper";
 }
 
 class AssetManager
@@ -24,6 +25,8 @@ public:
 
     void ClearAsset();
 
+    //texture asset
+    void LoadTextureAsset(SDL_Renderer* renderer);
     void AddSprite(SDL_Renderer* renderer, const std::string& id, const std::string& filePath);
     SDL_Texture* GetTexture(const std::string& id) 
     { 

@@ -8,7 +8,6 @@ struct SDL_Renderer;
 class Scene
 {
 private:
-    Registry m_registry;
     SDL_Renderer* m_renderer;
 
 public:

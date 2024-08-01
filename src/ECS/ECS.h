@@ -31,10 +31,9 @@ class Entity
 {
 private:
     int m_id;
-    class Registry* m_registry;
 
 public:
-    Entity(int id, Registry& registry);
+    Entity(int id);
     
     int GetId() const { return m_id; }
 
@@ -202,16 +201,6 @@ private:
     
     void AddEntityToSystem(const Entity& entity);
 
-public:
-    Registry() = default;
-    ~Registry();
-
-    void Update(float dt);
-    void Render(SDL_Renderer* renderer);
-
-    //Entity Managements
-    Entity CreateEntity();
-
     //Component Management
     template <typename TComponent, typename... TArgs> TComponent& AddComponent(const Entity &e, TArgs &&...args);
     template <typename TComponent> void RemoveComponent(const Entity &e);
@@ -219,12 +208,27 @@ public:
     template <typename TComponent> TComponent* GetComponentPtr(const Entity &e);
     template <typename TComponent> TComponent& GetComponent(const Entity &e);
 
+public:
+    Registry() = default;
+    ~Registry();
+    Registry(const Registry&) = delete; //avoid copy constructor
+    //singleton
+    static Registry& GetInstance();
+
+    void Update(float dt);
+    void Render(SDL_Renderer* renderer);
+
+    //Entity Managements
+    Entity CreateEntity();
+
     //System Management
     template <typename TSystem, typename... TArgs> void AddSystem(TArgs &&...args);
     template <typename TSystem> void RemoveSystem();
     template <typename TSystem> bool HasSystem() const;
     template <typename TSystem> TSystem& GetSystem();
     template <typename TSystem> const TSystem& GetSystem() const;
+
+    friend class Entity;
 };
 
 //---Component Management implementation
@@ -322,6 +326,7 @@ void Registry::AddSystem(TArgs &&...args)
 {
     //create a new system
     TSystem* newSystem = new TSystem(std::forward<TArgs>(args)...);
+    newSystem->Init();
 
     //question: do we need to make sure TSystem is a derived class of System before adding??
 
@@ -368,31 +373,31 @@ const TSystem& Registry::GetSystem() const
 template <typename TComponent, typename... TArgs>
 TComponent& Entity::AddComponent(TArgs &&...args)
 {
-    return m_registry->AddComponent<TComponent>(*this, std::forward<TArgs>(args)...);
+    return Registry::GetInstance().AddComponent<TComponent>(*this, std::forward<TArgs>(args)...);
 }
 
 template <typename TComponent>
 void Entity::RemoveComponent()
 {
-    m_registry->RemoveComponent<TComponent>(*this);
+    Registry::GetInstance().RemoveComponent<TComponent>(*this);
 }
 
 template <typename TComponent>
 bool Entity::HasComponent() const
 {
-    return m_registry->HasComponent<TComponent>(*this);
+    return Registry::GetInstance().HasComponent<TComponent>(*this);
 }
 
 template <typename TComponent>
 TComponent* Entity::GetComponentPtr()
 {
-    return m_registry->GetComponentPtr<TComponent>(*this);
+    return Registry::GetInstance().GetComponentPtr<TComponent>(*this);
 }
 
 template <typename TComponent>
 TComponent& Entity::GetComponent()
 {
-    return m_registry->GetComponent<TComponent>(*this);
+    return Registry::GetInstance().GetComponent<TComponent>(*this);
 }
 
 #endif

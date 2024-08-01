@@ -29,6 +29,12 @@ void AssetManager::AddSprite(SDL_Renderer* renderer, const std::string& id, cons
     spriteMap.emplace(id, texture); //insert only, constructs element in-place
 }
 
+void AssetManager::LoadTextureAsset(SDL_Renderer* renderer)
+{
+    AddSprite(renderer, SpriteId::TANK, "./assets/images/tank-panther-right.png");
+    AddSprite(renderer, SpriteId::CHOPPER, "./assets/images/chopper.png");
+}
+
 AssetManager& AssetManager::GetInstance()
 {
 	static AssetManager manager;

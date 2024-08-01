@@ -23,8 +23,8 @@ void RenderSystem::Render(SDL_Renderer* renderer)
         SDL_Rect dsRect = { 
             static_cast<int>(transform.position.x), 
             static_cast<int>(transform.position.y), 
-            static_cast<int>(transform.scale.x * sprite.width), 
-            static_cast<int>(transform.scale.y * sprite.height) 
+            static_cast<int>(transform.scale.x * sprite.srcRect.w), 
+            static_cast<int>(transform.scale.y * sprite.srcRect.h) 
         };
         
         SDL_RenderCopyEx(

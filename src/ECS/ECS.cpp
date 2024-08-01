@@ -1,7 +1,7 @@
 #include "ECS.h"
 
 //-------Entity-----------------//
-Entity::Entity(int id, Registry& registry) : m_id(id), m_registry(&registry)
+Entity::Entity(int id) : m_id(id)
 {   
 
 }
@@ -63,7 +63,7 @@ void Registry::Render(SDL_Renderer* renderer)
 Entity Registry::CreateEntity()
 {
     auto id = m_numberOfEntitnes++;
-    Entity e(id, *this);
+    Entity e(id);
 
     //todo: figure out why this is implemented this way???
     if (id >= m_entityComponentSignatures.size())
@@ -97,4 +97,10 @@ void Registry::AddEntityToSystem(const Entity& entity)
             s.second->AddEntityToSystem(entity);
         }
     }
+}
+
+Registry& Registry::GetInstance()
+{
+	static Registry registry;
+	return registry;
 }
