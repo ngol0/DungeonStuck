@@ -29,7 +29,7 @@ void RenderSystem::Render(SDL_Renderer* renderer)
         
         SDL_RenderCopyEx(
             renderer, 
-            AssetManager::GetInstance().GetTexture(sprite.assetId), //todo: ??
+            sprite.texture,
             &srcRect,
             &dsRect,
             transform.rotation,

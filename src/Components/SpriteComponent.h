@@ -6,6 +6,7 @@
 
 struct SpriteComponent
 {
+    SDL_Texture* texture;
     std::string assetId;
     SDL_Rect srcRect;
     int width;
@@ -13,7 +14,7 @@ struct SpriteComponent
 
     SpriteComponent(const std::string& id = "", int srcRectX = 0, int srcRectY = 0) : assetId(id)
     {
-        auto texture = AssetManager::GetInstance().GetTexture(id);
+        texture = AssetManager::GetInstance().GetTexture(id);
         SDL_QueryTexture(texture, NULL, NULL, &width, &height);
 
         srcRect = {srcRectX, srcRectY, width, height};
