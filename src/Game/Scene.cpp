@@ -36,7 +36,7 @@ void Scene::Render()
     Registry::GetInstance().Render(m_renderer);
 }
 
-void Scene::Shutdown()
+void Scene::Clear()
 {
-
+    
 }

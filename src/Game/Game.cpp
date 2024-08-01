@@ -116,7 +116,7 @@ void Game::Render()
 
 void Game::Destroy()
 {
-    m_scene.Shutdown();
+    m_scene.Clear();
 
     SDL_DestroyRenderer(m_renderer);
     SDL_DestroyWindow(m_window);

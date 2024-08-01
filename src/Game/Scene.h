@@ -14,7 +14,7 @@ public:
     void Init(SDL_Renderer* renderer);
     void Update(float deltaTime);
     void Render();
-    void Shutdown();
+    void Clear();
 };
 
 #endif

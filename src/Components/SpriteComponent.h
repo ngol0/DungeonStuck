@@ -7,8 +7,9 @@
 struct SpriteComponent
 {
     SDL_Texture* texture;
-    std::string assetId;
     SDL_Rect srcRect;
+
+    std::string assetId;
     int width;
     int height;
 

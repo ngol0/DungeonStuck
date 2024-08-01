@@ -43,7 +43,7 @@ void Registry::Update(float dt)
     }
     m_entitesToBeAdded.clear();
 
-    //remove entity
+    //todo: remove entity
     
     //update all systems
     for (const auto& pair : m_systems)
