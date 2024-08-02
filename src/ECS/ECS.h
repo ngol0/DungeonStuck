@@ -34,6 +34,8 @@ private:
 
 public:
     Entity(int id);
+
+    void Destroy();
     
     int GetId() const { return m_id; }
 
@@ -200,6 +202,8 @@ private:
     std::set<Entity> m_entitiesToBeRemoved;
     
     void AddEntityToSystem(const Entity& entity);
+    void RemoveEntityFromSystem(const Entity& entity);
+    void KillEntity(const Entity& entity);
 
     //Component Management
     template <typename TComponent, typename... TArgs> TComponent& AddComponent(const Entity &e, TArgs &&...args);
