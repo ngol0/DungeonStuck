@@ -20,6 +20,17 @@ namespace EntityFactory
         return e;
     }
 
+    Entity CreateTank2()
+    {
+        Entity e = Registry::GetInstance().CreateEntity();
+        e.AddComponent<TransformComponent>(glm::vec2(500.f, 1.f), glm::vec2(1.f, 1.f), 0.f);
+        e.AddComponent<MovementComponent>(-90.f);
+        auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::TANK);
+        e.AddComponent<BoxColliderComponent>("tank2", sprite.srcRect.w - 5, sprite.srcRect.h, glm::vec2(4.f, 0.f));
+
+        return e;
+    }
+
     Entity CreateChopper()
     {
         Entity e = Registry::GetInstance().CreateEntity();

@@ -143,8 +143,12 @@ void Registry::RemoveEntityFromAllPool(const Entity &entity)
 {
     for (const auto pool : m_componentPools)
     {
-        // remove from pool
-        pool->Remove(entity);
+        //pool can be a nullptr when a system requires a component > call require > create an id for that component
+        //i.e: AnimComponent id is 3 (created when added system)
+        //but no entity has added this component yet > so when there's another component after that created with id 4
+        //pool 3 is nullptr
+        if (pool) 
+            pool->Remove(entity);
     }
 }
 

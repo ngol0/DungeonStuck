@@ -213,7 +213,7 @@ public:
         //remove the last element of the vector
         m_data.pop_back();
 
-        //PrintSizeDebug();
+        PrintSizeDebug();
     }
 
     T &operator[](unsigned int index)

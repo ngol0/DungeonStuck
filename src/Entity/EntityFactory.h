@@ -7,6 +7,7 @@ namespace EntityFactory
 {
     Entity CreateTank();
     Entity CreateChopper();
+    Entity CreateTank2();
 }
 
 #endif

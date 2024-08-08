@@ -55,7 +55,7 @@ void CollisionSystem::Update(float dt)
                         "On Collision Enter between: " + std::to_string(first.GetId()) + " and " + std::to_string(second.GetId()));
 
                     //todo: delete this
-                    first.Destroy();
+                    second.Destroy();
 
 					//colliders[i]->collision_enter.Notify(*colliders[j]);
 					//colliders[j]->collision_enter.Notify(*colliders[i]);

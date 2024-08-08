@@ -28,6 +28,7 @@ void Scene::Init(SDL_Renderer* renderer)
     //Create entity
     EntityFactory::CreateTank(); //when create entity > entity added to m_added
     EntityFactory::CreateChopper();
+    EntityFactory::CreateTank2(); 
 }
 
 void Scene::Update(float deltaTime)
