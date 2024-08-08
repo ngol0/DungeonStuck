@@ -53,7 +53,10 @@ void CollisionSystem::Update(float dt)
 				{
 					spdlog::info(
                         "On Collision Enter between: " + std::to_string(first.GetId()) + " and " + std::to_string(second.GetId()));
+
+                    //todo: delete this
                     first.Destroy();
+
 					//colliders[i]->collision_enter.Notify(*colliders[j]);
 					//colliders[j]->collision_enter.Notify(*colliders[i]);
 
