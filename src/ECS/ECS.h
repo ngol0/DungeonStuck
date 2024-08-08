@@ -138,7 +138,7 @@ public:
         // if use resize > data will init the members and call its default constructor of TComponent
         // m_data.resize(size);
 
-        // todo: what does reserve do??
+        // reserve a certain memory for this size of obj
         m_data.reserve(size); // this will not init the members and doesnot need default constructor for TComponent
     }
     virtual ~Pool() {}
@@ -213,7 +213,7 @@ public:
         //remove the last element of the vector
         m_data.pop_back();
 
-        PrintSizeDebug();
+        //PrintSizeDebug();
     }
 
     T &operator[](unsigned int index)

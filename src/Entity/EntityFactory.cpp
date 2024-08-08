@@ -20,6 +20,7 @@ namespace EntityFactory
         return e;
     }
 
+    //for testing
     Entity CreateTank2()
     {
         Entity e = Registry::GetInstance().CreateEntity();
