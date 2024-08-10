@@ -7,13 +7,13 @@
 class DamageSystem : public System
 {
 private:
+    
 
 public:
     DamageSystem();
 
     void Init() override;
     void Update(float dt) override {};
-    void RegisterToEvent();
     void OnCollisionHappen(CollisionData& data);
 
     //collision response

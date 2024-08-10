@@ -16,9 +16,6 @@ public:
     void Update(float deltaTime);
     void Render();
     void Clear();
-
-    void Test(CollisionData& data);
-    void Test2(CollisionData& data);
 };
 
 #endif

@@ -11,6 +11,7 @@
 #include "../Global/AssetManager.h"
 
 #include <spdlog/spdlog.h>
+#include <glm/glm.hpp>
 
 void Scene::Init(SDL_Renderer* renderer)
 {
@@ -29,9 +30,8 @@ void Scene::Init(SDL_Renderer* renderer)
     Registry::GetInstance().AddSystem<DamageSystem>();
    
     //Create entity
-    EntityFactory::CreateTank(); //when create entity > entity added to m_added
-    EntityFactory::CreateChopper();
-    //EntityFactory::CreateTank2(); 
+    EntityFactory::CreatePlayer(glm::vec2(0.f, 1.f));
+    EntityFactory::CreateEnemy(glm::vec2(300.f, 1.f), -50.f, 100.f);
 }
 
 void Scene::Update(float deltaTime)
