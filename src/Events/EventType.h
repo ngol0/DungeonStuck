@@ -10,6 +10,8 @@ enum class EventType
 
     //trigger event type
     
+    //
+    OnEntityDestroy
 };
 
 #endif

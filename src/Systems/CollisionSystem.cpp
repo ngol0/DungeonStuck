@@ -14,6 +14,22 @@ CollisionSystem::CollisionSystem()
     RequireComponent<BoxColliderComponent>();
 }
 
+void CollisionSystem::Init()
+{
+    EventManager::GetInstance().Register<CollisionData>(EventType::OnEntityDestroy, this, &CollisionSystem::OnEntityDestroy);
+}
+
+void CollisionSystem::OnEntityDestroy(CollisionData& data)
+{
+    auto iter = m_collisionMap.find(data.collisionPair);
+    if (iter != m_collisionMap.end())
+    {
+        spdlog::info("Reset collision between: " +
+            std::to_string(data.collisionPair.first) + " and " + std::to_string(data.collisionPair.second));
+        iter->second = false;
+    }
+}
+
 void CollisionSystem::Update(float dt)
 {
     auto entities = GetSystemEntities();
@@ -56,14 +72,8 @@ void CollisionSystem::Update(float dt)
 				{
 					spdlog::info("On Collision Enter");
 
-                    //todo: when destroy an entity > that entity is removed from the system entities array
-                    //but it still exists in the map of current status
-                    //when that entity id is reused
-                    //might cause problems?
-                    //>>solution: when collide > call damage system >> when health hits 0 >> call another event
-                    //collision system listens to that event and update the map?
-
-                    //emit an event
+                    // Update the collision map with the current status & emit event
+				    m_collisionMap[key] = currentCollisionStatus;
                     EventManager::GetInstance().Notify(EventType::OnCollisionEnter, data);
 					
 				}
@@ -71,11 +81,11 @@ void CollisionSystem::Update(float dt)
 				else
 				{
 					spdlog::info("On Collision Exit");
+
+                    // Update the collision map with the current status & emit event
+				    m_collisionMap[key] = currentCollisionStatus;
                     EventManager::GetInstance().Notify(EventType::OnCollisionExit, data);
 				}
-
-				// Update the collision map with the current status
-				m_collisionMap[key] = currentCollisionStatus;
 			}
 			// If status hasn't changed and they were collided on last frame, on collision stay 
 			else if (currentCollisionStatus == m_collisionMap[key] && currentCollisionStatus)

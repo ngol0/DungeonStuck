@@ -17,9 +17,7 @@ public:
     void OnCollisionHappen(CollisionData& data);
 
     //collision response
-    void OnEnemyCollidePlayer(int playerId);
-    void OnPlayerBulletCollideEnemy(int enemyId);
-    void OnEnemyBulletCollidePlayer(int playerId);
+    void DamageTakenBy(Entity& victim, float damageAmount, CollisionData& data);
 };
 
 #endif

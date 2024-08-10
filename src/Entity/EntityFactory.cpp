@@ -4,6 +4,7 @@
 #include "../Components/SpriteComponent.h"
 #include "../Components/AnimationComponent.h"
 #include "../Components/BoxColliderComponent.h"
+#include "../Components/HealthComponent.h"
 
 #include "../Global/AssetManager.h"
 
@@ -40,6 +41,7 @@ namespace EntityFactory
         auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::CHOPPER);
         e.AddComponent<AnimationComponent>(2, 10);
         e.AddComponent<BoxColliderComponent>(Tag::PLAYER, sprite.srcRect.w/2, sprite.srcRect.h);
+        e.AddComponent<HealthComponent>(100.f);
 
         return e;
     }

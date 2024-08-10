@@ -9,7 +9,7 @@
 
 DamageSystem::DamageSystem()
 {
-    RequireComponent<BoxColliderComponent>();
+    RequireComponent<HealthComponent>();
 }
 
 void DamageSystem::Init()
@@ -22,35 +22,31 @@ void DamageSystem::RegisterToEvent()
     EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionEnter, this, &DamageSystem::OnCollisionHappen);
 }
 
-void DamageSystem::OnPlayerBulletCollideEnemy(int enemyId)
+void DamageSystem::DamageTakenBy(Entity& victim, float damageAmount, CollisionData& data)
 {
-
-}
-
-void DamageSystem::OnEnemyBulletCollidePlayer(int playerId)
-{
-    
-}
-
-void DamageSystem::OnEnemyCollidePlayer(int playerId)
-{
-    Entity player(playerId);
-    Registry::GetInstance().KillEntity(player);
+    auto& health = victim.GetComponent<HealthComponent>();
+    health.healthAmount -= damageAmount;
+    if (health.healthAmount <= 0.f)
+    {
+        victim.Destroy();
+        EventManager::GetInstance().Notify(EventType::OnEntityDestroy, data);
+    }
 }
 
 void DamageSystem::OnCollisionHappen(CollisionData& data)
 {
-    //player > enemy, enemy > bullet, player > enemy bullet
     auto& collider1 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.first);
     auto& collider2 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.second);
 
     if (collider1.tag == Tag::PLAYER && collider2.tag == Tag::ENEMY)
     {
-        OnEnemyCollidePlayer(data.collisionPair.first);
+        Entity player(data.collisionPair.first);
+        DamageTakenBy(player, 100, data);
     }
     else if (collider1.tag == Tag::ENEMY && collider2.tag == Tag::PLAYER)
     {
-        OnEnemyCollidePlayer(data.collisionPair.second);
+        Entity player(data.collisionPair.second);
+        DamageTakenBy(player, 100, data);
     }
     else if (collider1.tag == Tag::PLAYER && collider2.tag == Tag::ENEMY_BULLET)
     {

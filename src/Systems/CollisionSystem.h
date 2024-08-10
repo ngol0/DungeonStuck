@@ -2,6 +2,8 @@
 #define COLLISIONSYSTEM_H
 
 #include "../ECS/ECS.h"
+#include "../Events/EventData.h"
+
 #include <map>
 
 class CollisionSystem : public System
@@ -12,7 +14,10 @@ private:
 public:
     CollisionSystem();
 
+    void Init() override;
     void Update(float dt) override;
+
+    void OnEntityDestroy(CollisionData& data);
 };
 
 #endif
