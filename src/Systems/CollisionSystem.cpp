@@ -3,6 +3,8 @@
 #include "../Components/TransformComponent.h"
 #include "../Components/BoxColliderComponent.h"
 #include "../ECS/ECS.h"
+#include "../Events/EventManager.h"
+#include "../Events/EventType.h"
 
 #include <spdlog/spdlog.h>
 
@@ -43,43 +45,43 @@ void CollisionSystem::Update(float dt)
                 static_cast<int>(secondBox.height)};
 
             bool currentCollisionStatus = SDL_HasIntersection(&firstRect, &secondRect);
+    
+            auto key = std::make_pair(first.GetId(), second.GetId());
+            CollisionData data(key);
 
-            auto key = std::make_pair(first, second);
-
-            if (currentCollisionStatus != collision_map[key])
+            if (currentCollisionStatus != m_collisionMap[key])
 			{
 				// If two are collided -> on collision enter
 				if (currentCollisionStatus)
 				{
-					spdlog::info(
-                        "On Collision Enter between: " + std::to_string(first.GetId()) + " and " + std::to_string(second.GetId()));
+					spdlog::info("On Collision Enter");
 
-                    //todo: delete this
-                    second.Destroy();
+                    //todo: when destroy an entity > that entity is removed from the system entities array
+                    //but it still exists in the map of current status
+                    //when that entity id is reused
+                    //might cause problems?
+                    //>>solution: when collide > call damage system >> when health hits 0 >> call another event
+                    //collision system listens to that event and update the map?
 
-					//colliders[i]->collision_enter.Notify(*colliders[j]);
-					//colliders[j]->collision_enter.Notify(*colliders[i]);
-
-					//colliders[i]->collisions_enter.Notify(*colliders[i], *colliders[j]);
-					//colliders[j]->collisions_enter.Notify(*colliders[j], *colliders[i]);
+                    //emit an event
+                    EventManager::GetInstance().Notify(EventType::OnCollisionEnter, data);
+					
 				}
 				// If two are not collided -> on collision exit
 				else
 				{
 					spdlog::info("On Collision Exit");
-					//colliders[i]->collision_exit.Notify(*colliders[j]);
-					//colliders[j]->collision_exit.Notify(*colliders[i]);
+                    EventManager::GetInstance().Notify(EventType::OnCollisionExit, data);
 				}
 
 				// Update the collision map with the current status
-				collision_map[key] = currentCollisionStatus;
+				m_collisionMap[key] = currentCollisionStatus;
 			}
 			// If status hasn't changed and they were collided on last frame, on collision stay 
-			else if (currentCollisionStatus == collision_map[key] && currentCollisionStatus)
+			else if (currentCollisionStatus == m_collisionMap[key] && currentCollisionStatus)
 			{
                 //spdlog::info("On Collision Stay");
-				//colliders[i]->collision_stay.Notify(*colliders[j]);
-				//colliders[j]->collision_stay.Notify(*colliders[i]);
+				EventManager::GetInstance().Notify(EventType::OnCollisionStay, data);
 			}
         }
     }

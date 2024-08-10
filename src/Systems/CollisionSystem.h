@@ -7,7 +7,7 @@
 class CollisionSystem : public System
 {
 private:
-    std::map<std::pair<Entity, Entity>, bool> collision_map;
+    std::map<std::pair<int, int>, bool> m_collisionMap;
 
 public:
     CollisionSystem();

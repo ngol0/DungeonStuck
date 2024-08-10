@@ -32,7 +32,7 @@ Registry::~Registry()
         delete pair.second;
     }
 
-    for (auto &pool : m_componentPools)
+    for (IPool* pool : m_componentPools)
     {
         delete pool;
     }

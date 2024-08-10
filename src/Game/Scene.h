@@ -2,6 +2,7 @@
 #define SCENE_H
 
 #include "../Entity/EntityFactory.h"
+#include "../Events/EventManager.h"
 
 struct SDL_Renderer;
 
@@ -15,6 +16,9 @@ public:
     void Update(float deltaTime);
     void Render();
     void Clear();
+
+    void Test(CollisionData& data);
+    void Test2(CollisionData& data);
 };
 
 #endif
