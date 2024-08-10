@@ -280,19 +280,12 @@ private:
     void AddEntityToSystem(const Entity &entity);
     void RemoveEntityFromAllSystem(const Entity &entity);
     void RemoveEntityFromAllPool(const Entity &entity);
-    void KillEntity(const Entity &entity);
 
     // Component Management
     template <typename TComponent, typename... TArgs>
     TComponent &AddComponent(const Entity &e, TArgs &&...args);
     template <typename TComponent>
     void RemoveComponent(const Entity &e);
-    template <typename TComponent>
-    bool HasComponent(const Entity &e) const;
-    template <typename TComponent>
-    TComponent *GetComponentPtr(const Entity &e);
-    template <typename TComponent>
-    TComponent &GetComponent(const Entity &e);
 
 public:
     Registry() = default;
@@ -306,6 +299,7 @@ public:
 
     // Entity Managements
     Entity CreateEntity();
+    void KillEntity(const Entity &entity);
 
     // System Management
     template <typename TSystem, typename... TArgs>
@@ -318,6 +312,14 @@ public:
     TSystem &GetSystem();
     template <typename TSystem>
     const TSystem &GetSystem() const;
+
+    // Component Management
+    template <typename TComponent>
+    bool HasComponent(const Entity &e) const;
+    template <typename TComponent>
+    TComponent *GetComponentPtr(const Entity &e);
+    template <typename TComponent>
+    TComponent &GetComponent(const Entity &e);
 
     friend class Entity;
 };

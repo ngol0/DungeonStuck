@@ -5,6 +5,7 @@
 #include "../Systems/AnimationSystem.h"
 #include "../Systems/CollisionSystem.h"
 #include "../Systems/DebugColliderSystem.h"
+#include "../Systems/DamageSystem.h"
 #include "../Events/EventType.h"
 
 #include "../Global/AssetManager.h"
@@ -25,26 +26,12 @@ void Scene::Init(SDL_Renderer* renderer)
     Registry::GetInstance().AddSystem<RenderSystem>();
     Registry::GetInstance().AddSystem<CollisionSystem>();
     Registry::GetInstance().AddSystem<DebugColliderSystem>();
+    Registry::GetInstance().AddSystem<DamageSystem>();
    
     //Create entity
     EntityFactory::CreateTank(); //when create entity > entity added to m_added
     EntityFactory::CreateChopper();
     EntityFactory::CreateTank2(); 
-
-    EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionEnter, this, &Scene::Test);
-    EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionExit, this, &Scene::Test2);
-}
-
-void Scene::Test(CollisionData& data)
-{
-    spdlog::info("Testing call, collision ENTER between: " + 
-        std::to_string(data.collisionPair.first) + " and " + std::to_string(data.collisionPair.second));
-}
-
-void Scene::Test2(CollisionData& data)
-{
-    spdlog::info("Testing call 2, collision EXIT between: " + 
-        std::to_string(data.collisionPair.first) + " and " + std::to_string(data.collisionPair.second));
 }
 
 void Scene::Update(float deltaTime)

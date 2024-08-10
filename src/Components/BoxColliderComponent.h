@@ -4,6 +4,14 @@
 #include <glm/glm.hpp>
 #include <SDL2/SDL.h>
 
+namespace Tag
+{
+	const static std::string PLAYER = "player";
+    const static std::string ENEMY = "enemy";
+    const static std::string PLAYER_BULLET = "player_bullet";
+    const static std::string ENEMY_BULLET = "enemy_bullet";
+}
+
 struct BoxColliderComponent
 {
     std::string tag;
