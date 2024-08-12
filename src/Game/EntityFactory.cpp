@@ -7,8 +7,6 @@
 #include "../Components/HealthComponent.h"
 #include "../Components/PlayerInputComponent.h"
 
-#include "../Asset/AssetManager.h"
-
 namespace EntityFactory
 {
     Entity CreatePlayer(glm::vec2 pos, glm::vec2 scale, float rot)
@@ -17,9 +15,9 @@ namespace EntityFactory
         e.AddComponent<TransformComponent>(pos, scale, rot);
 
         auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::CHOPPER);
-        e.AddComponent<BoxColliderComponent>(Tag::PLAYER, sprite.srcRect.w/2, sprite.srcRect.h);
-        e.AddComponent<MovementComponent>(50.f);
-        e.AddComponent<AnimationComponent>(2, 10);
+        e.AddComponent<BoxColliderComponent>(Tag::PLAYER, sprite.srcRect.w/2, sprite.srcRect.h/4);
+        e.AddComponent<MovementComponent>();
+        e.AddComponent<AnimationComponent>(2, 4, 10);
         e.AddComponent<HealthComponent>(100.f);
         e.AddComponent<PlayerInputComponent>();
 

@@ -4,6 +4,12 @@
 #include <SDL2/SDL.h>
 #include "../Asset/AssetManager.h"
 
+namespace SpriteId
+{
+	const static std::string TANK = "tank";
+    const static std::string CHOPPER = "chopper";
+}
+
 struct SpriteComponent
 {
     SDL_Texture* texture{nullptr};

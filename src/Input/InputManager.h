@@ -29,17 +29,17 @@ public:
 //     }
 // };
 
-template<typename TOwner, typename TValue>
+template<typename TOwner, typename T>
 class Action : public IAction
 {
 private:
 	TOwner* m_instance; //instance pointer
-	void(TOwner::* m_function)(TValue&); //function pointer with TArgs arguments
-    TValue dataValue;
+	void(TOwner::* m_function)(T&); //function pointer with TArgs arguments
+    T dataValue;
 
 public:
     virtual ~Action() = default;
-    Action(TOwner* owner, void(TOwner::* func)(TValue&), const TValue& value) : m_instance(owner), m_function(func), dataValue(value) {}
+    Action(TOwner* owner, void(TOwner::* func)(T&), const T& value) : m_instance(owner), m_function(func), dataValue(value) {}
 
     void Execute()
     {
@@ -55,11 +55,11 @@ private:
     std::unordered_map<SDL_Keycode, IAction*> m_keyActionMap;
 
 public:
-    template<typename TValue, typename TOwner>
-    void BindKey(const InputData<TValue>& data, TOwner* owner, void(TOwner::* func)(TValue&))
+    template<typename T, typename TOwner>
+    void BindKey(const InputData<T>& data, TOwner* owner, void(TOwner::* func)(T&))
     {
         //create a concrete data here
-        auto action = new Action<TOwner, TValue>(owner, func, data.valueToBePassed);
+        auto action = new Action<TOwner, T>(owner, func, data.valueToBePassed);
 
         m_keyActionMap[data.key] = action;
     }

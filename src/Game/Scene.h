@@ -1,7 +1,6 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "../Entity/EntityFactory.h"
 #include "../Events/EventManager.h"
 
 struct SDL_Renderer;
@@ -16,6 +15,8 @@ public:
     void Update(float deltaTime);
     void Render();
     void Clear();
+
+    void LoadTextureAsset();
 };
 
 #endif

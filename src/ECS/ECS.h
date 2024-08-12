@@ -455,6 +455,7 @@ TSystem &Registry::GetSystem()
 template <typename TSystem>
 const TSystem &Registry::GetSystem() const
 {
+    assert (HasSystem<TSystem>());
     auto iter = m_systems.find(std::type_index(typeid(TSystem)));
 
     // iter->second returns a pointer to a System

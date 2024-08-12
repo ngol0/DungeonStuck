@@ -21,9 +21,12 @@ void AnimationSystem::Update(float dt)
         animation.currentFrame++;
         auto animationFrameIndex = (animation.currentFrame / animation.frameSpeed) % animation.numOfFrame;
         auto frameWidth = sprite.width / animation.numOfFrame;
+        auto frameHeight = sprite.height / animation.numOfAnims;
 
         //display correct sprite in this frame
         sprite.srcRect.x = frameWidth * animationFrameIndex;
         sprite.srcRect.w = frameWidth;
+
+        sprite.srcRect.h = frameHeight;        
     }
 }

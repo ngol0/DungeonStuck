@@ -5,10 +5,10 @@
 
 struct AnimationComponent
 {
-    size_t numOfFrame, currentFrame, frameSpeed;
+    size_t numOfFrame, numOfAnims, currentFrame, frameSpeed;
 
-    AnimationComponent(size_t numFrame = 1, size_t fSpeed = 1)
-        : numOfFrame(numFrame), currentFrame(0), frameSpeed(fSpeed)
+    AnimationComponent(size_t numFrame = 1, size_t numAnim = 1, size_t fSpeed = 1)
+        : numOfFrame(numFrame), numOfAnims(numAnim), currentFrame(0), frameSpeed(fSpeed)
     {
         
     }

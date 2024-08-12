@@ -8,9 +8,7 @@ class PlayerMovementSystem : public System
 {
 public:
     PlayerMovementSystem();
-
-    void Update(float dt) override;
-    void Move(glm::vec2& value);
+    void Move(glm::vec3& value);
 };
 
 #endif
