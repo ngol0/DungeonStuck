@@ -2,7 +2,6 @@
 
 #include "../Components/SpriteComponent.h"
 #include "../Components/AnimationComponent.h"
-#include "../ECS/ECS.h"
 
 AnimationSystem::AnimationSystem()
 {

@@ -9,12 +9,10 @@
 #include "../Systems/PlayerInputSystem.h"
 #include "../Systems/PlayerMovementSystem.h"
 
-#include "../Events/EventType.h"
 #include "../Asset/AssetManager.h"
 
 #include "../Components/SpriteComponent.h"
 
-#include <spdlog/spdlog.h>
 #include <glm/glm.hpp>
 
 

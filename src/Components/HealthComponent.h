@@ -2,7 +2,6 @@
 #define HEALTHCOMPONENT_H
 
 #include <glm/glm.hpp>
-#include <SDL2/SDL.h>
 
 struct HealthComponent
 {

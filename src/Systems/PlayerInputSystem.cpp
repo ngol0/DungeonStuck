@@ -1,8 +1,6 @@
 #include "PlayerInputSystem.h"
 #include "PlayerMovementSystem.h"
 
-#include "../Events/EventManager.h"
-#include "../Events/EventType.h"
 #include "../Input/InputManager.h"
 #include "../Input/InputData.h"
 

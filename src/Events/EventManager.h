@@ -5,7 +5,6 @@
 #include "EventData.h"
 #include <map>
 #include <vector>
-#include <spdlog/spdlog.h>
 
 class IEventCallback
 {

@@ -2,7 +2,6 @@
 
 #include "../Components/TransformComponent.h"
 #include "../Components/BoxColliderComponent.h"
-#include "../ECS/ECS.h"
 #include "../Events/EventManager.h"
 #include "../Events/EventType.h"
 

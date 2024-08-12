@@ -3,7 +3,6 @@
 
 #include <SDL2/SDL_image.h>
 #include <unordered_map>
-#include <spdlog/spdlog.h>
 #include "InputData.h"
 
 class IAction

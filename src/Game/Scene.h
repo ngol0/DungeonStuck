@@ -1,8 +1,6 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "../Events/EventManager.h"
-
 struct SDL_Renderer;
 
 class Scene

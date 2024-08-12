@@ -1,7 +1,6 @@
 #include "AssetManager.h"
-#include <string>
-
 #include <SDL2/SDL_image.h>
+#include <string>
 
 AssetManager::~AssetManager()
 {

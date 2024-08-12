@@ -2,7 +2,6 @@
 #define ASSETMANAGER_H
 
 #include <map>
-#include <string>
 
 struct SDL_Renderer;
 struct SDL_Texture;

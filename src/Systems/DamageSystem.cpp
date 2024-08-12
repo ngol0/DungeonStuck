@@ -5,8 +5,6 @@
 #include "../Events/EventManager.h"
 #include "../Events/EventType.h"
 
-#include "../ECS/ECS.h"
-
 DamageSystem::DamageSystem()
 {
     RequireComponent<HealthComponent>();
