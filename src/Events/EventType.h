@@ -9,9 +9,15 @@ enum class EventType
     OnCollisionExit,
 
     //trigger event type
+    OnTriggerEnter,
     
-    //
-    OnEntityDestroy
+    
+    //entity event
+    OnEntityDestroy,
+
+    //input event
+    OnKeyPressed,
+    OnMousePressed,
 };
 
 #endif

@@ -2,6 +2,7 @@
 #define EVENTDATA_H
 
 #include <utility>
+#include <SDL2/SDL_image.h>
 
 struct IData
 {
@@ -10,10 +11,9 @@ struct IData
 
 struct CollisionData : public IData
 {
-    virtual ~CollisionData() = default;
-
     std::pair<int, int> collisionPair;
 
+    virtual ~CollisionData() = default;
     CollisionData(std::pair<int,int> pair) : collisionPair(pair) {}
 };
 

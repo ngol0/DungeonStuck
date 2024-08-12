@@ -2,7 +2,7 @@
 #define SPRITECOMPONENT_H
 
 #include <SDL2/SDL.h>
-#include "../Global/AssetManager.h"
+#include "../Asset/AssetManager.h"
 
 struct SpriteComponent
 {

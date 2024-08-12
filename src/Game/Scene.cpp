@@ -6,12 +6,14 @@
 #include "../Systems/CollisionSystem.h"
 #include "../Systems/DebugColliderSystem.h"
 #include "../Systems/DamageSystem.h"
-#include "../Events/EventType.h"
+#include "../Systems/PlayerInputSystem.h"
 
-#include "../Global/AssetManager.h"
+#include "../Events/EventType.h"
+#include "../Asset/AssetManager.h"
 
 #include <spdlog/spdlog.h>
 #include <glm/glm.hpp>
+
 
 void Scene::Init(SDL_Renderer* renderer)
 {
@@ -28,10 +30,11 @@ void Scene::Init(SDL_Renderer* renderer)
     Registry::GetInstance().AddSystem<CollisionSystem>();
     Registry::GetInstance().AddSystem<DebugColliderSystem>();
     Registry::GetInstance().AddSystem<DamageSystem>();
+    Registry::GetInstance().AddSystem<PlayerInputSystem>();
    
     //Create entity
     EntityFactory::CreatePlayer(glm::vec2(0.f, 1.f));
-    EntityFactory::CreateEnemy(glm::vec2(300.f, 1.f), -50.f, 100.f);
+    EntityFactory::CreateEnemy(glm::vec2(300.f, 1.f), -50.f, 100.f); //todo: enemy type for diff params
 }
 
 void Scene::Update(float deltaTime)

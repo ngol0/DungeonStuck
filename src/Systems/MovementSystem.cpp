@@ -2,7 +2,6 @@
 
 #include "../Components/TransformComponent.h"
 #include "../Components/MovementComponent.h"
-#include "../ECS/ECS.h"
 
 MovementSystem::MovementSystem()
 {

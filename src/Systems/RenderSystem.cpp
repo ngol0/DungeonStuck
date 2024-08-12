@@ -1,7 +1,6 @@
 #include "RenderSystem.h"
 #include "../Components/TransformComponent.h"
 #include "../Components/SpriteComponent.h"
-#include "../Global/AssetManager.h"
 
 #include <SDL2/SDL.h>
 

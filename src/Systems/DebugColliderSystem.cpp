@@ -1,7 +1,6 @@
 #include "DebugColliderSystem.h"
 #include "../Components/TransformComponent.h"
 #include "../Components/BoxColliderComponent.h"
-#include "../Global/AssetManager.h"
 
 #include <SDL2/SDL.h>
 

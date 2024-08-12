@@ -6,8 +6,6 @@
 #include "../Events/EventManager.h"
 #include "../Events/EventType.h"
 
-#include <spdlog/spdlog.h>
-
 CollisionSystem::CollisionSystem()
 {
     RequireComponent<TransformComponent>();

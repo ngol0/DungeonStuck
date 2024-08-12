@@ -3,6 +3,8 @@
 #include <glm/glm.hpp>
 #include <spdlog/spdlog.h>
 
+#include "../Input/InputManager.h"
+
 Game::Game()
 {
     b_running = false;
@@ -28,10 +30,10 @@ void Game::InitWindow()
 
     // create a window
     m_window = SDL_CreateWindow(
-        NULL, 
-        SDL_WINDOWPOS_CENTERED, 
-        SDL_WINDOWPOS_CENTERED, 
-        m_window_width, 
+        NULL,
+        SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED,
+        m_window_width,
         m_window_height,
         SDL_WINDOW_BORDERLESS);
 
@@ -43,8 +45,8 @@ void Game::InitWindow()
 
     // create sdl renderer
     m_renderer = SDL_CreateRenderer(
-        m_window, 
-        -1, 
+        m_window,
+        -1,
         SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (!m_renderer)
     {
@@ -52,7 +54,7 @@ void Game::InitWindow()
         return;
     }
 
-    //SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+    // SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
     b_running = true;
 }
 
@@ -74,20 +76,23 @@ void Game::Run()
 
 void Game::ProcessInput()
 {
-    SDL_Event e; //event handler
+    SDL_Event e; // event handler
     while (SDL_PollEvent(&e))
     {
-        switch(e.type)
+        switch (e.type)
         {
-            case SDL_QUIT:
+        case SDL_QUIT:
+            b_running = false;
+            break;
+        case SDL_KEYDOWN:
+            if (e.key.keysym.sym == SDLK_ESCAPE)
+            {
                 b_running = false;
-                break;
-            case SDL_KEYDOWN:
-                if (e.key.keysym.sym==SDLK_ESCAPE)
-                {
-                    b_running = false;
-                }
-                break;
+            }
+
+            //emit key pressed event
+            InputManager::GetInstance().Execute(e.key.keysym.sym);
+            break;
         }
     }
 }
@@ -95,11 +100,11 @@ void Game::ProcessInput()
 void Game::Update()
 {
     Uint32 currentTime = SDL_GetTicks();
-	float deltaTime = (currentTime - m_last_update_frame) / 1000.0f;
+    float deltaTime = (currentTime - m_last_update_frame) / 1000.0f;
 
     m_last_update_frame = currentTime;
 
-    //Update System
+    // Update System
     m_scene.Update(deltaTime);
 }
 
@@ -108,7 +113,7 @@ void Game::Render()
     SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
     SDL_RenderClear(m_renderer);
 
-    //render game objects
+    // render game objects
     m_scene.Render();
 
     SDL_RenderPresent(m_renderer);
