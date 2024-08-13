@@ -6,15 +6,8 @@
 #include <map>
 #include <vector>
 
-class IEventCallback
-{
-public:
-    virtual ~IEventCallback() = default;
-    virtual void Call(IData& data) = 0;
-};
-
 template<typename TOwner, typename TData>
-class EventCallback : public IEventCallback
+class EventCallback : public ICallback
 {
 private:
     TOwner* m_instance; //instance pointer
@@ -33,8 +26,7 @@ public:
 class EventManager
 {
 private:
-    std::map<EventType, std::vector<std::unique_ptr<IEventCallback>>> listeners;
-    //std::map<EventType, std::vector<IEventCallback*>> listeners;
+    std::map<EventType, std::vector<std::unique_ptr<ICallback>>> listeners;
 
 public:
     EventManager() = default;
@@ -68,12 +60,10 @@ public:
     void Register(EventType eventType, TOwner* owner, void (TOwner::*function)(TData&))
     {
         //make a new EventCallback
-        //auto eventCallback = new EventCallback<TOwner, TData>(owner, function);
         auto eventCallbackPtr = std::make_unique<EventCallback<TOwner, TData>>(owner, function);
 
         //add event callbacks to the map based on event type
         listeners[eventType].emplace_back(std::move(eventCallbackPtr));
-        //listeners[eventType].push_back(eventCallback);
     }
 };
 

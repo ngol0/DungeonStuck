@@ -3,11 +3,7 @@
 
 #include <utility>
 #include <SDL2/SDL_image.h>
-
-struct IData
-{
-    virtual ~IData() = default;
-};
+#include "../Global/Interface.h"
 
 struct CollisionData : public IData
 {
