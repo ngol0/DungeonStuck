@@ -6,7 +6,7 @@ LINKER_FLAG := `sdl2-config --libs --cflags` -lSDL2_image -llua
 INCLUDE_FLAG := -I./libs
 
 # Define your source files here
-SRCS=src/**/*.cpp src/*.cpp libs/imgui/*.cpp
+SRCS=src/**/*.cpp src/*.cpp libs/imgui/*.cpp src/**/**/*.cpp
 
 # Define object files (replace .cc with .o)
 OBJS=$(SRCS:.cc=.o)

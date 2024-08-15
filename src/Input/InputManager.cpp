@@ -25,3 +25,23 @@ void InputManager::Execute(SDL_Keycode key)
 		iter->second->Call();
 	}
 }
+
+void InputManager::RebindKey(const std::string &actionName, SDL_Keycode newKey)
+{
+	// look up the old key
+	auto oldKeyIter = m_ActionNameKeyMap.find(actionName);
+
+	if (oldKeyIter != m_ActionNameKeyMap.end())
+	{
+		// look up the callback
+		auto oldKey = oldKeyIter->second;
+		auto callbackIter = m_keyActionMap.find(oldKey);
+
+		auto callback = callbackIter->second;
+
+		m_keyActionMap[newKey] = callback;
+		m_keyActionMap.erase(oldKey);
+	}
+
+	m_ActionNameKeyMap[actionName] = newKey;
+}

@@ -5,8 +5,6 @@
 #include <vector>
 #include "../Global/Interface.h"
 
-#include <spdlog/spdlog.h>
-
 //                                  INPUT DATA & INPUT ACTION
 //------------------------------------------------------------------------------------------------//
 //Input Data includes:
@@ -15,54 +13,42 @@
 //==================================================================================================
 //Input Action includes: a vector of input data
 //==================================================================================================
-//When binding an input, add an input action (i.e: move action)
+//When binding an input, create an input action with a name
 //Add data into that input action: i.e: moveInput.Add(UpData(Keycode.W, glm::vec2(0,-1)));
-//Then bind that input action with a callback by calling BindAction(InputAction, *owner, &callback)
+//Then bind loop through all the data in the input action and bind those data using:
+//BindKey(data, *owner, &callback)
 //------------------------------------------------------------------------------------------------//
 
 template<typename T>
 struct InputData : public IData
 {
+    std::string dataId;
     SDL_Keycode key;
     T valueToBePassed;
 
     virtual ~InputData() = default;
-    InputData(SDL_Keycode key, T value) : key(key), valueToBePassed(value) {}
+    InputData(const std::string& name, SDL_Keycode key, T value) : dataId(name), key(key), valueToBePassed(value) {}
 };
 
+template<typename T>
 class InputAction
 {
 private: 
     std::string id;
-    std::vector<IData*> m_inputData;
+    std::vector<InputData<T>> m_inputData;
 
 public:
     InputAction(const std::string& id="") : id(id) {}
-    ~InputAction();
 
-    //Todo: Copy constructor
-    //InputAction(const InputAction& other) noexcept;
-    InputAction(const InputAction& other) = delete; //for now, prevent copying
-
-    //Todo: Copy assignment operator
-    //InputAction& operator=(const InputAction& other) noexcept;
-
-    // Move constructor
-    InputAction(InputAction&& other) noexcept;
-
-    // Move assigment operator
-    InputAction& operator=(InputAction&& other) noexcept;    
-
-    template<typename T>
-    void AddKeyInputData(SDL_Keycode key, T valueToBePassed)
+    void AddKeyInputData(const std::string& actionName, SDL_Keycode key, T valueToBePassed)
     {
-        auto data = new InputData<T>(key, valueToBePassed);
-        m_inputData.push_back(data);
+        m_inputData.emplace_back(InputData<T>(actionName, key, valueToBePassed)); //copy??? todo: move??
     }
 
     const std::string& GetName() const { return id; }
 
-    friend class InputManager;
+    friend class InputEditorSystem;
+    friend class PlayerInputSystem;
 };
 
 #endif

@@ -4,6 +4,7 @@
 #include <SDL2/SDL_image.h>
 #include <unordered_map>
 #include <string>
+#include <unordered_set>
 
 #include "InputData.h"
 #include "../Global/Interface.h"
@@ -50,38 +51,19 @@ class InputManager
 {
 private:
     std::unordered_map<SDL_Keycode, ICallback *> m_keyActionMap;
-    std::unordered_map<std::string, InputAction> m_actionMap;
-
-    template <typename T, typename TOwner>
-    void BindKey(IData* data, TOwner *owner, void (TOwner::*func)(T &))
-    {
-        auto inputData = static_cast<InputData<T>*>(data);
-        // create a concrete data here
-        auto callback = new InputCallback<TOwner, T>(owner, func, inputData->valueToBePassed);
-
-        m_keyActionMap[inputData->key] = callback;
-    }
+    std::unordered_map<std::string, SDL_Keycode> m_ActionNameKeyMap;
 
 public:
     template <typename T, typename TOwner>
-    void BindAction(const std::string &action, TOwner *owner, void (TOwner::*func)(T &))
+    void BindKey(InputData<T>& data, TOwner *owner, void (TOwner::*func)(T &))
     {
-        auto iter = m_actionMap.find(action);
-        if (iter != m_actionMap.end())
-        {
-            for (const auto &data : iter->second.m_inputData)
-            {
-                BindKey(data, owner, func);
-            }
-        }
+        // create a concrete data here
+        auto callback = new InputCallback<TOwner, T>(owner, func, data.valueToBePassed);
+        m_keyActionMap[data.key] = callback;
+        m_ActionNameKeyMap[data.dataId] = data.key;
     }
 
-    InputAction& AddAction(const std::string &actionName)
-    {
-        InputAction input(actionName);
-        m_actionMap.emplace(actionName, std::move(input));
-        return m_actionMap[actionName];
-    }
+    void RebindKey(const std::string& actionName, SDL_Keycode newKey);
 
     void Execute(SDL_Keycode key);
 
@@ -90,6 +72,8 @@ public:
     ~InputManager();
     // singleton
     static InputManager &GetInstance();
+
+    friend class InputEditorSystem;
 
     //---Not in use anymore--//
     // Bind Key with TArgs...

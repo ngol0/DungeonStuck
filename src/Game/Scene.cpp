@@ -5,9 +5,10 @@
 #include "../Systems/AnimationSystem.h"
 #include "../Systems/CollisionSystem.h"
 #include "../Systems/DebugColliderSystem.h"
-#include "../Systems/DamageSystem.h"
-#include "../Systems/PlayerInputSystem.h"
-#include "../Systems/PlayerMovementSystem.h"
+#include "../Systems/Game/DamageSystem.h"
+#include "../Systems/Game/PlayerInputSystem.h"
+#include "../Systems/Game/PlayerMovementSystem.h"
+#include "../Systems/Editor/InputEditorSystem.h"
 
 #include "../Asset/AssetManager.h"
 
@@ -25,15 +26,21 @@ void Scene::Init(SDL_Renderer* renderer)
     LoadTextureAsset();
 
     //Create system
+    //engine
     Registry::GetInstance().AddSystem<MovementSystem>();
     Registry::GetInstance().AddSystem<AnimationSystem>();
     Registry::GetInstance().AddSystem<RenderSystem>();
     Registry::GetInstance().AddSystem<CollisionSystem>();
-    Registry::GetInstance().AddSystem<DebugColliderSystem>();
+    //Registry::GetInstance().AddSystem<DebugColliderSystem>();
+
+    //game
     Registry::GetInstance().AddSystem<DamageSystem>();
     Registry::GetInstance().AddSystem<PlayerMovementSystem>();
 
+    //input system
     Registry::GetInstance().AddSystem<PlayerInputSystem>(); //system to bind all the input -- should be added last
+    //input editor
+    Registry::GetInstance().AddSystem<InputEditorSystem>();
    
     // //Create entity
     EntityFactory::CreatePlayer(glm::vec2(0.f, 1.f));

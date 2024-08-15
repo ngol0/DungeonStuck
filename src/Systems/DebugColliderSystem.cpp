@@ -12,6 +12,7 @@ DebugColliderSystem::DebugColliderSystem()
 
 void DebugColliderSystem::Render(SDL_Renderer* renderer)
 {
+    
     for (auto& e : GetSystemEntities())
     {
         TransformComponent& transform = e.GetComponent<TransformComponent>();
