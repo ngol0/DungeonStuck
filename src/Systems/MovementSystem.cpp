@@ -17,6 +17,6 @@ void MovementSystem::Update(float dt)
         auto& transform = e.GetComponent<TransformComponent>();
         auto& movement = e.GetComponent<MovementComponent>();
 
-        transform.position += movement.moveDirection * movement.speed * dt;
+        //transform.position += movement.moveDirection * movement.speed * dt;
     }
 }

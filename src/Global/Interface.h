@@ -14,6 +14,7 @@ public:
 
     virtual void Call() {}
     virtual void Call(IData& data) {}
+    virtual void Call(float dt) {}
 };
 
 #endif

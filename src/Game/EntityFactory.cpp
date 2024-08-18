@@ -16,7 +16,7 @@ namespace EntityFactory
 
         auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::CHOPPER);
         e.AddComponent<BoxColliderComponent>(Tag::PLAYER, sprite.srcRect.w/2, sprite.srcRect.h/4);
-        e.AddComponent<MovementComponent>();
+        e.AddComponent<MovementComponent>(150.f);
         e.AddComponent<AnimationComponent>(2, 4, 10);
         e.AddComponent<HealthComponent>(100.f);
         e.AddComponent<PlayerInputComponent>();

@@ -47,27 +47,74 @@ public:
     friend class InputManager;
 };
 
+template <typename TOwner, typename T>
+class InputCallbackDelta : public ICallback
+{
+private:
+    TOwner *m_instance;        
+    void (TOwner::*m_function)(T&, float dt);
+    T dataValue;
+
+public:
+    virtual ~InputCallbackDelta() = default;
+    InputCallbackDelta(TOwner *owner, void (TOwner::*func)(T&, float dt), const T &value) : m_instance(owner), m_function(func), dataValue(value) {}
+
+    void Call(float dt) override
+    {
+        (m_instance->*m_function)(dataValue, dt);
+    }
+
+    friend class InputManager;
+};
+
 class InputManager
 {
 private:
-    std::unordered_map<SDL_Keycode, ICallback *> m_keyActionMap;
+    std::unordered_map<SDL_Keycode, ICallback *> m_keyDownActionMap;
+    std::unordered_map<SDL_Keycode, ICallback *> m_keyUpActionMap;
+
     std::unordered_map<std::string, SDL_Keycode> m_ActionNameKeyMap;
+    std::unordered_map<SDL_Keycode, ICallback *> m_keyPressedAction;
 
 public:
+    //----for key pressed----//
+    bool KEYS[355];
+
     template <typename T, typename TOwner>
-    void BindKey(InputData<T>& data, TOwner *owner, void (TOwner::*func)(T &))
+    void BindKeyDown(InputData<T>& data, TOwner *owner, void (TOwner::*func)(T&))
     {
         // create a concrete data here
         auto callback = new InputCallback<TOwner, T>(owner, func, data.valueToBePassed);
-        m_keyActionMap[data.key] = callback;
+        m_keyDownActionMap[data.key] = callback;
+        m_ActionNameKeyMap[data.dataId] = data.key;
+    }
+
+    template <typename T, typename TOwner>
+    void BindKeyUp(InputData<T>& data, TOwner *owner, void (TOwner::*func)(T&))
+    {
+        // create a concrete data here
+        auto callback = new InputCallback<TOwner, T>(owner, func, data.valueToBePassed);
+        m_keyUpActionMap[data.key] = callback;
+    }
+
+    template <typename T, typename TOwner>
+    void BindKeyPressed(InputData<T>& data, TOwner *owner, void (TOwner::*func)(T&, float dt))
+    {
+        // create a concrete data here
+        auto callback = new InputCallbackDelta<TOwner, T>(owner, func, data.valueToBePassed);
+        m_keyPressedAction[data.key] = callback;
         m_ActionNameKeyMap[data.dataId] = data.key;
     }
 
     void RebindKey(const std::string& actionName, SDL_Keycode newKey);
+    bool IsKeyExist(SDL_Keycode newKey);
 
-    void Execute(SDL_Keycode key);
+    void OnKeyDown(SDL_Keycode key);
+    void OnKeyUp(SDL_Keycode key);
 
-    InputManager() {}
+    void Update(float dt);
+
+    InputManager();
     InputManager(const InputManager &) = delete;
     ~InputManager();
     // singleton

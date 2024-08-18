@@ -8,7 +8,7 @@ class PlayerMovementSystem : public System
 {
 public:
     PlayerMovementSystem();
-    void Move(glm::vec3& value);
+    void Move(glm::vec3& value, float dt = 0.f);
 };
 
 #endif

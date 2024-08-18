@@ -16,7 +16,7 @@
 class PlayerInputSystem : public System
 {
 private:
-    InputAction<glm::vec3> moveAction;
+    
 
 public:
     PlayerInputSystem();

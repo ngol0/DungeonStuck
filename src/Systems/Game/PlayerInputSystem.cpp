@@ -7,7 +7,7 @@
 
 PlayerInputSystem::PlayerInputSystem() 
 {
-    moveAction.id = "Move";
+    
 }
 
 void PlayerInputSystem::Init()
@@ -20,17 +20,19 @@ void PlayerInputSystem::ConfigureDefaultInputBindings()
     auto& inputManager = InputManager::GetInstance();
 
     //------------------------Movement Input---------------------------//
-    moveAction.AddKeyInputData("MoveLeft", SDLK_LEFT, glm::vec3(-1, 0, 3));
-    moveAction.AddKeyInputData("MoveDown", SDLK_DOWN, glm::vec3(0, 1, 2));
-    moveAction.AddKeyInputData("MoveRight", SDLK_RIGHT, glm::vec3(1, 0, 1));
-    moveAction.AddKeyInputData("MoveUp", SDLK_UP, glm::vec3(0, -1, 0)); 
+    InputAction<glm::vec3> moveAction{"Move"};
+    moveAction.AddKeyInputData("MoveLeft", SDLK_a, glm::vec3(-1, 0, 3));
+    moveAction.AddKeyInputData("MoveDown", SDLK_s, glm::vec3(0, 1, 2));
+    moveAction.AddKeyInputData("MoveRight", SDLK_d, glm::vec3(1, 0, 1));
+    moveAction.AddKeyInputData("MoveUp", SDLK_w, glm::vec3(0, -1, 0)); 
 
-    //input binding
+    //---Input binding
     auto& movementSystem = Registry::GetInstance().GetSystem<PlayerMovementSystem>();
-
+    
+    //key pressed
     for (auto& data : moveAction.m_inputData)
     {
-        inputManager.BindKey(data, &movementSystem, &PlayerMovementSystem::Move);
+        inputManager.BindKeyPressed(data, &movementSystem, &PlayerMovementSystem::Move);
     }
 
     //------------------------Interact Input---------------------------//

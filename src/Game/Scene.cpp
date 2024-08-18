@@ -27,7 +27,6 @@ void Scene::Init(SDL_Renderer* renderer)
 
     //Create system
     //engine
-    Registry::GetInstance().AddSystem<MovementSystem>();
     Registry::GetInstance().AddSystem<AnimationSystem>();
     Registry::GetInstance().AddSystem<RenderSystem>();
     Registry::GetInstance().AddSystem<CollisionSystem>();
@@ -36,6 +35,7 @@ void Scene::Init(SDL_Renderer* renderer)
     //game
     Registry::GetInstance().AddSystem<DamageSystem>();
     Registry::GetInstance().AddSystem<PlayerMovementSystem>();
+    Registry::GetInstance().AddSystem<MovementSystem>();
 
     //input system
     Registry::GetInstance().AddSystem<PlayerInputSystem>(); //system to bind all the input -- should be added last
