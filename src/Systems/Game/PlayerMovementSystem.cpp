@@ -5,12 +5,12 @@
 #include "../../Components/PlayerInputComponent.h"
 #include "../../Components/TransformComponent.h"
 
-#include "../../Input/InputManager.h"
-
 PlayerMovementSystem::PlayerMovementSystem()
 {
     RequireComponent<PlayerInputComponent>();
     RequireComponent<TransformComponent>();
+    RequireComponent<MovementComponent>();
+    RequireComponent<SpriteComponent>();
 }
 
 void PlayerMovementSystem::Move(glm::vec3& value, float dt)

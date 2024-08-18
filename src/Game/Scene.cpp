@@ -1,6 +1,5 @@
 #include "Scene.h"
 #include "EntityFactory.h"
-#include "../Systems/MovementSystem.h"
 #include "../Systems/RenderSystem.h"
 #include "../Systems/AnimationSystem.h"
 #include "../Systems/CollisionSystem.h"
@@ -35,7 +34,6 @@ void Scene::Init(SDL_Renderer* renderer)
     //game
     Registry::GetInstance().AddSystem<DamageSystem>();
     Registry::GetInstance().AddSystem<PlayerMovementSystem>();
-    Registry::GetInstance().AddSystem<MovementSystem>();
 
     //input system
     Registry::GetInstance().AddSystem<PlayerInputSystem>(); //system to bind all the input -- should be added last
