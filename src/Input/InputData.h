@@ -29,11 +29,10 @@ template<typename T>
 class InputAction
 {
 private: 
-    std::string id;
     std::vector<InputData<T>> m_inputData;
 
 public:
-    InputAction(const std::string& id="") : id(id) {}
+    InputAction() = default;
 
     void AddKeyInputData(const std::string& actionName, SDL_Keycode key, T valueToBePassed)
     {

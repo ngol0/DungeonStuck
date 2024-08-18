@@ -12,15 +12,15 @@ PlayerInputSystem::PlayerInputSystem()
 
 void PlayerInputSystem::Init()
 {
-    ConfigureDefaultInputBindings();
+    ConfigDefaultInputBindings();
 }
 
-void PlayerInputSystem::ConfigureDefaultInputBindings()
+void PlayerInputSystem::ConfigDefaultInputBindings()
 {
     auto& inputManager = InputManager::GetInstance();
 
     //------------------------Movement Input---------------------------//
-    InputAction<glm::vec3> moveAction{"Move"};
+    InputAction<glm::vec3> moveAction;
     moveAction.AddKeyInputData("MoveLeft", SDLK_a, glm::vec3(-1, 0, 3));
     moveAction.AddKeyInputData("MoveRight", SDLK_d, glm::vec3(1, 0, 1));
     moveAction.AddKeyInputData("MoveDown", SDLK_s, glm::vec3(0, 1, 2));

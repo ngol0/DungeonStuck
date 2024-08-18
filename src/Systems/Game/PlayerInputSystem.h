@@ -24,7 +24,7 @@ public:
     void Init() override;
     void Update(float dt) override {};
 
-    void ConfigureDefaultInputBindings();
+    void ConfigDefaultInputBindings();
 };
 
 #endif
