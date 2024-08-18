@@ -11,6 +11,7 @@
 
 #include <spdlog/spdlog.h>
 
+//not in use, just for reference
 // Action class with TArgs as argument
 // template<typename TOwner, typename... TArgs>
 // class Action : public IAction
@@ -67,19 +68,32 @@ public:
     friend class InputManager;
 };
 
+//------------------------------------------------------------------------------------------------//
+//                                      INPUT MANAGER
+//------------------------------------------------------------------------------------------------//
+//When binding an input, create an input action with a name
+//Add data into that input action: i.e: moveInput.AddData(UpData(Keycode.W, glm::vec2(0,-1)));
+//Then bind loop through all the data in the input action and bind those data using one of these:
+//1. BindKeyDown(data, *owner, &callback)
+//--> only bind callback that runs once on the first frame that the key was pressed
+
+//2. BindKeyUp(data, *owner, &callback)
+//--> only bind callback that runs once on the frame that the key was released
+
+//3. BindKeyPressed(data, *owner, &callback)
+//--> bind callback that runs continuously to check if a key is currently pressed down or not
+//------------------------------------------------------------------------------------------------//
+
 class InputManager
 {
 private:
     std::unordered_map<SDL_Keycode, ICallback *> m_keyDownActionMap;
     std::unordered_map<SDL_Keycode, ICallback *> m_keyUpActionMap;
-
-    std::unordered_map<std::string, SDL_Keycode> m_ActionNameKeyMap;
     std::unordered_map<SDL_Keycode, ICallback *> m_keyPressedAction;
 
-public:
-    //----for key pressed----//
-    bool KEYS[355];
+    std::unordered_map<std::string, SDL_Keycode> m_ActionNameKeyMap;
 
+public:
     template <typename T, typename TOwner>
     void BindKeyDown(InputData<T>& data, TOwner *owner, void (TOwner::*func)(T&))
     {
@@ -122,7 +136,7 @@ public:
 
     friend class InputEditorSystem;
 
-    //---Not in use anymore--//
+    //---Not in use anymore only for reference--//
     // Bind Key with TArgs...
     // template<typename TOwner, typename... TArgs>
     // void BindKey(SDL_Keycode key, TOwner* owner, void(TOwner::* func)(TArgs...))

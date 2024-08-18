@@ -8,10 +8,7 @@ InputManager &InputManager::GetInstance()
 
 InputManager::InputManager()
 {
-	for (int i = 0; i < 355; ++i)
-	{
-		KEYS[i] = false;
-	}
+	
 }
 
 InputManager::~InputManager()
@@ -29,7 +26,10 @@ void InputManager::Update(float dt)
 {
 	for (auto &pair : m_keyPressedAction)
 	{
-		if (KEYS[pair.first])
+		const Uint8* keystates = SDL_GetKeyboardState(NULL);
+		SDL_Scancode scancode = SDL_GetScancodeFromKey(pair.first);
+
+		if (keystates[scancode])
 		{
 			pair.second->Call(dt);
 		}

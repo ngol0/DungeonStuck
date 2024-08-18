@@ -13,11 +13,6 @@
 //==================================================================================================
 //Input Action includes: a vector of input data
 //==================================================================================================
-//When binding an input, create an input action with a name
-//Add data into that input action: i.e: moveInput.Add(UpData(Keycode.W, glm::vec2(0,-1)));
-//Then bind loop through all the data in the input action and bind those data using:
-//BindKey(data, *owner, &callback)
-//------------------------------------------------------------------------------------------------//
 
 template<typename T>
 struct InputData : public IData

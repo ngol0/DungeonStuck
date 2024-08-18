@@ -112,14 +112,17 @@ void Game::ProcessInput()
             {
                 b_running = false;
             }
-
-            // emit key pressed event
-            InputManager::GetInstance().OnKeyDown(e.key.keysym.sym);
-            InputManager::GetInstance().KEYS[e.key.keysym.sym] = true;
+            if (e.key.repeat == 0)
+            {
+                // emit key pressed event
+                InputManager::GetInstance().OnKeyDown(e.key.keysym.sym);
+            }
             break;
         case SDL_KEYUP:
-            InputManager::GetInstance().OnKeyUp(e.key.keysym.sym);
-            InputManager::GetInstance().KEYS[e.key.keysym.sym] = false;
+            if (e.key.repeat ==0) 
+            {
+                InputManager::GetInstance().OnKeyUp(e.key.keysym.sym);
+            }
             break;
         }
     }
@@ -133,8 +136,8 @@ void Game::Update()
     m_last_update_frame = currentTime;
 
     // Update System
-    m_scene.Update(deltaTime);
     InputManager::GetInstance().Update(deltaTime);
+    m_scene.Update(deltaTime);
 }
 
 void Game::Render()
