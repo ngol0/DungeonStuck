@@ -100,11 +100,11 @@ Entity PlayerMovementSystem::GetPlayer(CollisionData& data)
     auto& collider2 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.second);
 
     int playerId = -1;
-    if (collider1.tag == Tag::PLAYER && collider2.tag == Tag::ENEMY_BULLET)
+    if (collider1.tag == Tag::PLAYER && collider2.tag == Tag::BLOCK)
     {
         playerId = data.collisionPair.first;
     }
-    else if (collider2.tag == Tag::PLAYER && collider1.tag == Tag::ENEMY_BULLET)
+    else if (collider2.tag == Tag::PLAYER && collider1.tag == Tag::BLOCK)
     {
         playerId = data.collisionPair.second;
     }
