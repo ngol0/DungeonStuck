@@ -1,6 +1,7 @@
 #include "DamageSystem.h"
 #include "../../Components/HealthComponent.h"
 #include "../../Components/BoxColliderComponent.h"
+#include "../../Components/TransformComponent.h"
 
 #include "../../Events/EventManager.h"
 #include "../../Events/EventType.h"
@@ -21,8 +22,8 @@ void DamageSystem::DamageTakenBy(Entity& victim, float damageAmount, CollisionDa
     health.healthAmount -= damageAmount;
     if (health.healthAmount <= 0.f)
     {
-        victim.Destroy();
-        EventManager::GetInstance().Notify(EventType::OnEntityDestroy, data);
+        //victim.Destroy();
+        //EventManager::GetInstance().Notify(EventType::OnEntityDestroy, data);
     }
 }
 

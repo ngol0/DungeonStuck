@@ -74,6 +74,7 @@ public:
 //When binding an input, create an input action with a name
 //Add data into that input action: i.e: moveInput.AddData(UpData(Keycode.W, glm::vec2(0,-1)));
 //Then bind loop through all the data in the input action and bind those data using one of these:
+
 //1. BindKeyDown(data, *owner, &callback)
 //--> only bind callback that runs once on the first frame that the key was pressed
 

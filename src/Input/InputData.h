@@ -5,6 +5,7 @@
 #include <vector>
 #include "../Global/Interface.h"
 
+//------------------------------------------------------------------------------------------------//
 //                                  INPUT DATA & INPUT ACTION
 //------------------------------------------------------------------------------------------------//
 //Input Data includes:
@@ -38,8 +39,6 @@ public:
     {
         m_inputData.emplace_back(InputData<T>(actionName, key, valueToBePassed)); //copy??? todo: move??
     }
-
-    const std::string& GetName() const { return id; }
 
     friend class InputEditorSystem;
     friend class PlayerInputSystem;

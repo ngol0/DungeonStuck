@@ -30,7 +30,7 @@ namespace EntityFactory
         e.AddComponent<TransformComponent>(pos, glm::vec2(1.f, 1.f), 0.f);
 
         auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::TANK);
-        e.AddComponent<BoxColliderComponent>(Tag::ENEMY, sprite.srcRect.w - 5, sprite.srcRect.h, glm::vec2(4.f, 0.f));
+        e.AddComponent<BoxColliderComponent>(Tag::ENEMY_BULLET, sprite.srcRect.w - 5, sprite.srcRect.h, glm::vec2(4.f, 0.f));
         e.AddComponent<MovementComponent>(speed);
 
         return e;
