@@ -23,6 +23,7 @@ void Scene::Init(SDL_Renderer* renderer)
     //load asset??
     //todo: figure out where should assets be loaded and when?
     LoadTextureAsset();
+    AssetManager::GetInstance().OpenMapFile("./assets/tilemaps/test.map");
 
     //Create system
     //engine
@@ -64,4 +65,5 @@ void Scene::LoadTextureAsset()
 {
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::TANK, "./assets/images/tank-panther-right.png");
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::CHOPPER, "./assets/images/chopper-spritesheet.png");
+    AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::MAP, "./assets/tilemaps/tilemap_packed.png");
 }

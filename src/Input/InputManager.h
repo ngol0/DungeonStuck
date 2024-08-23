@@ -9,8 +9,6 @@
 #include "InputData.h"
 #include "../Global/Interface.h"
 
-#include <spdlog/spdlog.h>
-
 //not in use, just for reference
 // Action class with TArgs as argument
 // template<typename TOwner, typename... TArgs>

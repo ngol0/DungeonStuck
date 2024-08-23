@@ -86,7 +86,7 @@ void PlayerMovementSystem::OnWalkablePath(CollisionData& data)
     Entity player = GetPlayer(data);
     if (player.GetId() == -1) return;
     auto& movement = player.GetComponent<MovementComponent>();
-    auto& transform = player.GetComponent<TransformComponent>();
+    //auto& transform = player.GetComponent<TransformComponent>();
 
     movement.isBlockDown = false;
     movement.isBlockRight = false;

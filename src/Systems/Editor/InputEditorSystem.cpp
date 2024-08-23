@@ -85,8 +85,6 @@ void InputEditorSystem::Init()
         }
         continue;
     }
-
-    spdlog::info(items.size());
 }
 
 void InputEditorSystem::Render(SDL_Renderer *renderer)

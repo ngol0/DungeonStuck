@@ -365,7 +365,7 @@ TComponent &Registry::AddComponent(const Entity &e, TArgs &&...args)
     pool->Set(entityId, newComponent); // set the component to the entity at index id
     m_entityComponentSignatures[entityId].set(componentId);
 
-    spdlog::info("Component id " + std::to_string(componentId) + " was added to entity id " + std::to_string(entityId));
+    //spdlog::info("Component id " + std::to_string(componentId) + " was added to entity id " + std::to_string(entityId));
 
     return pool->Get(entityId);
 }

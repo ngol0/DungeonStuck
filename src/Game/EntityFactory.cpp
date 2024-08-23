@@ -35,4 +35,19 @@ namespace EntityFactory
 
         return e;
     }
+
+    //---------------------------------------------Tile------------------------------------------------------------------------
+    Entity CreateTile(glm::vec2 size, glm::vec2 srcRect, glm::vec2 pos, float rot, glm::vec2 scale)
+    {
+        Entity e = Registry::GetInstance().CreateEntity();
+
+        e.AddComponent<SpriteComponent>(
+            SpriteId::MAP, 
+            static_cast<int>(srcRect.x), static_cast<int>(srcRect.y),
+            static_cast<int>(size.x), static_cast<int>(size.y));
+
+        e.AddComponent<TransformComponent>(glm::vec2(pos.x * scale.x, pos.y * scale.y), scale, rot);
+
+        return e;
+    }
 }
