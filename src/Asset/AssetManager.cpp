@@ -74,7 +74,7 @@ void AssetManager::ReadMapFile()
         iss >> offset.x >> offset.y;
 
         //Create Entity and Component
-        EntityFactory::CreateTile(size, srcRect, pos, rotation, scale * 1.5f);
+        EntityFactory::CreateTile(size, srcRect, pos, rotation, scale);
     }
 }
 

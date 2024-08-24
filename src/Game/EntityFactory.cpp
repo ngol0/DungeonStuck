@@ -9,15 +9,18 @@
 
 namespace EntityFactory
 {
-    Entity CreatePlayer(glm::vec2 pos, glm::vec2 scale, float rot)
+    Entity CreatePlayer(glm::vec2 pos)
     {
+        glm::vec2 scale = glm::vec2{2.f};
+        float rot = 0.f;
+
         Entity e = Registry::GetInstance().CreateEntity();
         e.AddComponent<TransformComponent>(pos, scale, rot);
 
-        auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::CHOPPER);
+        auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::PLAYER);
         e.AddComponent<BoxColliderComponent>(Tag::PLAYER, sprite.srcRect.w/2, sprite.srcRect.h/4);
         e.AddComponent<MovementComponent>(150.f);
-        e.AddComponent<AnimationComponent>(2, 4, 10);
+        e.AddComponent<AnimationComponent>(4, 4, 10);
         e.AddComponent<HealthComponent>(100.f);
         e.AddComponent<PlayerInputComponent>();
 
@@ -40,6 +43,7 @@ namespace EntityFactory
     Entity CreateTile(glm::vec2 size, glm::vec2 srcRect, glm::vec2 pos, float rot, glm::vec2 scale)
     {
         Entity e = Registry::GetInstance().CreateEntity();
+        scale *= 2.f;
 
         e.AddComponent<SpriteComponent>(
             SpriteId::MAP, 

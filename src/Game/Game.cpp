@@ -136,8 +136,8 @@ void Game::Update()
     m_last_update_frame = currentTime;
 
     // Update System
-    InputManager::GetInstance().Update(deltaTime);
     m_scene.Update(deltaTime);
+    InputManager::GetInstance().Update(deltaTime);
 }
 
 void Game::Render()

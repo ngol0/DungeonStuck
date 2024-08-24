@@ -33,7 +33,7 @@ void PlayerMovementSystem::Move(glm::vec3& value, float dt)
         auto& sprite = e.GetComponent<SpriteComponent>();
         auto& transform = e.GetComponent<TransformComponent>();
         
-        //
+        // If player hits wall
         int x = value.x;
         int y = value.y;
 
@@ -43,10 +43,23 @@ void PlayerMovementSystem::Move(glm::vec3& value, float dt)
         if (movement.isBlockDown) y = SDL_clamp(value.y, -1.f, 0.f);
         else if (movement.isBlockUp) y = SDL_clamp(value.y, 0.f, 1.f);
 
+        // Animation
         movement.moveDirection = glm::vec2(x, y);
         sprite.srcRect.y = sprite.srcRect.h * value.z;
 
+        // Movement
         transform.position += movement.moveDirection * movement.speed * dt;
+    }
+}
+
+void PlayerMovementSystem::Update(float dt)
+{
+    for (auto& e : GetSystemEntities())
+    {
+        auto& sprite = e.GetComponent<SpriteComponent>();
+        auto& movement = e.GetComponent<MovementComponent>();
+
+        sprite.srcRect.y = (movement.moveDirection.x < 0) ?  0 : sprite.srcRect.h * 2;
     }
 }
 

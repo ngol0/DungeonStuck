@@ -7,7 +7,7 @@
 namespace SpriteId
 {
 	const static std::string TANK = "tank";
-    const static std::string CHOPPER = "chopper";
+    const static std::string PLAYER = "chopper";
 
     const static std::string MAP = "map";
 }
