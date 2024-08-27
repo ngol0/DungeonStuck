@@ -45,22 +45,17 @@ void CollisionSystem::Update(float dt)
 
             if (firstBox.tag == secondBox.tag) continue;
 
-            SDL_Rect firstRect = {
-                static_cast<int>(firstTransform.position.x + firstBox.offset.x),
-                static_cast<int>(firstTransform.position.y + firstBox.offset.y),
-                static_cast<int>(firstBox.width),
-                static_cast<int>(firstBox.height)};
+            firstBox.rect.x = firstTransform.position.x + firstBox.offset.x;
+            firstBox.rect.y = firstTransform.position.y + firstBox.offset.y;
+            secondBox.rect.x = secondTransform.position.x + secondBox.offset.x;
+            secondBox.rect.y = secondTransform.position.y + secondBox.offset.y;
 
-            SDL_Rect secondRect = {
-                static_cast<int>(secondTransform.position.x + secondBox.offset.x),
-                static_cast<int>(secondTransform.position.y + secondBox.offset.y),
-                static_cast<int>(secondBox.width),
-                static_cast<int>(secondBox.height)};
+            SDL_Rect overlap;
 
-            bool currentCollisionStatus = SDL_HasIntersection(&firstRect, &secondRect);
+            bool currentCollisionStatus = SDL_IntersectRect(&firstBox.rect, &secondBox.rect, &overlap);
     
             auto key = std::make_pair(first.GetId(), second.GetId());
-            CollisionData data(key);
+            CollisionData data(key, overlap, dt);
 
             if (currentCollisionStatus != m_collisionMap[key])
 			{

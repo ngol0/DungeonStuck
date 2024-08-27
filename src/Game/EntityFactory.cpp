@@ -18,8 +18,9 @@ namespace EntityFactory
         e.AddComponent<TransformComponent>(pos, scale, rot);
 
         auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::PLAYER);
-        e.AddComponent<BoxColliderComponent>(Tag::PLAYER, sprite.srcRect.w/2, sprite.srcRect.h/4);
-        e.AddComponent<MovementComponent>(150.f);
+        e.AddComponent<BoxColliderComponent>(
+                Tag::PLAYER, sprite.srcRect.w/4 * scale.x - 25.f, sprite.srcRect.h/4 * scale.y - 20.f, glm::vec2(12.f, 20.f));
+        e.AddComponent<MovementComponent>(200.f);
         e.AddComponent<AnimationComponent>(4, 4, 10);
         e.AddComponent<HealthComponent>(100.f);
         e.AddComponent<PlayerInputComponent>();
@@ -40,17 +41,23 @@ namespace EntityFactory
     }
 
     //---------------------------------------------Tile------------------------------------------------------------------------
-    Entity CreateTile(glm::vec2 size, glm::vec2 srcRect, glm::vec2 pos, float rot, glm::vec2 scale)
+    Entity CreateTile(glm::vec2 size, glm::vec2 srcRect, glm::vec2 pos, float rot, glm::vec2 boxSize)
     {
         Entity e = Registry::GetInstance().CreateEntity();
-        scale *= 2.f;
+        float scale = 2.f;
 
         e.AddComponent<SpriteComponent>(
             SpriteId::MAP, 
             static_cast<int>(srcRect.x), static_cast<int>(srcRect.y),
             static_cast<int>(size.x), static_cast<int>(size.y));
 
-        e.AddComponent<TransformComponent>(glm::vec2(pos.x * scale.x, pos.y * scale.y), scale, rot);
+        e.AddComponent<TransformComponent>(glm::vec2(pos.x * scale, pos.y * scale), glm::vec2{scale}, rot);
+
+        //check to see if tile has box collider
+        if (boxSize.x != 0)
+        {
+            e.AddComponent<BoxColliderComponent>(Tag::BLOCK, boxSize.x * scale, boxSize.y * scale, glm::vec2{0.f});
+        }
 
         return e;
     }

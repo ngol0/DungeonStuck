@@ -8,9 +8,10 @@
 class PlayerMovementSystem : public System
 {
 private:
-    Entity GetPlayer(CollisionData& data);
     void OnHitWall(CollisionData& data);
-    void OnWalkablePath(CollisionData& data);
+    void OnAwayFromWall(CollisionData& data);
+
+    float variable{1.f};
 
 public:
     PlayerMovementSystem();

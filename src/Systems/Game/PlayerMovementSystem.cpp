@@ -22,105 +22,112 @@ PlayerMovementSystem::PlayerMovementSystem()
 void PlayerMovementSystem::Init()
 {
     EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionEnter, this, &PlayerMovementSystem::OnHitWall);
-    EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionExit, this, &PlayerMovementSystem::OnWalkablePath);
+    EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionExit, this, &PlayerMovementSystem::OnAwayFromWall);
 }
 
-void PlayerMovementSystem::Move(glm::vec3& value, float dt)
+void PlayerMovementSystem::Move(glm::vec3 &value, float dt)
 {
-    for (auto& e : GetSystemEntities())
+    for (auto &e : GetSystemEntities())
     {
-        auto& movement = e.GetComponent<MovementComponent>();
-        auto& sprite = e.GetComponent<SpriteComponent>();
-        auto& transform = e.GetComponent<TransformComponent>();
-        
-        // If player hits wall
-        int x = value.x;
-        int y = value.y;
-
-        if (movement.isBlockRight) x = SDL_clamp(value.x, -1.f, 0.f);
-        else if (movement.isBlockLeft) x = SDL_clamp(value.x, 0.f, 1.f);
-
-        if (movement.isBlockDown) y = SDL_clamp(value.y, -1.f, 0.f);
-        else if (movement.isBlockUp) y = SDL_clamp(value.y, 0.f, 1.f);
-
-        // Animation
-        movement.moveDirection = glm::vec2(x, y);
-        sprite.srcRect.y = sprite.srcRect.h * value.z;
+        auto &movement = e.GetComponent<MovementComponent>();
+        auto &sprite = e.GetComponent<SpriteComponent>();
+        auto &transform = e.GetComponent<TransformComponent>();
 
         // Movement
-        transform.position += movement.moveDirection * movement.speed * dt;
+        // glm::vec2 dir = glm::vec2{value.x, value.y};
+        // movement.moveDirection += dir;
+
+        // if (glm::length(movement.moveDirection) != 0) movement.moveDirection = glm::normalize(movement.moveDirection);
+
+        // value.z = (movement.moveDirection.x < 0) ? 1.f : 3.f;
+        sprite.srcRect.y = sprite.srcRect.h * value.z;
+
+        movement.moveDirection.x = value.x;
+        movement.moveDirection.y = value.y;
+
+        transform.position += (movement.moveDirection * movement.speed) * dt * variable;
     }
 }
 
 void PlayerMovementSystem::Update(float dt)
 {
-    for (auto& e : GetSystemEntities())
+    for (auto &e : GetSystemEntities())
     {
-        auto& sprite = e.GetComponent<SpriteComponent>();
-        auto& movement = e.GetComponent<MovementComponent>();
+        auto &sprite = e.GetComponent<SpriteComponent>();
+        auto &movement = e.GetComponent<MovementComponent>();
 
-        sprite.srcRect.y = (movement.moveDirection.x < 0) ?  0 : sprite.srcRect.h * 2;
+        sprite.srcRect.y = (movement.moveDirection.x < 0) ? 0 : sprite.srcRect.h * 2;
     }
 }
 
-void PlayerMovementSystem::OnHitWall(CollisionData& data)
+void PlayerMovementSystem::OnHitWall(CollisionData &data)
 {
-    Entity player = GetPlayer(data);
-    if (player.GetId() == -1) return;
-    auto& movement = player.GetComponent<MovementComponent>();
-    
-    // Check horizontal collision
-    if (movement.moveDirection.x > 0) 
-    {
-        // Moving right, collision on the right side
-        movement.isBlockRight = true;
-    } 
-    else if (movement.moveDirection.x < 0) 
-    {
-        // Moving left, collision on the left side
-        movement.isBlockLeft = true;
-    }
-
-    // Check vertical collision
-    if (movement.moveDirection.y > 0) 
-    {
-        // Moving down, collision from below
-        movement.isBlockDown = true;
-    } 
-    else if (movement.moveDirection.y < 0) 
-    {
-        // Moving up, collision from above
-        movement.isBlockUp = true;
-    }
-}
-
-void PlayerMovementSystem::OnWalkablePath(CollisionData& data)
-{
-    Entity player = GetPlayer(data);
-    if (player.GetId() == -1) return;
-    auto& movement = player.GetComponent<MovementComponent>();
-    //auto& transform = player.GetComponent<TransformComponent>();
-
-    movement.isBlockDown = false;
-    movement.isBlockRight = false;
-    movement.isBlockLeft = false;
-    movement.isBlockUp = false;
-}
-
-Entity PlayerMovementSystem::GetPlayer(CollisionData& data)
-{
-    auto& collider1 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.first);
-    auto& collider2 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.second);
+    auto &collider1 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.first);
+    auto &collider2 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.second);
 
     int playerId = -1;
+    int boxId = -1;
     if (collider1.tag == Tag::PLAYER && collider2.tag == Tag::BLOCK)
     {
         playerId = data.collisionPair.first;
+        boxId = data.collisionPair.second;
     }
     else if (collider2.tag == Tag::PLAYER && collider1.tag == Tag::BLOCK)
     {
         playerId = data.collisionPair.second;
+        boxId = data.collisionPair.first;
     }
+
     Entity player(playerId);
-    return player;
+    Entity block(boxId);
+
+    auto &transform = player.GetComponent<TransformComponent>();
+    auto &playerBox = player.GetComponent<BoxColliderComponent>();
+    auto &movement = player.GetComponent<MovementComponent>();
+
+    auto &blockBox = block.GetComponent<BoxColliderComponent>();
+
+    // Calculate the overlap direction
+    // int overlapX = std::min(playerBox.rect.x + playerBox.rect.w, blockBox.rect.x + blockBox.rect.w) 
+    //     - std::max(playerBox.rect.x, blockBox.rect.x);
+    // int overlapY = std::min(playerBox.rect.y + playerBox.rect.h, blockBox.rect.y + blockBox.rect.h) 
+    //     - std::max(playerBox.rect.y, blockBox.rect.y);
+
+    glm::vec2 dir;
+    int overlapAmt;
+
+    if (data.overlap.w < data.overlap.h)
+    {
+        // Resolve collision horizontally
+        if (playerBox.rect.x < blockBox.rect.x)
+        {
+            // Moving rect is on the left
+            transform.position.x -= data.overlap.w; // Move left to prevent overlap
+        }
+        else
+        {
+            // Moving rect is on the right
+            transform.position.x += data.overlap.w; // Move right to prevent overlap
+        }
+    }
+    else
+    {
+        // Resolve collision horizontally
+        if (playerBox.rect.y < blockBox.rect.y)
+        {
+            // Moving rect is on the left
+            transform.position.y -= data.overlap.h; // Move left to prevent overlap
+        }
+        else
+        {
+            // Moving rect is on the right
+            transform.position.y += data.overlap.h; // Move right to prevent overlap
+        }
+    }
+    variable = 0.f;
+}
+
+void PlayerMovementSystem::OnAwayFromWall(CollisionData &data)
+{
+    variable = 1.f;
 }

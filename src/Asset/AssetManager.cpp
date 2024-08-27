@@ -48,7 +48,7 @@ void AssetManager::ReadMapFile()
         //skip the first 2 strings
         iss >> first >> second;
 
-        //read the rest
+        //----FIST IS POSITION AND TILE INFO
         //first 2 numbers is size
         glm::vec2 size;
         iss >> size.x >> size.y;
@@ -69,12 +69,25 @@ void AssetManager::ReadMapFile()
         glm::vec2 scale;
         iss >> scale.x >> scale.y;
 
+        //----REST IS COLLIDERS INFO
+
         //offset
-        glm::vec2 offset;
-        iss >> offset.x >> offset.y;
+        glm::vec3 boxCollider{0.f};
+        glm::vec3 offset{0.f};
+        glm::vec2 colliderSize{0.f};
+
+        iss >> boxCollider.x >> boxCollider.y;
+
+        if (iss >> boxCollider.z)
+        {
+            colliderSize.x = boxCollider.y;
+            colliderSize.y = boxCollider.z;
+
+            iss >> offset.x >> offset.y >> offset.z;
+        }
 
         //Create Entity and Component
-        EntityFactory::CreateTile(size, srcRect, pos, rotation, scale);
+        EntityFactory::CreateTile(size, srcRect, pos, rotation, colliderSize);
     }
 }
 

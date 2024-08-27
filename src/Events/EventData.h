@@ -8,9 +8,11 @@
 struct CollisionData : public IData
 {
     std::pair<int, int> collisionPair;
+    SDL_Rect overlap;
+    float dt;
 
     virtual ~CollisionData() = default;
-    CollisionData(std::pair<int,int> pair) : collisionPair(pair) {}
+    CollisionData(std::pair<int,int> pair, SDL_Rect rect, float d) : collisionPair(pair), overlap(rect), dt(d) {}
 };
 
 #endif

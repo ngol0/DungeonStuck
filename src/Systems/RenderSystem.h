@@ -7,10 +7,13 @@ struct SDL_Renderer;
 
 class RenderSystem : public System
 {
+private:
+    bool m_isDebugging = false;
+
 public:
     RenderSystem();
-
     void Render(SDL_Renderer* renderer) override;
+    void OnDebug(int& num);
 };
 
 #endif

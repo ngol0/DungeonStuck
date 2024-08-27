@@ -1,5 +1,6 @@
 #include "PlayerInputSystem.h"
 #include "PlayerMovementSystem.h"
+#include "../RenderSystem.h"
 
 #include "../../Input/InputManager.h"
 
@@ -23,8 +24,8 @@ void PlayerInputSystem::ConfigDefaultInputBindings()
     InputAction<glm::vec3> moveAction;
     moveAction.AddKeyInputData("MoveLeft", SDLK_a, glm::vec3(-1, 0, 1));
     moveAction.AddKeyInputData("MoveRight", SDLK_d, glm::vec3(1, 0, 3));
-    moveAction.AddKeyInputData("MoveDown", SDLK_s, glm::vec3(0, 1, 3));
-    moveAction.AddKeyInputData("MoveUp", SDLK_w, glm::vec3(0, -1, 3)); 
+    moveAction.AddKeyInputData("MoveDown", SDLK_s, glm::vec3(0, 1, 3)); //1 or 3?
+    moveAction.AddKeyInputData("MoveUp", SDLK_w, glm::vec3(0, -1, 3)); //1 or 3?
 
     //---Input binding
     auto& movementSystem = Registry::GetInstance().GetSystem<PlayerMovementSystem>();
@@ -39,7 +40,11 @@ void PlayerInputSystem::ConfigDefaultInputBindings()
 
 
     //------------------------Fight Input------------------------------//
-
     
+
+    //------------------------Debug Input------------------------------//
+    InputData<int> inputData("Debugging", SDLK_0, 0);
+    auto& renderSystem = Registry::GetInstance().GetSystem<RenderSystem>();
+    inputManager.BindKeyDown(inputData, &renderSystem, &RenderSystem::OnDebug);    
 }
 

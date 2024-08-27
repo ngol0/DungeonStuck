@@ -21,10 +21,12 @@ struct BoxColliderComponent
     int height;
     glm::vec2 offset;
 
+    SDL_Rect rect;
+
     BoxColliderComponent(const std::string& tag = "", int w = 0, int h = 0, glm::vec2 offset = glm::vec2(0.f)) 
         : tag(tag), width(w), height(h), offset(offset)
     {
-        
+        rect = {0, 0, width, height};
     }
 };
 

@@ -7,12 +7,7 @@ struct MovementComponent
 {
     glm::vec2 moveDirection;
     float speed;
-
-    bool isBlockLeft;
-    bool isBlockRight;
-    bool isBlockUp;
-    bool isBlockDown;
-
+    
     MovementComponent(float speed = 0) : moveDirection(glm::vec2(1.0f, 0.0f)), speed(speed)
     {
         

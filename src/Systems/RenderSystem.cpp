@@ -1,6 +1,9 @@
 #include "RenderSystem.h"
 #include "../Components/TransformComponent.h"
 #include "../Components/SpriteComponent.h"
+#include "../Components/BoxColliderComponent.h"
+#include "../Input/InputManager.h"
+#include "../Input/InputData.h"
 
 #include <SDL2/SDL.h>
 
@@ -10,30 +13,49 @@ RenderSystem::RenderSystem()
     RequireComponent<SpriteComponent>();
 }
 
-void RenderSystem::Render(SDL_Renderer* renderer)
+void RenderSystem::OnDebug(int& num)
 {
-    for (auto& e : GetSystemEntities())
+    m_isDebugging = !m_isDebugging;
+}
+
+void RenderSystem::Render(SDL_Renderer *renderer)
+{
+    for (auto &e : GetSystemEntities())
     {
-        TransformComponent& transform = e.GetComponent<TransformComponent>();
-        SpriteComponent& sprite = e.GetComponent<SpriteComponent>();
+        TransformComponent &transform = e.GetComponent<TransformComponent>();
+        SpriteComponent &sprite = e.GetComponent<SpriteComponent>();
 
         SDL_Rect srcRect = sprite.srcRect;
 
-        SDL_Rect dsRect = { 
-            static_cast<int>(transform.position.x), 
-            static_cast<int>(transform.position.y), 
-            static_cast<int>(transform.scale.x * sprite.srcRect.w), 
-            static_cast<int>(transform.scale.y * sprite.srcRect.h) 
-        };
-        
+        SDL_Rect dsRect = {
+            static_cast<int>(transform.position.x),
+            static_cast<int>(transform.position.y),
+            static_cast<int>(transform.scale.x * sprite.srcRect.w),
+            static_cast<int>(transform.scale.y * sprite.srcRect.h)};
+
         SDL_RenderCopyEx(
-            renderer, 
+            renderer,
             sprite.texture,
             &srcRect,
             &dsRect,
             transform.rotation,
             NULL,
-            SDL_FLIP_NONE
-        );
+            SDL_FLIP_NONE);
+
+        if (m_isDebugging)
+        {
+            BoxColliderComponent *collider = e.GetComponentPtr<BoxColliderComponent>();
+
+            if (collider == nullptr)
+                continue;
+            SDL_Rect boxRect = {
+                static_cast<int>(transform.position.x + collider->offset.x),
+                static_cast<int>(transform.position.y + collider->offset.y),
+                static_cast<int>(collider->width),
+                static_cast<int>(collider->height)};
+
+            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+            SDL_RenderDrawRect(renderer, &boxRect);
+        }
     }
 }
