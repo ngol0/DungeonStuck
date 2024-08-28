@@ -36,5 +36,5 @@ A 2D dungeon crawler game made with a simple custom 2D game engine. This game an
 ## Build
 The game is currently only run in Mac & Linux. Download the project and type `make run` in the terminal to run the game.
 
-# Attribute
+## Attribute
 The game engine with the ECS structure is made using references from [Pikuma Game Engine Course](https://pikuma.com/courses/cpp-2d-game-engine-development) course and from this [Link](https://www.david-colson.com/2020/02/09/making-a-simple-ecs.html).
