@@ -10,6 +10,8 @@ A 2D dungeon crawler game made with a simple custom 2D game engine. This game an
 **2. Input Binding Tool:**
    A tool created using DearImGui to help player rebind the input by choosing from the Drop down menu and click Save. User cannot choose the input that is already in use for other actions
 
+   <img src="https://github.com/ngol0/DungeonStuck/blob/main/input.gif" width="900" title="build">
+
 **3. Event System:**
    An event system that allows user to pass custom data (i.e: CollisionData, InputData, etc.)
 
