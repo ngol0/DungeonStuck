@@ -1,9 +1,10 @@
-# Introduction
+# Stuck In A Dungeon
+## Introduction
 A 2D dungeon crawler game made with a simple custom 2D game engine. This game and the game engine is made using C++ and SDL2. This is made for educational purpose and I referenced different sources which are mentioned in the `Attribute` section.
 
 <img src="https://github.com/ngol0/DungeonStuck/blob/main/gameplay.gif" width="900" title="build">
 
-# Current technical features
+## Current technical features
 **1. ECS architecture:**
 
    ECS (Entity Component System) to help manage entities, components, and systems that are in the game.
@@ -26,7 +27,7 @@ A 2D dungeon crawler game made with a simple custom 2D game engine. This game an
 
    A .map file with data about tile, transform, colliders is read to create the level layout
 
-# Future Plans
+## Future Plans
 - [ ] AI System and Pathfinding
 - [ ] Combat System
 - [ ] Interation System (with things/people)
@@ -36,6 +37,9 @@ A 2D dungeon crawler game made with a simple custom 2D game engine. This game an
 - [ ] Some other useful tools such as Level Editor, etc.
 - [ ] UI System
 - [ ] Scripting with Lua
+
+## Build
+The game is currently only run in Mac & Linux. Download the project and type `make run` to run the game.
 
 # Attribute
 The game engine with the ECS structure is made using references from [Pikuma Game Engine Course](https://pikuma.com/courses/cpp-2d-game-engine-development) course and from this [Link](https://www.david-colson.com/2020/02/09/making-a-simple-ecs.html).
