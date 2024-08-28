@@ -148,6 +148,9 @@ void Game::Render()
     // render game objects
     m_scene.Render();
 
+    ImGui::Render();
+    ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), m_renderer);
+
     SDL_RenderPresent(m_renderer);
 }
 

@@ -17,8 +17,6 @@ private:
     float m_force{0.f};
     float m_initialForce{20.f};
 
-    float m_prevX;
-
 public:
     PlayerMovementSystem();
 

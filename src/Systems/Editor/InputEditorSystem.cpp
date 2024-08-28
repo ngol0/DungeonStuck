@@ -122,9 +122,6 @@ void InputEditorSystem::Render(SDL_Renderer *renderer)
     ImGui::End();
 
     //-------------
-
-    ImGui::Render();
-    ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), renderer);
 }
 
 void InputEditorSystem::RebindKey(const std::string &actionName, SDL_Keycode key)

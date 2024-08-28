@@ -24,7 +24,7 @@ void Scene::Init(SDL_Renderer* renderer)
     //load asset??
     //todo: figure out where should assets be loaded and when?
     LoadTextureAsset();
-    AssetManager::GetInstance().OpenMapFile("./assets/tilemaps/withbox.map");
+    AssetManager::GetInstance().OpenMapFile("./assets/tilemaps/fixed_map.map");
 
     //----------------------------------------Create system----------------------------------------
     //engine

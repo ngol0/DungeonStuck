@@ -41,14 +41,13 @@ void PlayerMovementSystem::Move(glm::vec3 &value, float dt)
         // movement.moveDirection += dir;
         // if (glm::length(movement.moveDirection) != 0) movement.moveDirection = glm::normalize(movement.moveDirection);
         // value.z = (movement.moveDirection.x < 0) ? 1.f : 3.f;
-
-        movement.moveDirection.x = value.x;
-        movement.moveDirection.y = value.y;
+        glm::vec2 moveDir = glm::vec2{value.x, value.y};
+        if (value.x != 0) movement.moveDirection.x = value.x;
 
         value.z = movement.moveDirection.x < 0 ? 1 : 3;
         sprite.srcRect.y = sprite.srcRect.h * value.z;
 
-        transform.position += (movement.moveDirection * movement.speed) * dt * m_moveVariable;
+        transform.position += (moveDir * movement.speed) * dt * m_moveVariable;
     }
 }
 

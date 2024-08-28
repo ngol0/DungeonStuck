@@ -1545,3 +1545,7 @@ tiles tilemap_packed 16 16 128 32 0 432 384 1 1 1 16 16 0 0 0
 tiles tilemap_packed 16 16 80 32 0 256 368 1 1 1 16 16 0 0 0 
 tiles tilemap_packed 16 16 80 32 0 464 192 1 1 1 16 16 0 0 0 
 tiles tilemap_packed 16 16 144 48 0 496 192 1 1 1 16 16 0 0 0 
+tiles tilemap_packed 16 16 16 16 0 576 112 1 1 1 0 0 0 0 0 
+tiles tilemap_packed 16 16 16 16 0 576 128 1 1 1 0 0 0 0 0 
+tiles tilemap_packed 16 16 16 16 0 272 288 1 1 1 0 0 0 0 0 
+tiles tilemap_packed 16 16 16 16 0 224 256 1 1 1 0 0 0 0 0 
