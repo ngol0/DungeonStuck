@@ -8,10 +8,14 @@
 class PlayerMovementSystem : public System
 {
 private:
-    void OnHitWall(CollisionData& data);
-    void OnAwayFromWall(CollisionData& data);
+    void OnStartHit(CollisionData& data);
+    void OnKeepHitting(CollisionData& data);
+    void OnDoneHitting(CollisionData& data);
 
-    float variable{1.f};
+    float m_moveVariable{1.f};
+    float m_forceCount{0.f};
+    float m_force{0.f};
+    float m_initialForce{20.f};
 
 public:
     PlayerMovementSystem();

@@ -21,8 +21,9 @@ PlayerMovementSystem::PlayerMovementSystem()
 
 void PlayerMovementSystem::Init()
 {
-    EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionStay, this, &PlayerMovementSystem::OnHitWall);
-    EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionExit, this, &PlayerMovementSystem::OnAwayFromWall);
+    EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionEnter, this, &PlayerMovementSystem::OnStartHit);
+    EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionStay, this, &PlayerMovementSystem::OnKeepHitting);
+    EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionExit, this, &PlayerMovementSystem::OnDoneHitting);
 }
 
 void PlayerMovementSystem::Move(glm::vec3 &value, float dt)
@@ -46,7 +47,7 @@ void PlayerMovementSystem::Move(glm::vec3 &value, float dt)
         movement.moveDirection.x = value.x;
         movement.moveDirection.y = value.y;
 
-        transform.position += (movement.moveDirection * movement.speed) * dt * variable;
+        transform.position += (movement.moveDirection * movement.speed) * dt * m_moveVariable;
     }
 }
 
@@ -61,7 +62,13 @@ void PlayerMovementSystem::Update(float dt)
     }
 }
 
-void PlayerMovementSystem::OnHitWall(CollisionData &data)
+void PlayerMovementSystem::OnStartHit(CollisionData &data)
+{
+    m_forceCount++;
+    m_force = m_initialForce/m_forceCount;
+}
+
+void PlayerMovementSystem::OnKeepHitting(CollisionData &data)
 {
     auto &collider1 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.first);
     auto &collider2 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.second);
@@ -88,8 +95,6 @@ void PlayerMovementSystem::OnHitWall(CollisionData &data)
 
     auto &blockBox = block.GetComponent<BoxColliderComponent>();
 
-    float force = 20.f;
-
     // A hack to check which direction is the overlap coming from
     // As the player is always bigger than the block, when overlap horizontally, width < height
     if (data.overlap.w < data.overlap.h)
@@ -98,12 +103,12 @@ void PlayerMovementSystem::OnHitWall(CollisionData &data)
         if (playerBox.rect.x < blockBox.rect.x)
         {
             // Moving rect is on the left
-            transform.position.x -= data.overlap.w * data.dt * force; // Move left to prevent overlap
+            transform.position.x -= data.overlap.w * data.dt * m_force; // Move left to prevent overlap
         }
         else
         {
             // Moving rect is on the right
-            transform.position.x += data.overlap.w * data.dt * force; // Move right to prevent overlap
+            transform.position.x += data.overlap.w * data.dt * m_force; // Move right to prevent overlap
         }
     }
     else
@@ -112,18 +117,20 @@ void PlayerMovementSystem::OnHitWall(CollisionData &data)
         if (playerBox.rect.y < blockBox.rect.y)
         {
             // Moving rect is up
-            transform.position.y -= data.overlap.h * data.dt * force;
+            transform.position.y -= data.overlap.h * data.dt * m_force;
         }
         else
         {
             // Moving rect is down
-            transform.position.y += data.overlap.h * data.dt * force;
+            transform.position.y += data.overlap.h * data.dt * m_force;
         }
     }
-    variable = 0.f;
+    m_moveVariable = 0.f;
 }
 
-void PlayerMovementSystem::OnAwayFromWall(CollisionData &data)
+void PlayerMovementSystem::OnDoneHitting(CollisionData &data)
 {
-    variable = 1.f;
+    m_moveVariable = 1.f;
+    m_forceCount--;
+    m_force = m_initialForce/m_forceCount;
 }
