@@ -1,5 +1,6 @@
 # Introduction
 A 2D dungeon crawler game made with a simple custom 2D game engine. This game and the game engine is made using C++ and SDL2. This is made for educational purpose and I referenced different sources which are mentioned in the `Attribute` section.
+
 <img src="https://github.com/ngol0/DungeonStuck/blob/main/gameplay.gif" width="900" title="build">
 
 # Current technical features
