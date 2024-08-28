@@ -7,6 +7,8 @@
 
 #include <SDL2/SDL.h>
 
+#include "../Game/Scene.h"
+
 RenderSystem::RenderSystem()
 {
     RequireComponent<TransformComponent>();
@@ -28,8 +30,8 @@ void RenderSystem::Render(SDL_Renderer *renderer)
         SDL_Rect srcRect = sprite.srcRect;
 
         SDL_Rect dsRect = {
-            static_cast<int>(transform.position.x),
-            static_cast<int>(transform.position.y),
+            static_cast<int>(transform.position.x - Scene::camera.x),
+            static_cast<int>(transform.position.y - Scene::camera.y),
             static_cast<int>(transform.scale.x * sprite.srcRect.w),
             static_cast<int>(transform.scale.y * sprite.srcRect.h)};
 
@@ -42,6 +44,7 @@ void RenderSystem::Render(SDL_Renderer *renderer)
             NULL,
             SDL_FLIP_NONE);
 
+        //----------------------RENDER DEBUG COLLIDER--------------------------------//
         if (m_isDebugging)
         {
             BoxColliderComponent *collider = e.GetComponentPtr<BoxColliderComponent>();

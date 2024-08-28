@@ -2,6 +2,7 @@
 #include "EntityFactory.h"
 #include "../Systems/RenderSystem.h"
 #include "../Systems/AnimationSystem.h"
+#include "../Systems/CameraMovementSystem.h"
 #include "../Systems/CollisionSystem.h"
 #include "../Systems/Game/DamageSystem.h"
 #include "../Systems/Game/PlayerInputSystem.h"
@@ -14,6 +15,7 @@
 
 #include <glm/glm.hpp>
 
+SDL_Rect Scene::camera{0, 0, 800, 600};
 
 void Scene::Init(SDL_Renderer* renderer)
 {
@@ -26,6 +28,7 @@ void Scene::Init(SDL_Renderer* renderer)
 
     //----------------------------------------Create system----------------------------------------
     //engine
+    Registry::GetInstance().AddSystem<CameraMovementSystem>();
     Registry::GetInstance().AddSystem<AnimationSystem>();
     Registry::GetInstance().AddSystem<RenderSystem>();
     Registry::GetInstance().AddSystem<CollisionSystem>();

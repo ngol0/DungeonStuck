@@ -6,6 +6,7 @@
 #include "../Components/BoxColliderComponent.h"
 #include "../Components/HealthComponent.h"
 #include "../Components/PlayerInputComponent.h"
+#include "../Components/CameraFollowComponent.h"
 
 namespace EntityFactory
 {
@@ -24,6 +25,7 @@ namespace EntityFactory
         e.AddComponent<AnimationComponent>(4, 4, 10);
         e.AddComponent<HealthComponent>(100.f);
         e.AddComponent<PlayerInputComponent>();
+        e.AddComponent<CameraFollowComponent>();
 
         return e;
     }

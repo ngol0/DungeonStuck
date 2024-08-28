@@ -15,9 +15,6 @@
 
 class PlayerInputSystem : public System
 {
-private:
-    
-
 public:
     PlayerInputSystem();
 

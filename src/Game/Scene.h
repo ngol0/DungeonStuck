@@ -1,6 +1,8 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include <SDL2/SDL.h>
+
 struct SDL_Renderer;
 
 class Scene
@@ -15,6 +17,8 @@ public:
     void Clear();
 
     void LoadTextureAsset();
+
+    static SDL_Rect camera;
 };
 
 #endif
