@@ -21,7 +21,7 @@ PlayerMovementSystem::PlayerMovementSystem()
 
 void PlayerMovementSystem::Init()
 {
-    EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionEnter, this, &PlayerMovementSystem::OnHitWall);
+    EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionStay, this, &PlayerMovementSystem::OnHitWall);
     EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionExit, this, &PlayerMovementSystem::OnAwayFromWall);
 }
 
@@ -34,12 +34,13 @@ void PlayerMovementSystem::Move(glm::vec3 &value, float dt)
         auto &transform = e.GetComponent<TransformComponent>();
 
         // Movement
+
+        //testing - has some weird bugs with speed and direction// todo: investigate later
         // glm::vec2 dir = glm::vec2{value.x, value.y};
         // movement.moveDirection += dir;
-
         // if (glm::length(movement.moveDirection) != 0) movement.moveDirection = glm::normalize(movement.moveDirection);
-
         // value.z = (movement.moveDirection.x < 0) ? 1.f : 3.f;
+
         sprite.srcRect.y = sprite.srcRect.h * value.z;
 
         movement.moveDirection.x = value.x;
@@ -83,45 +84,40 @@ void PlayerMovementSystem::OnHitWall(CollisionData &data)
 
     auto &transform = player.GetComponent<TransformComponent>();
     auto &playerBox = player.GetComponent<BoxColliderComponent>();
-    auto &movement = player.GetComponent<MovementComponent>();
+    //auto &movement = player.GetComponent<MovementComponent>();
 
     auto &blockBox = block.GetComponent<BoxColliderComponent>();
 
-    // Calculate the overlap direction
-    // int overlapX = std::min(playerBox.rect.x + playerBox.rect.w, blockBox.rect.x + blockBox.rect.w) 
-    //     - std::max(playerBox.rect.x, blockBox.rect.x);
-    // int overlapY = std::min(playerBox.rect.y + playerBox.rect.h, blockBox.rect.y + blockBox.rect.h) 
-    //     - std::max(playerBox.rect.y, blockBox.rect.y);
+    float force = 20.f;
 
-    glm::vec2 dir;
-    int overlapAmt;
-
+    // A hack to check which direction is the overlap coming from
+    // As the player is always bigger than the block, when overlap horizontally, width < height
     if (data.overlap.w < data.overlap.h)
     {
         // Resolve collision horizontally
         if (playerBox.rect.x < blockBox.rect.x)
         {
             // Moving rect is on the left
-            transform.position.x -= data.overlap.w; // Move left to prevent overlap
+            transform.position.x -= data.overlap.w * data.dt * force; // Move left to prevent overlap
         }
         else
         {
             // Moving rect is on the right
-            transform.position.x += data.overlap.w; // Move right to prevent overlap
+            transform.position.x += data.overlap.w * data.dt * force; // Move right to prevent overlap
         }
     }
     else
     {
-        // Resolve collision horizontally
+        // Resolve collision vertically
         if (playerBox.rect.y < blockBox.rect.y)
         {
-            // Moving rect is on the left
-            transform.position.y -= data.overlap.h; // Move left to prevent overlap
+            // Moving rect is up
+            transform.position.y -= data.overlap.h * data.dt * force;
         }
         else
         {
-            // Moving rect is on the right
-            transform.position.y += data.overlap.h; // Move right to prevent overlap
+            // Moving rect is down
+            transform.position.y += data.overlap.h * data.dt * force;
         }
     }
     variable = 0.f;
