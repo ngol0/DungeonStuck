@@ -4,7 +4,7 @@ A 2D dungeon crawler game made with a simple custom 2D game engine. This game an
 <img src="https://github.com/ngol0/DungeonStuck/blob/main/gameplay.gif" width="900" title="build">
 
 # Current technical features
-**1. ECS architecture:**
+**## ECS architecture:**
    ECS (Entity Component System) to help manage entities, components, and systems that are in the game.
 
 **2. Input Binding Tool:**
