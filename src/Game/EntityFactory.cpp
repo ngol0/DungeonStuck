@@ -7,6 +7,7 @@
 #include "../Components/HealthComponent.h"
 #include "../Components/PlayerInputComponent.h"
 #include "../Components/CameraFollowComponent.h"
+#include "../Components/WeaponComponent.h"
 
 namespace EntityFactory
 {
@@ -30,6 +31,21 @@ namespace EntityFactory
         return e;
     }
 
+    Entity CreateWeapon(WeaponType type, const glm::vec2& spawnPos)
+    {
+        Entity e = Registry::GetInstance().CreateEntity();
+        e.AddComponent<TransformComponent>(spawnPos, glm::vec2{1.5f}, 0.f);
+
+        if (type == WeaponType::BASIC)
+        {
+            auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::BASIC_WEAPON);
+            e.AddComponent<WeaponComponent>(20.f, 0.5f);
+        }
+
+        return e;
+    }
+
+    //
     Entity CreateEnemy(glm::vec2 pos, float speed, float health, glm::vec2 scale, float rot)
     {
         Entity e = Registry::GetInstance().CreateEntity();

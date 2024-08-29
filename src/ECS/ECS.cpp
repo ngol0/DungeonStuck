@@ -85,6 +85,8 @@ Entity Registry::CreateEntity()
     {
         id = m_freeIds.front();
         m_freeIds.pop();
+
+        //spdlog::info("Free id gotten " + std::to_string(id));
     }
     else
     {

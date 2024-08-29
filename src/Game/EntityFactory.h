@@ -2,11 +2,15 @@
 #define ENTITYFACTORY_H
 
 #include "../ECS/ECS.h"
+#include "../Global/WeaponData.h"
 #include <glm/glm.hpp>
 
 namespace EntityFactory
 {
     Entity CreatePlayer(glm::vec2 pos);
+    Entity CreateWeapon(WeaponType type, const glm::vec2& spawnPos);
+
+    //to do : change this
     Entity CreateEnemy(glm::vec2 pos, float speed, float health, glm::vec2 scale = glm::vec2(1.f), float rot = 0.f);
 
     //---------------------------------------------Tile-----------------------------------------------------------------------

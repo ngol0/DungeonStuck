@@ -114,6 +114,7 @@ void InputEditorSystem::Render(SDL_Renderer *renderer)
             if (ImGui::Button(buttonLabel.c_str()))
             {
                 RebindKey(actionNames[i], keyCodes[items[i]]);
+                ImGui::Text("Successfully bind input");
             }
             ImGui::EndDisabled();
         }

@@ -204,15 +204,14 @@ public:
 
             // update indexToEnttIdMap: entityIdatLastIndex match with indexToRemoved
             m_indexToEntityIdMap[indexToRemoved] = entityAtLastIndex;
-
-            // erase the id and last index from each map
-            m_entityIdToIndexMap.erase(entityId);
-            m_indexToEntityIdMap.erase(lastIndex);
         }
+
+        // erase the id and last index from each map
+        m_entityIdToIndexMap.erase(entityId);
+        m_indexToEntityIdMap.erase(lastIndex);
 
         //remove the last element of the vector
         m_data.pop_back();
-
         //PrintSizeDebug();
     }
 

@@ -7,10 +7,6 @@ enum class EventType
     OnCollisionEnter,
     OnCollisionStay,
     OnCollisionExit,
-
-    //trigger event type
-    OnTriggerEnter,
-    
     
     //entity event
     OnEntityDestroy,
@@ -18,6 +14,9 @@ enum class EventType
     //input event
     OnKeyPressed,
     OnMousePressed,
+
+    // on attack
+    OnAttack,
 };
 
 #endif

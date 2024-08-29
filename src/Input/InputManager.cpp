@@ -58,7 +58,9 @@ bool InputManager::IsKeyExist(SDL_Keycode newKey)
 {
 	// look up new key in action map
 	auto iter = m_keyDownActionMap.find(newKey);
-	return (iter != m_keyDownActionMap.end());
+	auto iter2 = m_keyPressedAction.find(newKey);
+
+	return (iter != m_keyDownActionMap.end()) || (iter2 != m_keyPressedAction.end());
 }
 
 void InputManager::RebindKey(const std::string &actionName, SDL_Keycode newKey)
