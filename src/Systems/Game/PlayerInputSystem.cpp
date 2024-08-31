@@ -25,8 +25,8 @@ void PlayerInputSystem::ConfigDefaultInputBindings()
     //------------------------Movement Input---------------------------//
     InputAction<glm::vec3> moveAction;
     moveAction.AddKeyInputData("MoveLeft", SDLK_LEFT, glm::vec3(-1, 0, 1));
-    moveAction.AddKeyInputData("MoveRight", SDLK_RIGHT, glm::vec3(1, 0, 3));
-    moveAction.AddKeyInputData("MoveDown", SDLK_DOWN, glm::vec3(0, 1, 3));
+    moveAction.AddKeyInputData("MoveRight", SDLK_RIGHT, glm::vec3(1, 0, 2));
+    moveAction.AddKeyInputData("MoveDown", SDLK_DOWN, glm::vec3(0, 1, 0));
     moveAction.AddKeyInputData("MoveUp", SDLK_UP, glm::vec3(0, -1, 3));
 
     //---Input binding

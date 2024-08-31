@@ -13,7 +13,7 @@ namespace EntityFactory
 {
     Entity CreatePlayer(glm::vec2 pos)
     {
-        glm::vec2 scale = glm::vec2{2.f};
+        glm::vec2 scale = glm::vec2{3.f};
         float rot = 0.f;
 
         Entity e = Registry::GetInstance().CreateEntity();
@@ -21,9 +21,9 @@ namespace EntityFactory
 
         auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::PLAYER);
         e.AddComponent<BoxColliderComponent>(
-                Tag::PLAYER, sprite.srcRect.w/4 * scale.x - 25.f, sprite.srcRect.h/4 * scale.y - 20.f, glm::vec2(12.f, 20.f));
+                Tag::PLAYER, sprite.srcRect.w/3 * scale.x, sprite.srcRect.h/4 * scale.y, glm::vec2(0.f, 0.f));
         e.AddComponent<MovementComponent>(200.f);
-        e.AddComponent<AnimationComponent>(4, 4, 10);
+        e.AddComponent<AnimationComponent>(3, 4, 10);
         e.AddComponent<HealthComponent>(100.f);
         e.AddComponent<PlayerInputComponent>();
         e.AddComponent<CameraFollowComponent>();

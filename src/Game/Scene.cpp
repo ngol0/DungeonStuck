@@ -75,7 +75,7 @@ void Scene::Clear()
 void Scene::LoadTextureAsset()
 {
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::TANK, "./assets/images/tank-panther-right.png");
-    AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::PLAYER, "./assets/images/zombie-full.png");
+    AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::PLAYER, "./assets/images/human.png");
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::MAP, "./assets/tilemaps/tilemap_packed.png");
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::BASIC_WEAPON, "./assets/images/basic_weapon.png");
 }

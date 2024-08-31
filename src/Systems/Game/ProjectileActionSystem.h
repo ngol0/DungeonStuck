@@ -6,9 +6,6 @@
 
 class ProjectileActionSystem : public System
 {
-private:
-    int playerId;
-    
 public:
     ProjectileActionSystem();
 
