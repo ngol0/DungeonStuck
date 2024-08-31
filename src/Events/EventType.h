@@ -16,7 +16,8 @@ enum class EventType
     OnMousePressed,
 
     // on attack
-    OnAttack,
+    OnBeginAnim,
+    OnDoneAnim,
 };
 
 #endif

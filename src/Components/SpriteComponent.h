@@ -18,6 +18,8 @@ struct SpriteComponent
 {
     SDL_Texture* texture{nullptr};
     SDL_Rect srcRect;
+    bool isLooping;
+    bool endOfSprite;
 
     std::string assetId;
     int width;

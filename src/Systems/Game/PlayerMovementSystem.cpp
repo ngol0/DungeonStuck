@@ -24,6 +24,9 @@ void PlayerMovementSystem::Init()
     EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionEnter, this, &PlayerMovementSystem::OnStartHit);
     EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionStay, this, &PlayerMovementSystem::OnKeepHitting);
     EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionExit, this, &PlayerMovementSystem::OnDoneHitting);
+
+    EventManager::GetInstance().Register<IData>(EventType::OnBeginAnim, this, &PlayerMovementSystem::OnStartAttack);
+    EventManager::GetInstance().Register<IData>(EventType::OnDoneAnim, this, &PlayerMovementSystem::OnEndAttack);
 }
 
 void PlayerMovementSystem::Move(glm::vec3 &value, float dt)
@@ -52,10 +55,11 @@ void PlayerMovementSystem::Move(glm::vec3 &value, float dt)
         //glm::vec2 moveDir = glm::vec2{value.x, value.y};
         //if (value.x != 0) movement.moveDirection.x = value.x;
         //movement.moveDirection = moveDir;
-
-        //value.z = movement.moveDirection.x < 0 ? 1 : 3;
+        if (m_isAttacking) return;
+        sprite.isLooping = true;
         sprite.srcRect.y = sprite.srcRect.h * value.z;
 
+        //
         transform.position += (movement.moveDirection * movement.speed) * dt * m_moveVariable;
     }
 }
@@ -65,8 +69,29 @@ void PlayerMovementSystem::Update(float dt)
     for (auto &e : GetSystemEntities())
     {
         auto &movement = e.GetComponent<MovementComponent>();
+        auto &sprite = e.GetComponent<SpriteComponent>();
         movement.moveDirection = glm::vec2(0, 0);
+
+        //
+        if (m_isAttacking) return;
+
+        sprite.isLooping = true;
+
+        if (movement.lastDirection.x < 0) sprite.srcRect.y = sprite.srcRect.h * 0; // left
+        if (movement.lastDirection.x > 0) sprite.srcRect.y = sprite.srcRect.h * 2; // right
+        if (movement.lastDirection.y < 0) sprite.srcRect.y = sprite.srcRect.h * 3; // up
+        if (movement.lastDirection.y > 0) sprite.srcRect.y = sprite.srcRect.h * 1; // down
     }
+}
+
+void PlayerMovementSystem::OnStartAttack(IData& data)
+{
+    m_isAttacking = true;
+}
+
+void PlayerMovementSystem::OnEndAttack(IData& data)
+{
+    m_isAttacking = false;
 }
 
 void PlayerMovementSystem::OnStartHit(CollisionData &data)

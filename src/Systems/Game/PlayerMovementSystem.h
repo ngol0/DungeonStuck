@@ -12,10 +12,14 @@ private:
     void OnKeepHitting(CollisionData& data);
     void OnDoneHitting(CollisionData& data);
 
+    void OnStartAttack(IData& data);
+    void OnEndAttack(IData& data);
+
     float m_moveVariable{1.f};
     float m_forceCount{0.f};
     float m_force{0.f};
     float m_initialForce{20.f};
+    bool m_isAttacking;
 
 public:
     PlayerMovementSystem();

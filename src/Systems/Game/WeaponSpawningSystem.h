@@ -13,7 +13,7 @@ public:
     WeaponSpawningSystem();
 
     //void Init() override;
-    //void Update(float dt) override;
+    void Update(float dt) override;
 
     void Attack(int& weaponType);
 };
