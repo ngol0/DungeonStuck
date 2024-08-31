@@ -27,8 +27,8 @@ void WeaponSpawningSystem::Attack(int &weaponType)
         auto &movement = e.GetComponent<MovementComponent>();
         auto &anim = e.GetComponent<AnimationComponent>();
 
-        glm::vec2 spawnPos = glm::vec2(transform.position.x + 20.f, transform.position.y + 32.f);
-        EntityFactory::CreateWeapon(WeaponType::BASIC, spawnPos, movement.lastDirection);
+        //glm::vec2 spawnPos = glm::vec2(transform.position.x + 20.f, transform.position.y + 32.f);
+        //EntityFactory::CreateWeapon(WeaponType::BASIC, spawnPos, movement.lastDirection);
 
         // change sprite
         auto &sprite = e.GetComponent<SpriteComponent>();
