@@ -2,9 +2,10 @@
 
 #include "../../Components/PlayerInputComponent.h"
 #include "../../Components/TransformComponent.h"
-#include "../../Events/EventManager.h"
-#include "../../Events/EventData.h"
+#include "../../Components/MovementComponent.h"
+
 #include "../../Global/WeaponData.h"
+#include "../../Game/EntityFactory.h"
 
 WeaponSpawningSystem::WeaponSpawningSystem()
 {
@@ -18,12 +19,9 @@ void WeaponSpawningSystem::Attack(int &weaponType)
     {
         // create weapon spawn pos
         auto &transform = e.GetComponent<TransformComponent>();
-        
-        //todo: get weapon type from inventory component
-        AttackData spawnData(transform.position, WeaponType::BASIC);
+        auto &movement = e.GetComponent<MovementComponent>();
 
-        // call an event for attack system to listen
-        // create a basic weapon
-        EventManager::GetInstance().Notify<AttackData>(EventType::OnAttack, spawnData);
+        glm::vec2 spawnPos = glm::vec2(transform.position.x + 20.f, transform.position.y + 32.f);
+        EntityFactory::CreateWeapon(WeaponType::BASIC, spawnPos, movement.lastDirection);
     }
 }

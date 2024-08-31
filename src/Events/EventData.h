@@ -17,13 +17,13 @@ struct CollisionData : public IData
     CollisionData(std::pair<int,int> pair, SDL_Rect rect, float d) : collisionPair(pair), overlap(rect), dt(d) {}
 };
 
+
 struct AttackData : public IData
 {
-    glm::vec2 position;
     WeaponType weaponType;
 
     virtual ~AttackData() = default;
-    AttackData(glm::vec2 pos, WeaponType type) : position(pos), weaponType(type) {}
+    AttackData(WeaponType type) : weaponType(type) {}
 };
 
 #endif

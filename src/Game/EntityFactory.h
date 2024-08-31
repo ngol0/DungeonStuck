@@ -8,7 +8,7 @@
 namespace EntityFactory
 {
     Entity CreatePlayer(glm::vec2 pos);
-    Entity CreateWeapon(WeaponType type, const glm::vec2& spawnPos);
+    Entity CreateWeapon(WeaponType type, glm::vec2 spawnPos, glm::vec2 moveDir);
 
     //to do : change this
     Entity CreateEnemy(glm::vec2 pos, float speed, float health, glm::vec2 scale = glm::vec2(1.f), float rot = 0.f);

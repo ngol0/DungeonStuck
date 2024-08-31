@@ -5,10 +5,11 @@
 
 struct MovementComponent
 {
-    glm::vec2 moveDirection;
     float speed;
+    glm::vec2 moveDirection;
+    glm::vec2 lastDirection;
     
-    MovementComponent(float speed = 0) : moveDirection(glm::vec2(1.0f, 0.0f)), speed(speed)
+    MovementComponent(float speed = 0, glm::vec2 moveDir = glm::vec2{1.0f, 0.f}) : speed(speed), moveDirection(moveDir)
     {
         
     }

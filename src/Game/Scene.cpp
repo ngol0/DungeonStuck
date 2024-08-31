@@ -8,7 +8,7 @@
 #include "../Systems/Game/PlayerInputSystem.h"
 #include "../Systems/Game/PlayerMovementSystem.h"
 #include "../Systems/Game/WeaponSpawningSystem.h"
-#include "../Systems/Game/PlayerAttackSystem.h"
+#include "../Systems/Game/ProjectileActionSystem.h"
 #include "../Systems/Editor/InputEditorSystem.h"
 
 //#include "../Components/TransformComponent.h"
@@ -41,7 +41,7 @@ void Scene::Init(SDL_Renderer* renderer)
     Registry::GetInstance().AddSystem<DamageSystem>();
     Registry::GetInstance().AddSystem<PlayerMovementSystem>();
     Registry::GetInstance().AddSystem<WeaponSpawningSystem>();
-    Registry::GetInstance().AddSystem<PlayerAttackSystem>();
+    Registry::GetInstance().AddSystem<ProjectileActionSystem>();
 
     //input system
     Registry::GetInstance().AddSystem<PlayerInputSystem>(); //system to bind all the input -- should be added last

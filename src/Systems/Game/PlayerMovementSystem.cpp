@@ -35,19 +35,28 @@ void PlayerMovementSystem::Move(glm::vec3 &value, float dt)
         auto &transform = e.GetComponent<TransformComponent>();
 
         // Movement
+        glm::vec2 dir = glm::vec2{value.x, value.y};
+        movement.moveDirection += dir;
+        
+        if (glm::length(movement.moveDirection) != 0)
+        {
+            movement.moveDirection = glm::normalize(movement.moveDirection);
+            movement.lastDirection = movement.moveDirection;
+        } 
 
-        //testing - has some weird bugs with speed and direction// todo: investigate later
-        // glm::vec2 dir = glm::vec2{value.x, value.y};
-        // movement.moveDirection += dir;
-        // if (glm::length(movement.moveDirection) != 0) movement.moveDirection = glm::normalize(movement.moveDirection);
-        // value.z = (movement.moveDirection.x < 0) ? 1.f : 3.f;
-        glm::vec2 moveDir = glm::vec2{value.x, value.y};
-        if (value.x != 0) movement.moveDirection.x = value.x;
+        //log to test
+        //spdlog::info("Move x: " + std::to_string(movement.moveDirection.x));
+        //spdlog::info("Move y: " + std::to_string(movement.moveDirection.y));
 
-        value.z = movement.moveDirection.x < 0 ? 1 : 3;
+        //old way: not correct but leave here in case of useful to test around
+        //glm::vec2 moveDir = glm::vec2{value.x, value.y};
+        //if (value.x != 0) movement.moveDirection.x = value.x;
+        //movement.moveDirection = moveDir;
+
+        //value.z = movement.moveDirection.x < 0 ? 1 : 3;
         sprite.srcRect.y = sprite.srcRect.h * value.z;
 
-        transform.position += (moveDir * movement.speed) * dt * m_moveVariable;
+        transform.position += (movement.moveDirection * movement.speed) * dt * m_moveVariable;
     }
 }
 
@@ -55,10 +64,8 @@ void PlayerMovementSystem::Update(float dt)
 {
     for (auto &e : GetSystemEntities())
     {
-        auto &sprite = e.GetComponent<SpriteComponent>();
         auto &movement = e.GetComponent<MovementComponent>();
-
-        sprite.srcRect.y = (movement.moveDirection.x < 0) ? 0 : sprite.srcRect.h * 2;
+        movement.moveDirection = glm::vec2(0, 0);
     }
 }
 
