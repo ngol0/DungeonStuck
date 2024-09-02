@@ -6,7 +6,7 @@ A 2D dungeon crawler game made with a simple custom 2D game engine. This game an
 
 ## Current technical features
   * #### ECS (Entity-Component-System) architecture:
-    Entites and Components are data-only elements and do not contain any logic. Entities are only ids and Components contain data such as movementSpeed, texture, etc. Systems are responsible for the logic processing of certain components. For example: RenderSystem is responsible to implement logic on any Entities that have the Sprite and Transform Component by indicating in the system constructor with `RequireComponent<TComponent>` . All systems have the Init, Update and Render methods that are automatically called once a system is created.
+    Entites and Components are data-only elements and do not contain any logic. Systems are responsible for the logic processing of certain components. For example: RenderSystem is responsible to implement logic on any Entities that have the Sprite and Transform component. All systems have the Init, Update and Render methods that are automatically called once a system is created.
 
  * #### Input Binding Tool:
    A tool created using DearImGui to help player rebind the input by choosing from the Drop down menu and click Save. User cannot choose the input that is already in use for other actions
