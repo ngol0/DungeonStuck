@@ -5,7 +5,7 @@
 #include <SDL2/SDL_image.h>
 #include <glm/glm.hpp>
 #include "../Global/Interface.h"
-#include "../Global/WeaponData.h"
+#include "../Global/GlobalDataType.h"
 
 struct CollisionData : public IData
 {

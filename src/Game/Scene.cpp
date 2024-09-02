@@ -7,11 +7,9 @@
 #include "../Systems/Game/DamageSystem.h"
 #include "../Systems/Game/PlayerInputSystem.h"
 #include "../Systems/Game/PlayerMovementSystem.h"
-#include "../Systems/Game/WeaponSpawningSystem.h"
-#include "../Systems/Game/ProjectileActionSystem.h"
+#include "../Systems/Game/AttackSpawningSystem.h"
+#include "../Systems/Game/WeaponActionSystem.h"
 #include "../Systems/Editor/InputEditorSystem.h"
-
-//#include "../Components/TransformComponent.h"
 
 #include "../Asset/AssetManager.h"
 
@@ -40,8 +38,8 @@ void Scene::Init(SDL_Renderer* renderer)
     //game
     Registry::GetInstance().AddSystem<DamageSystem>();
     Registry::GetInstance().AddSystem<PlayerMovementSystem>();
-    Registry::GetInstance().AddSystem<WeaponSpawningSystem>();
-    Registry::GetInstance().AddSystem<ProjectileActionSystem>();
+    Registry::GetInstance().AddSystem<AttackSpawningSystem>();
+    Registry::GetInstance().AddSystem<WeaponActionSystem>();
 
     //input system
     Registry::GetInstance().AddSystem<PlayerInputSystem>(); //system to bind all the input -- should be added last
@@ -52,9 +50,9 @@ void Scene::Init(SDL_Renderer* renderer)
     // //----------------------------------------Create entity----------------------------------------
     // create player
     EntityFactory::CreatePlayer(glm::vec2(0.f, 1.f));
-    //auto& playerTransform = player.GetComponent<TransformComponent>();
 
-    //EntityFactory::CreateEnemy(glm::vec2(300.f, 1.f), -50.f, 100.f); //todo: enemy type for diff params
+    // create slime enemy for testing the combat
+    EntityFactory::CreateEnemy(glm::vec2(1.f, 200.f), EnemyType::SLIME); //todo: enemy type for diff params
 }
 
 void Scene::Update(float deltaTime)
@@ -74,8 +72,9 @@ void Scene::Clear()
 
 void Scene::LoadTextureAsset()
 {
-    AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::TANK, "./assets/images/tank-panther-right.png");
-    AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::PLAYER, "./assets/images/player.png");
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::MAP, "./assets/tilemaps/tilemap_packed.png");
+
+    AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::PLAYER, "./assets/images/player.png");
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::BASIC_WEAPON, "./assets/images/basic_weapon.png");
+    AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::SLIME, "./assets/images/slime.png");
 }

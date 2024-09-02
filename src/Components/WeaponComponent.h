@@ -1,7 +1,7 @@
 #ifndef WEAPONCOMPONENT_H
 #define WEAPONCOMPONENT_H
 
-#include "../Global/WeaponData.h"
+#include "../Global/GlobalDataType.h"
 
 struct WeaponComponent
 {

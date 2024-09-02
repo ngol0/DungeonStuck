@@ -1,8 +1,8 @@
 #include "PlayerInputSystem.h"
 #include "PlayerMovementSystem.h"
-#include "WeaponSpawningSystem.h"
+#include "AttackSpawningSystem.h"
 #include "../RenderSystem.h"
-#include "../../Global/WeaponData.h"
+#include "../../Global/GlobalDataType.h"
 
 #include "../../Input/InputManager.h"
 
@@ -44,8 +44,8 @@ void PlayerInputSystem::ConfigDefaultInputBindings()
     //------------------------Fight Input------------------------------//
     //todo: get the inventory system > get the weapon type and pass the weapon type to here
     InputData<int> fightData("Fight", SDLK_x, 1);
-    auto& combatSystem = Registry::GetInstance().GetSystem<WeaponSpawningSystem>();
-    inputManager.BindKeyDown(fightData, &combatSystem, &WeaponSpawningSystem::Attack);
+    auto& combatSystem = Registry::GetInstance().GetSystem<AttackSpawningSystem>();
+    inputManager.BindKeyDown(fightData, &combatSystem, &AttackSpawningSystem::Attack);
     
 
     //------------------------Debug Input------------------------------//

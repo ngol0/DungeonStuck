@@ -5,6 +5,7 @@
 #include "../../Components/PlayerInputComponent.h"
 #include "../../Components/TransformComponent.h"
 #include "../../Components/BoxColliderComponent.h"
+#include "../../Components/AnimationComponent.h"
 
 #include "../../Events/EventManager.h"
 #include "../../Events/EventType.h"
@@ -17,6 +18,7 @@ PlayerMovementSystem::PlayerMovementSystem()
     RequireComponent<TransformComponent>();
     RequireComponent<MovementComponent>();
     RequireComponent<SpriteComponent>();
+    RequireComponent<AnimationComponent>();
 }
 
 void PlayerMovementSystem::Init()
@@ -36,6 +38,7 @@ void PlayerMovementSystem::Move(glm::vec3 &value, float dt)
         auto &movement = e.GetComponent<MovementComponent>();
         auto &sprite = e.GetComponent<SpriteComponent>();
         auto &transform = e.GetComponent<TransformComponent>();
+        auto &anim = e.GetComponent<AnimationComponent>();
 
         // Movement
         glm::vec2 dir = glm::vec2{value.x, value.y};
@@ -56,7 +59,7 @@ void PlayerMovementSystem::Move(glm::vec3 &value, float dt)
         //if (value.x != 0) movement.moveDirection.x = value.x;
         //movement.moveDirection = moveDir;
         if (m_isAttacking) return;
-        sprite.isLooping = true;
+        anim.isLooping = true;
         sprite.srcRect.y = sprite.srcRect.h * value.z;
 
         //
@@ -70,12 +73,13 @@ void PlayerMovementSystem::Update(float dt)
     {
         auto &movement = e.GetComponent<MovementComponent>();
         auto &sprite = e.GetComponent<SpriteComponent>();
+        auto &anim = e.GetComponent<AnimationComponent>();
         movement.moveDirection = glm::vec2(0, 0);
 
         //
         if (m_isAttacking) return;
 
-        sprite.isLooping = true;
+        anim.isLooping = true;
 
         if (movement.lastDirection.x < 0) sprite.srcRect.y = sprite.srcRect.h * 0; // left
         if (movement.lastDirection.x > 0) sprite.srcRect.y = sprite.srcRect.h * 2; // right
@@ -117,6 +121,8 @@ void PlayerMovementSystem::OnKeepHitting(CollisionData &data)
         playerId = data.collisionPair.second;
         boxId = data.collisionPair.first;
     }
+
+    if (playerId == -1 || boxId == -1) return;
 
     Entity player(playerId);
     Entity block(boxId);

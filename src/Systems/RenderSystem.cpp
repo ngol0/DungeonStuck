@@ -52,8 +52,8 @@ void RenderSystem::Render(SDL_Renderer *renderer)
             if (collider == nullptr)
                 continue;
             SDL_Rect boxRect = {
-                static_cast<int>(transform.position.x + collider->offset.x),
-                static_cast<int>(transform.position.y + collider->offset.y),
+                static_cast<int>(transform.position.x + collider->offset.x - Scene::camera.x),
+                static_cast<int>(transform.position.y + collider->offset.y - Scene::camera.y),
                 static_cast<int>(collider->width),
                 static_cast<int>(collider->height)};
 

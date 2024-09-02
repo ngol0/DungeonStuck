@@ -27,7 +27,7 @@ void AnimationSystem::Update(float dt)
 
         int animationFrameIndex = 0;
 
-        if (sprite.endOfSprite && !sprite.isLooping)
+        if (animation.endOfSprite && !animation.isLooping)
         {
             animationFrameIndex = lastAnim;
             animation.currentFrame = 0;
@@ -42,7 +42,7 @@ void AnimationSystem::Update(float dt)
 
             if (animationFrameIndex == lastAnim)
             {
-                sprite.endOfSprite = true;
+                animation.endOfSprite = true;
             }
         }
 

@@ -394,10 +394,12 @@ TComponent *Registry::GetComponentPtr(const Entity &e)
 template <typename TComponent>
 TComponent &Registry::GetComponent(const Entity &e)
 {
-    assert(HasComponent<TComponent>(e));
-
     auto componentId = Component<TComponent>::GetId();
     const auto entityId = e.GetId();
+
+    if (!HasComponent<TComponent>(e)) spdlog::error("Component " + std::to_string(componentId) + " is missing from entity " + 
+        std::to_string(entityId) + "!");
+    assert(HasComponent<TComponent>(e));
 
     return static_cast<Pool<TComponent> *>(m_componentPools[componentId])->Get(entityId);
 }

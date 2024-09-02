@@ -6,7 +6,7 @@
 
 namespace SpriteId
 {
-	const static std::string TANK = "tank";
+	const static std::string SLIME = "tank";
     const static std::string PLAYER = "chopper";
 
     const static std::string MAP = "map";
@@ -18,8 +18,6 @@ struct SpriteComponent
 {
     SDL_Texture* texture{nullptr};
     SDL_Rect srcRect;
-    bool isLooping;
-    bool endOfSprite;
 
     std::string assetId;
     int width;

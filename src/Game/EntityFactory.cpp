@@ -8,6 +8,7 @@
 #include "../Components/PlayerInputComponent.h"
 #include "../Components/CameraFollowComponent.h"
 #include "../Components/WeaponComponent.h"
+#include "../Components/EnemyComponent.h"
 
 namespace EntityFactory
 {
@@ -22,8 +23,8 @@ namespace EntityFactory
         auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::PLAYER);
         e.AddComponent<BoxColliderComponent>(
                 Tag::PLAYER, sprite.srcRect.w/6 * scale.x - 104.f, sprite.srcRect.h/13 * scale.y - 32.f, glm::vec2(54.f, 16.f));
-        e.AddComponent<MovementComponent>(300.f);
-        e.AddComponent<AnimationComponent>(6, 14, 5);
+        e.AddComponent<MovementComponent>(200.f);
+        e.AddComponent<AnimationComponent>(6, 14, 7);
         e.AddComponent<HealthComponent>(100.f);
         e.AddComponent<PlayerInputComponent>();
         e.AddComponent<CameraFollowComponent>();
@@ -38,23 +39,31 @@ namespace EntityFactory
 
         if (type == WeaponType::BASIC)
         {
-            auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::BASIC_WEAPON);
+            //e.AddComponent<SpriteComponent>(SpriteId::BASIC_WEAPON);
             e.AddComponent<WeaponComponent>(20.f, 0.5f);
             e.AddComponent<MovementComponent>(400.f, moveDir);
+            e.AddComponent<BoxColliderComponent>(Tag::PLAYER_BULLET, 32.f, 32.f, glm::vec2(0.f, 0.f));
         }
 
         return e;
     }
 
-    //todo: implement real enemies
-    Entity CreateEnemy(glm::vec2 pos, float speed, float health, glm::vec2 scale, float rot)
+    Entity CreateEnemy(glm::vec2 pos, EnemyType type)
     {
         Entity e = Registry::GetInstance().CreateEntity();
-        e.AddComponent<TransformComponent>(pos, glm::vec2(1.f, 1.f), 0.f);
+        e.AddComponent<EnemyComponent>();
 
-        auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::TANK);
-        e.AddComponent<BoxColliderComponent>(Tag::ENEMY_BULLET, sprite.srcRect.w - 5, sprite.srcRect.h, glm::vec2(4.f, 0.f));
-        e.AddComponent<MovementComponent>(speed);
+        if (type == EnemyType::SLIME)
+        {
+            glm::vec2 scale = glm::vec2{1.5f};
+
+            e.AddComponent<TransformComponent>(pos, scale, 0.f);
+            auto& anim = e.AddComponent<AnimationComponent>(7, 5, 7);
+            auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::SLIME);
+            anim.isLooping = true;
+            e.AddComponent<BoxColliderComponent>(Tag::ENEMY_BULLET, sprite.srcRect.w/7, sprite.srcRect.h/5, glm::vec2(0.f, 0.f));
+            e.AddComponent<MovementComponent>(100.f);
+        }
 
         return e;
     }
