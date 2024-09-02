@@ -6,7 +6,7 @@ A 2D dungeon crawler game made with a simple custom 2D game engine. This game an
 
 ## Current technical features
   * #### ECS architecture:
-    ECS (Entity Component System) to help manage entities (that are only ids), components (that hold only data), and systems that are in the game.
+    ECS (Entity Component System): entites and components are data-only elements and do not contain any logic. Systems are responsible for the logic processing of certain components, for example: RenderSystem is responsible to implement logic on any Entities that have the Sprite and Transform Component by indicating in the system constructor with `RequireComponent<TComponent>` 
 
  * #### Input Binding Tool:
    A tool created using DearImGui to help player rebind the input by choosing from the Drop down menu and click Save. User cannot choose the input that is already in use for other actions
