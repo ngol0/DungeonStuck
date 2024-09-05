@@ -13,8 +13,6 @@ private:
     Scene m_scene;
 
     bool b_running;
-    int m_window_width;
-    int m_window_height;
 
     Uint32 m_last_update_frame;
 
@@ -29,6 +27,9 @@ public:
     void Update();
     void Render();
     void Destroy();
+
+    static int window_width;
+    static int window_height;
 };
 
 #endif

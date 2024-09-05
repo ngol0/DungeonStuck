@@ -1,5 +1,6 @@
 #include "InputEditorSystem.h"
 #include "../../Input/InputManager.h"
+#include "../../Game/Scene.h"
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_sdl2.h>
@@ -89,16 +90,10 @@ void InputEditorSystem::Init()
 
 void InputEditorSystem::Render(SDL_Renderer *renderer)
 {
-    if (!isDebugging)
-        return;
-
-    ImGui_ImplSDLRenderer2_NewFrame();
-    ImGui_ImplSDL2_NewFrame();
-    ImGui::NewFrame();
-
     // editor here
     //ImGui::ShowDemoWindow();
     //-------------
+    if (!Scene::isDebugging) return;
     ImGui::Begin("Input Editor");
     ImGui::Text("Use this to rebind input and action");
 

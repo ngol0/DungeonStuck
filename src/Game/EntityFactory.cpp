@@ -22,7 +22,7 @@ namespace EntityFactory
 
         auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::PLAYER);
         e.AddComponent<BoxColliderComponent>(
-                Tag::PLAYER, sprite.srcRect.w/6 * scale.x - 104.f, sprite.srcRect.h/13 * scale.y - 32.f, glm::vec2(54.f, 16.f));
+                Tag::PLAYER, sprite.srcRect.w/6 * scale.x - 104.f, sprite.srcRect.h/13 * scale.y - 40.f, glm::vec2(54.f, 16.f));
         e.AddComponent<MovementComponent>(200.f);
         e.AddComponent<AnimationComponent>(6, 14, 7);
         e.AddComponent<HealthComponent>(100.f);
@@ -40,7 +40,7 @@ namespace EntityFactory
         if (type == WeaponType::BASIC)
         {
             e.AddComponent<SpriteComponent>(SpriteId::BASIC_WEAPON);
-            e.AddComponent<WeaponComponent>(20.f, 0.5f);
+            e.AddComponent<WeaponComponent>(20.f, 0.3f);
             e.AddComponent<MovementComponent>(300.f, moveDir);
             e.AddComponent<BoxColliderComponent>(Tag::PLAYER_BULLET, 32.f, 16.f, glm::vec2(0.f, 0.f));
         }
@@ -48,7 +48,7 @@ namespace EntityFactory
         return e;
     }
 
-    Entity CreateEnemy(glm::vec2 pos, EnemyType type)
+    Entity CreateEnemy(glm::vec2 pos, glm::vec2 moveDir, EnemyType type)
     {
         Entity e = Registry::GetInstance().CreateEntity();
         e.AddComponent<EnemyComponent>();
@@ -70,7 +70,7 @@ namespace EntityFactory
                 glm::vec2(20.f, 16.f)
             );
             auto& movement = e.AddComponent<MovementComponent>(80.f);
-            movement.moveDirection = glm::vec2(1,0);
+            movement.moveDirection = moveDir;
             e.AddComponent<HealthComponent>(100.f);
         }
 

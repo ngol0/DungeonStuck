@@ -17,7 +17,7 @@ RenderSystem::RenderSystem()
 
 void RenderSystem::OnDebug(int& num)
 {
-    m_isDebugging = !m_isDebugging;
+    Scene::isDebugging = !Scene::isDebugging;
 }
 
 void RenderSystem::Render(SDL_Renderer *renderer)
@@ -45,7 +45,7 @@ void RenderSystem::Render(SDL_Renderer *renderer)
             SDL_FLIP_NONE);
 
         //----------------------RENDER DEBUG COLLIDER--------------------------------//
-        if (m_isDebugging)
+        if (Scene::isDebugging)
         {
             BoxColliderComponent *collider = e.GetComponentPtr<BoxColliderComponent>();
 

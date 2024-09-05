@@ -37,7 +37,7 @@ void EnemyAISystem::Update(float dt)
         //
         transform.position += (movement.moveDirection * movement.speed) * dt;
 
-        if (transform.position.x <= 0 || transform.position.x >= 640) 
+        if (transform.position.x <= 0.f || transform.position.x >= 640.f) 
         {
             movement.moveDirection *= -1;
         }
@@ -50,10 +50,14 @@ void EnemyAISystem::OnEnemyDieAnim(Entity& victim)
     {
         auto& anim = victim.GetComponent<AnimationComponent>();
         auto& sprite = victim.GetComponent<SpriteComponent>();
+        auto& movement = victim.GetComponent<MovementComponent>();
+
+        movement.speed = 0.f;
 
         anim.isLooping = false;
         anim.endOfSprite = false;
         anim.currentFrame = 0;
+        anim.frameSpeed = 5;
 
         sprite.srcRect.y = sprite.srcRect.h * 0; // die
     }

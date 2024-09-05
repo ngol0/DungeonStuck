@@ -1,5 +1,5 @@
-#ifndef PLAYERMOVEMENTSYSTEM_H
-#define PLAYERMOVEMENTSYSTEM_H
+#ifndef PLAYERACTIONSYSTEM_H
+#define PLAYERACTIONSYSTEM_H
 
 #include "../../ECS/ECS.h"
 #include <glm/glm.hpp>

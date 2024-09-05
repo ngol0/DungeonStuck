@@ -11,6 +11,7 @@
 #include "../Systems/Game/WeaponActionSystem.h"
 #include "../Systems/Game/EnemyAISystem.h"
 #include "../Systems/Editor/InputEditorSystem.h"
+#include "../Systems/Editor/EnemySpawnEditor.h"
 
 #include "../Asset/AssetManager.h"
 
@@ -19,6 +20,7 @@
 #include <glm/glm.hpp>
 
 SDL_Rect Scene::camera{0, 0, 800, 600};
+bool Scene::isDebugging{false};
 
 void Scene::Init(SDL_Renderer* renderer)
 {
@@ -47,6 +49,7 @@ void Scene::Init(SDL_Renderer* renderer)
     Registry::GetInstance().AddSystem<PlayerInputSystem>(); //system to bind all the input -- should be added last
     //input editor
     Registry::GetInstance().AddSystem<InputEditorSystem>();
+    Registry::GetInstance().AddSystem<EnemySpawnEditor>();
 
 
     // //----------------------------------------Create entity----------------------------------------
@@ -54,7 +57,7 @@ void Scene::Init(SDL_Renderer* renderer)
     EntityFactory::CreatePlayer(glm::vec2(0.f, 1.f));
 
     // create slime enemy for testing the combat
-    EntityFactory::CreateEnemy(glm::vec2(1.f, 200.f), EnemyType::SLIME); //todo: enemy type for diff params
+    EntityFactory::CreateEnemy(glm::vec2(1.f, 200.f), glm::vec2(1.f, 0.f), EnemyType::SLIME);
 }
 
 void Scene::Update(float deltaTime)

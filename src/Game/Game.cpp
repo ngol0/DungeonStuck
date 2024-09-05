@@ -8,13 +8,13 @@
 
 #include "../Input/InputManager.h"
 
+int Game::window_height = 600;
+int Game::window_width = 800;
+
 Game::Game()
 {
     b_running = false;
     spdlog::info("Game Created!");
-
-    m_window_height = 600;
-    m_window_width = 800;
 }
 
 Game::~Game()
@@ -36,8 +36,8 @@ void Game::InitWindow()
         NULL,
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        m_window_width,
-        m_window_height,
+        Game::window_width,
+        Game::window_height,
         SDL_WINDOW_BORDERLESS);
 
     if (!m_window)
@@ -146,11 +146,14 @@ void Game::Render()
     SDL_RenderClear(m_renderer);
 
     // render game objects
-    m_scene.Render();
+    ImGui_ImplSDLRenderer2_NewFrame();
+    ImGui_ImplSDL2_NewFrame();
+    ImGui::NewFrame();
 
+    m_scene.Render();
+    
     ImGui::Render();
     ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), m_renderer);
-
     SDL_RenderPresent(m_renderer);
 }
 

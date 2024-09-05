@@ -10,7 +10,7 @@ namespace EntityFactory
     Entity CreatePlayer(glm::vec2 pos);
     Entity CreateWeapon(WeaponType type, glm::vec2 spawnPos, glm::vec2 moveDir);
 
-    Entity CreateEnemy(glm::vec2 pos, EnemyType type);
+    Entity CreateEnemy(glm::vec2 pos, glm::vec2 moveDir, EnemyType type);
 
     //---------------------------------------------Tile-----------------------------------------------------------------------
     Entity CreateTile(glm::vec2 size, glm::vec2 srcRect, glm::vec2 transform, float rot, glm::vec2 boxSize);

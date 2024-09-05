@@ -49,7 +49,7 @@ void PlayerInputSystem::ConfigDefaultInputBindings()
     
 
     //------------------------Debug Input------------------------------//
-    InputData<int> inputData("Debugging", SDLK_0, 0);
+    InputData<int> inputData("Debugging", SDLK_k, 0);
     auto& renderSystem = Registry::GetInstance().GetSystem<RenderSystem>();
     inputManager.BindKeyDown(inputData, &renderSystem, &RenderSystem::OnDebug);    
 }

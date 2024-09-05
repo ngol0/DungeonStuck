@@ -3,6 +3,7 @@
 #include "../Components/TransformComponent.h"
 
 #include "../Game/Scene.h"
+#include "../Game/Game.h"
 
 CameraMovementSystem::CameraMovementSystem()
 {
@@ -19,11 +20,11 @@ void CameraMovementSystem::Update(float dt)
 
         if (transform.position.x + (Scene::camera.w / 2) < 640*2)
         {
-            Scene::camera.x = transform.position.x - (800 / 2);
+            Scene::camera.x = transform.position.x - (Game::window_width / 2);
         }
         if (transform.position.y + (Scene::camera.h / 2) < 480*2)
         {
-            Scene::camera.y = transform.position.y - (600 / 2);
+            Scene::camera.y = transform.position.y - (Game::window_height / 2);
         }
 
         Scene::camera.x = Scene::camera.x < 0 ? 0 : Scene::camera.x;

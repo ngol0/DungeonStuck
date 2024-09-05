@@ -63,6 +63,7 @@ void PlayerActionSystem::Move(glm::vec3 &value, float dt)
         //glm::vec2 moveDir = glm::vec2{value.x, value.y};
         //if (value.x != 0) movement.moveDirection.x = value.x;
         //movement.moveDirection = moveDir;
+        
         if (m_isAttacking) return;
         anim.isLooping = true;
         sprite.srcRect.y = sprite.srcRect.h * value.z;

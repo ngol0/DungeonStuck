@@ -19,6 +19,7 @@ public:
     void LoadTextureAsset();
 
     static SDL_Rect camera;
+    static bool isDebugging;
 };
 
 #endif

@@ -7,7 +7,7 @@
 class InputEditorSystem : public System
 {
 private:
-    bool isDebugging{true};
+    //bool isDebugging{true};
 
     std::map<SDL_Keycode, std::string> keyMap;
 
