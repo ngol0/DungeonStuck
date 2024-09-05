@@ -6,9 +6,10 @@
 #include "../Systems/CollisionSystem.h"
 #include "../Systems/Game/DamageSystem.h"
 #include "../Systems/Game/PlayerInputSystem.h"
-#include "../Systems/Game/PlayerMovementSystem.h"
+#include "../Systems/Game/PlayerActionSystem.h"
 #include "../Systems/Game/AttackSpawningSystem.h"
 #include "../Systems/Game/WeaponActionSystem.h"
+#include "../Systems/Game/EnemyAISystem.h"
 #include "../Systems/Editor/InputEditorSystem.h"
 
 #include "../Asset/AssetManager.h"
@@ -37,9 +38,10 @@ void Scene::Init(SDL_Renderer* renderer)
 
     //game
     Registry::GetInstance().AddSystem<DamageSystem>();
-    Registry::GetInstance().AddSystem<PlayerMovementSystem>();
+    Registry::GetInstance().AddSystem<PlayerActionSystem>();
     Registry::GetInstance().AddSystem<AttackSpawningSystem>();
     Registry::GetInstance().AddSystem<WeaponActionSystem>();
+    Registry::GetInstance().AddSystem<EnemyAISystem>();
 
     //input system
     Registry::GetInstance().AddSystem<PlayerInputSystem>(); //system to bind all the input -- should be added last
@@ -75,6 +77,6 @@ void Scene::LoadTextureAsset()
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::MAP, "./assets/tilemaps/tilemap_packed.png");
 
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::PLAYER, "./assets/images/player.png");
-    AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::BASIC_WEAPON, "./assets/images/basic_weapon.png");
+    //AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::BASIC_WEAPON, "./assets/images/basic_weapon.png");
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::SLIME, "./assets/images/slime.png");
 }

@@ -9,6 +9,8 @@
 #include <spdlog/spdlog.h>
 #include <queue>
 
+#include "../Global/Interface.h"
+
 struct SDL_Renderer;
 
 inline std::size_t GetUniqueId()
@@ -28,7 +30,7 @@ struct Component
     }
 };
 
-class Entity
+class Entity : public IData
 {
 private:
     int m_id;

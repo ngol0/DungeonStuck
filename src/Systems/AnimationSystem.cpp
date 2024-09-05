@@ -33,7 +33,7 @@ void AnimationSystem::Update(float dt)
             animation.currentFrame = 0;
 
             //send an event
-            EventManager::GetInstance().Notify<IData>(EventType::OnDoneAnim, IData());
+            EventManager::GetInstance().Notify<Entity>(EventType::OnDoneAnim, e);
         }
         else
         {

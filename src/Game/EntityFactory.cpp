@@ -39,10 +39,10 @@ namespace EntityFactory
 
         if (type == WeaponType::BASIC)
         {
-            //e.AddComponent<SpriteComponent>(SpriteId::BASIC_WEAPON);
+            e.AddComponent<SpriteComponent>(SpriteId::BASIC_WEAPON);
             e.AddComponent<WeaponComponent>(20.f, 0.5f);
-            e.AddComponent<MovementComponent>(400.f, moveDir);
-            e.AddComponent<BoxColliderComponent>(Tag::PLAYER_BULLET, 32.f, 32.f, glm::vec2(0.f, 0.f));
+            e.AddComponent<MovementComponent>(300.f, moveDir);
+            e.AddComponent<BoxColliderComponent>(Tag::PLAYER_BULLET, 32.f, 16.f, glm::vec2(0.f, 0.f));
         }
 
         return e;
@@ -55,14 +55,23 @@ namespace EntityFactory
 
         if (type == EnemyType::SLIME)
         {
-            glm::vec2 scale = glm::vec2{1.5f};
+            glm::vec2 scale = glm::vec2{2.f};
 
             e.AddComponent<TransformComponent>(pos, scale, 0.f);
-            auto& anim = e.AddComponent<AnimationComponent>(7, 5, 7);
+            auto& anim = e.AddComponent<AnimationComponent>(7, 5, 6);
             auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::SLIME);
+            sprite.srcRect.y = 1 * 32; //todo : move this to ai systme later
             anim.isLooping = true;
-            e.AddComponent<BoxColliderComponent>(Tag::ENEMY_BULLET, sprite.srcRect.w/7, sprite.srcRect.h/5, glm::vec2(0.f, 0.f));
-            e.AddComponent<MovementComponent>(100.f);
+            e.AddComponent<BoxColliderComponent>
+            (
+                Tag::ENEMY, 
+                sprite.srcRect.w/7 * scale.x - 30.f, 
+                sprite.srcRect.h/5 * scale.y - 30.f, 
+                glm::vec2(20.f, 16.f)
+            );
+            auto& movement = e.AddComponent<MovementComponent>(80.f);
+            movement.moveDirection = glm::vec2(1,0);
+            e.AddComponent<HealthComponent>(100.f);
         }
 
         return e;

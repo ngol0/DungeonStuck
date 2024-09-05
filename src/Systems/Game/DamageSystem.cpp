@@ -22,8 +22,8 @@ void DamageSystem::DamageTakenBy(Entity& victim, float damageAmount, CollisionDa
     health.healthAmount -= damageAmount;
     if (health.healthAmount <= 0.f)
     {
-        victim.Destroy();
-        EventManager::GetInstance().Notify(EventType::OnEntityDestroy, data);
+        EventManager::GetInstance().Notify(EventType::OnEntityDestroy, data); //reset the collision status
+        EventManager::GetInstance().Notify(EventType::OnEntityDestroy, victim); //for changing the behavior of the victim
     }
 }
 

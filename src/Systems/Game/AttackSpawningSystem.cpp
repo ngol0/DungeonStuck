@@ -27,22 +27,43 @@ void AttackSpawningSystem::Attack(int &weaponType)
         auto &movement = e.GetComponent<MovementComponent>();
         auto &anim = e.GetComponent<AnimationComponent>();
 
-        glm::vec2 spawnPos = glm::vec2(transform.position.x + 20.f, transform.position.y + 32.f);
-        EntityFactory::CreateWeapon(WeaponType::BASIC, spawnPos, movement.lastDirection);
-
         // change sprite
         auto &sprite = e.GetComponent<SpriteComponent>();
         anim.isLooping = false;
         anim.endOfSprite = false;
-
         anim.currentFrame = 0;
-        if (movement.lastDirection.x < 0) sprite.srcRect.y = sprite.srcRect.h * 10; // left
-        if (movement.lastDirection.x > 0) sprite.srcRect.y = sprite.srcRect.h * 9; // right
-        if (movement.lastDirection.y < 0) sprite.srcRect.y = sprite.srcRect.h * 11; // up
-        if (movement.lastDirection.y > 0) sprite.srcRect.y = sprite.srcRect.h * 8; // down
+
+        glm::vec2 spawnPos;
+        glm::vec2 midPoint = glm::vec2{transform.position.x + 60.f, transform.position.y + 50.f};
+        if (movement.lastDirection.x < 0) 
+        {
+            sprite.srcRect.y = sprite.srcRect.h * 10; // left
+            spawnPos.x = transform.position.x + 16.f;
+            spawnPos.y = midPoint.y;
+        }
+        if (movement.lastDirection.x > 0) 
+        {
+            sprite.srcRect.y = sprite.srcRect.h * 9; // right
+            spawnPos.x = transform.position.x + 100.f;
+            spawnPos.y = midPoint.y;
+        }
+        if (movement.lastDirection.y < 0) 
+        {
+            sprite.srcRect.y = sprite.srcRect.h * 11; // up
+            spawnPos.x = midPoint.x;
+            spawnPos.y = transform.position.y - 10.f;
+        }
+        if (movement.lastDirection.y > 0) 
+        {
+            sprite.srcRect.y = sprite.srcRect.h * 8; // down
+            spawnPos.x = midPoint.x;
+            spawnPos.y = transform.position.y + 90.f;
+        }
+
+        EntityFactory::CreateWeapon(WeaponType::BASIC, spawnPos, movement.lastDirection);
 
         //send an event
-        EventManager::GetInstance().Notify<IData>(EventType::OnBeginAnim, IData());
+        EventManager::GetInstance().Notify<Entity>(EventType::OnBeginAnim, e);
     }
 }
 

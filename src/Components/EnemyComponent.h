@@ -4,7 +4,7 @@
 
 struct EnemyComponent
 {
-    EnemyComponent();
+    EnemyComponent() = default;
 };
 
 #endif

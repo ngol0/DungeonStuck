@@ -1,5 +1,5 @@
 #include "PlayerInputSystem.h"
-#include "PlayerMovementSystem.h"
+#include "PlayerActionSystem.h"
 #include "AttackSpawningSystem.h"
 #include "../RenderSystem.h"
 #include "../../Global/GlobalDataType.h"
@@ -30,12 +30,12 @@ void PlayerInputSystem::ConfigDefaultInputBindings()
     moveAction.AddKeyInputData("MoveUp", SDLK_UP, glm::vec3(0, -1, 6));
 
     //---Input binding
-    auto& movementSystem = Registry::GetInstance().GetSystem<PlayerMovementSystem>();
+    auto& movementSystem = Registry::GetInstance().GetSystem<PlayerActionSystem>();
     
     //key pressed
     for (auto& data : moveAction.m_inputData)
     {
-        inputManager.BindKeyPressed(data, &movementSystem, &PlayerMovementSystem::Move);
+        inputManager.BindKeyPressed(data, &movementSystem, &PlayerActionSystem::Move);
     }
 
     //------------------------Interact Input---------------------------//

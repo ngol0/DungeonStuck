@@ -22,7 +22,8 @@ void CollisionSystem::OnEntityDestroy(CollisionData& data)
     if (iter != m_collisionMap.end())
     {
         spdlog::info("Reset collision between: " +
-            std::to_string(data.collisionPair.first) + " and " + std::to_string(data.collisionPair.second));
+            std::to_string(data.collisionPair.first) + 
+            " and " + std::to_string(data.collisionPair.second));
         iter->second = false;
     }
 }
@@ -43,7 +44,11 @@ void CollisionSystem::Update(float dt)
             auto &secondBox = second.GetComponent<BoxColliderComponent>();
             auto &secondTransform = second.GetComponent<TransformComponent>();
 
-            if (firstBox.tag == secondBox.tag) continue;
+            if (firstBox.tag == secondBox.tag) 
+            {
+                //spdlog::info("Two colliders with same tag: " + firstBox.tag);
+                continue;
+            }
 
             firstBox.rect.x = firstTransform.position.x + firstBox.offset.x;
             firstBox.rect.y = firstTransform.position.y + firstBox.offset.y;
