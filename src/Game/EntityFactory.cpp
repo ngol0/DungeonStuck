@@ -21,8 +21,13 @@ namespace EntityFactory
         e.AddComponent<TransformComponent>(pos, scale, rot);
 
         auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::PLAYER);
-        e.AddComponent<BoxColliderComponent>(
-                Tag::PLAYER, sprite.srcRect.w/6 * scale.x - 104.f, sprite.srcRect.h/13 * scale.y - 40.f, glm::vec2(54.f, 16.f));
+        e.AddComponent<BoxColliderComponent>
+        (
+            Tag::PLAYER, 
+            sprite.srcRect.w/6 * scale.x - 104.f, 
+            sprite.srcRect.h/13 * scale.y - 40.f, 
+            glm::vec2(54.f, 16.f)
+        );
         e.AddComponent<MovementComponent>(200.f);
         e.AddComponent<AnimationComponent>(6, 14, 7);
         e.AddComponent<HealthComponent>(100.f);
@@ -65,9 +70,9 @@ namespace EntityFactory
             e.AddComponent<BoxColliderComponent>
             (
                 Tag::ENEMY, 
-                sprite.srcRect.w/7 * scale.x - 30.f, 
+                sprite.srcRect.w/7 * scale.x - 26.f, 
                 sprite.srcRect.h/5 * scale.y - 30.f, 
-                glm::vec2(20.f, 16.f)
+                glm::vec2(16.f, 16.f)
             );
             auto& movement = e.AddComponent<MovementComponent>(80.f);
             movement.moveDirection = moveDir;

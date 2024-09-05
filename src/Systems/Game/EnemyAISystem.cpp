@@ -34,13 +34,17 @@ void EnemyAISystem::Update(float dt)
         auto &movement = e.GetComponent<MovementComponent>();
         auto &transform = e.GetComponent<TransformComponent>();
 
-        //
+        // if slime - move back and forth
         transform.position += (movement.moveDirection * movement.speed) * dt;
 
         if (transform.position.x <= 0.f || transform.position.x >= 640.f) 
         {
             movement.moveDirection *= -1;
         }
+
+        // if advanced - move towards player
+        // todo: pathfinding here
+        
     }
 }
 
