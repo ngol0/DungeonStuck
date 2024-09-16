@@ -77,6 +77,7 @@ namespace EntityFactory
             auto& movement = e.AddComponent<MovementComponent>(80.f);
             movement.moveDirection = moveDir;
             e.AddComponent<HealthComponent>(100.f);
+            e.AddComponent<EnemyComponent>(type);
         }
 
         return e;

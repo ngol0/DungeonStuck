@@ -31,20 +31,26 @@ void EnemyAISystem::Update(float dt)
     //move back and forth
     for (auto &e : GetSystemEntities())
     {
-        auto &movement = e.GetComponent<MovementComponent>();
-        auto &transform = e.GetComponent<TransformComponent>();
+        auto& movement = e.GetComponent<MovementComponent>();
+        auto& transform = e.GetComponent<TransformComponent>();
+        auto& enem = e.GetComponent<EnemyComponent>();
 
         // if slime - move back and forth
-        transform.position += (movement.moveDirection * movement.speed) * dt;
-
-        if (transform.position.x <= 0.f || transform.position.x >= 640.f) 
+        if (enem.enemType == EnemyType::SLIME)
         {
-            movement.moveDirection *= -1;
-        }
+            transform.position += (movement.moveDirection * movement.speed) * dt;
 
-        // if advanced - move towards player
-        // todo: pathfinding here
-        
+            if (transform.position.x <= 0.f || transform.position.x >= 640.f)
+            {
+                movement.moveDirection *= -1;
+            }
+        }
+        else if (enem.enemType == EnemyType::DRAGON)
+        {
+            // if advanced - move towards player
+            // todo: pathfinding here
+            
+        }
     }
 }
 
@@ -130,7 +136,7 @@ void EnemyAISystem::OnHitWall(CollisionData& data)
     auto &blockBox = block.GetComponent<BoxColliderComponent>();
 
     // A hack to check which direction is the overlap coming from
-    // As the player is always bigger than the block, when overlap horizontally, width < height
+    // As the enemy is always bigger than the block, when overlap horizontally, width < height
     if (data.overlap.w < data.overlap.h)
     {
         // Resolve collision horizontally
