@@ -25,9 +25,9 @@ A 2D dungeon crawler game made with a simple custom 2D game engine. This game an
 ## Future Plans
 - [ ] AI System and Pathfinding
 - [x] Combat System
-- [ ] Interation System (with things/people)
+- [x] Collect Item System
 - [ ] Dialogue System
-- [ ] Inventory System
+- [x] Inventory System
 - [ ] Some other useful tools such as Level Editor, etc.
 - [ ] UI System
 - [ ] Scripting with Lua
