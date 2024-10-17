@@ -12,6 +12,8 @@ namespace SpriteId
     const static std::string MAP = "map";
 
     const static std::string BASIC_WEAPON = "basic_weapon";
+
+    const static std::string HEALTH_ITEM = "health_item";
 }
 
 struct SpriteComponent

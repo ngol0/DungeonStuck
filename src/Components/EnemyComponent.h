@@ -6,7 +6,7 @@
 struct EnemyComponent
 {
     EnemyType enemType;
-    EnemyComponent(EnemyType type) : enemType(type) {};
+    EnemyComponent(EnemyType type = EnemyType::SLIME) : enemType(type) {};
 };
 
 #endif

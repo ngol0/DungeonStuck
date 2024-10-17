@@ -40,12 +40,18 @@ void EnemyAISystem::Update(float dt)
         {
             transform.position += (movement.moveDirection * movement.speed) * dt;
 
-            if (transform.position.x <= 0.f || transform.position.x >= 640.f)
+            if (transform.position.x < 0.f)
             {
+                transform.position.x = 0.f;
+                movement.moveDirection *= -1;
+            }
+            if (transform.position.x > 640.f)
+            {
+                transform.position.x = 640.f;
                 movement.moveDirection *= -1;
             }
         }
-        else if (enem.enemType == EnemyType::DRAGON)
+        else if (enem.enemType == EnemyType::RED_SLIME)
         {
             // if advanced - move towards player
             // todo: pathfinding here

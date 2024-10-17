@@ -11,7 +11,14 @@ enum class WeaponType
 enum class EnemyType
 {
     SLIME,
-    DRAGON,
+    RED_SLIME,
+};
+
+enum class ItemType
+{
+    HEALTH_PORTION,
+    STRENTH_PORTION,
+    WEAPON
 };
 
 #endif

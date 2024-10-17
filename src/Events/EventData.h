@@ -18,12 +18,27 @@ struct CollisionData : public IData
 };
 
 
-struct AttackData : public IData
-{
-    WeaponType weaponType;
+// struct AttackData : public IData
+// {
+//     WeaponType weaponType;
 
-    virtual ~AttackData() = default;
-    AttackData(WeaponType type) : weaponType(type) {}
+//     virtual ~AttackData() = default;
+//     AttackData(WeaponType type) : weaponType(type) {}
+// };
+
+struct ItemData : public IData
+{
+    ItemType itemType;
+
+    virtual ~ItemData() = default;
+    ItemData(ItemType type) : itemType(type) {}
+};
+
+class KeyPressedData : public IData
+{
+public:
+    SDL_Keycode key;
+    KeyPressedData(SDL_Keycode key) : key(key) {}
 };
 
 #endif

@@ -9,6 +9,7 @@
 #include "../Systems/Game/PlayerActionSystem.h"
 #include "../Systems/Game/AttackSpawningSystem.h"
 #include "../Systems/Game/WeaponActionSystem.h"
+#include "../Systems/Game/ItemCollectSystem.h"
 #include "../Systems/Game/EnemyAISystem.h"
 #include "../Systems/Editor/InputEditorSystem.h"
 #include "../Systems/Editor/EnemySpawnEditor.h"
@@ -44,6 +45,7 @@ void Scene::Init(SDL_Renderer* renderer)
     Registry::GetInstance().AddSystem<AttackSpawningSystem>();
     Registry::GetInstance().AddSystem<WeaponActionSystem>();
     Registry::GetInstance().AddSystem<EnemyAISystem>();
+    Registry::GetInstance().AddSystem<ItemCollectSystem>();
 
     //input system
     Registry::GetInstance().AddSystem<PlayerInputSystem>(); //system to bind all the input -- should be added last
@@ -53,6 +55,8 @@ void Scene::Init(SDL_Renderer* renderer)
 
 
     // //----------------------------------------Create entity----------------------------------------
+    EntityFactory::CreateItem(glm::vec2(100.f, 100.f), ItemType::HEALTH_PORTION);
+
     // create player
     EntityFactory::CreatePlayer(glm::vec2(0.f, 1.f));
 
@@ -82,4 +86,5 @@ void Scene::LoadTextureAsset()
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::PLAYER, "./assets/images/player.png");
     //AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::BASIC_WEAPON, "./assets/images/basic_weapon.png");
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::SLIME, "./assets/images/slime.png");
+    AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::HEALTH_ITEM, "./assets/images/basic_weapon.png");
 }

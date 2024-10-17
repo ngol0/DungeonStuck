@@ -7,6 +7,7 @@
 #include <imgui/imgui_impl_sdlrenderer2.h>
 
 #include "../Input/InputManager.h"
+#include "../Events/EventManager.h"
 
 int Game::window_height = 600;
 int Game::window_width = 800;
@@ -116,12 +117,14 @@ void Game::ProcessInput()
             {
                 // emit key pressed event
                 InputManager::GetInstance().OnKeyDown(e.key.keysym.sym);
+                EventManager::GetInstance().Notify<KeyPressedData>(EventType::OnKeyPressed, KeyPressedData(e.key.keysym.sym));
             }
             break;
         case SDL_KEYUP:
             if (e.key.repeat ==0) 
             {
                 InputManager::GetInstance().OnKeyUp(e.key.keysym.sym);
+                EventManager::GetInstance().Notify<KeyPressedData>(EventType::OnKeyUp, KeyPressedData(e.key.keysym.sym));
             }
             break;
         }
