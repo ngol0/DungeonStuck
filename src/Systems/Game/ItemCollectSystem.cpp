@@ -14,11 +14,11 @@ ItemCollectSystem::ItemCollectSystem()
 void ItemCollectSystem::Init()
 {
     //listen to collision event to see if item can be collected
-    EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionEnter, this, &ItemCollectSystem::OnNearItem);
-    EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionExit, this, &ItemCollectSystem::OnExitItem);
+    EventManager::GetInstance().Register<CollisionEventData>(EventType::OnCollisionEnter, this, &ItemCollectSystem::OnNearItem);
+    EventManager::GetInstance().Register<CollisionEventData>(EventType::OnCollisionExit, this, &ItemCollectSystem::OnExitItem);
 }
 
-Entity ItemCollectSystem::FindItem(CollisionData& data)
+Entity ItemCollectSystem::FindItem(CollisionEventData& data)
 {
     auto &collider1 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.first);
     auto &collider2 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.second);
@@ -38,7 +38,7 @@ Entity ItemCollectSystem::FindItem(CollisionData& data)
     return item;
 }
 
-void ItemCollectSystem::OnNearItem(CollisionData& data)
+void ItemCollectSystem::OnNearItem(CollisionEventData& data)
 {
     Entity item = FindItem(data);
     if (item.GetId() == -1) return;
@@ -49,7 +49,7 @@ void ItemCollectSystem::OnNearItem(CollisionData& data)
     itemComponent.canCollect = true;
 }
 
-void ItemCollectSystem::OnExitItem(CollisionData& data)
+void ItemCollectSystem::OnExitItem(CollisionEventData& data)
 {
     Entity item = FindItem(data);
     if (item.GetId() == -1) return;
@@ -70,10 +70,9 @@ void ItemCollectSystem::CollectItem(int& data)
         auto& itemComponent = e.GetComponent<ItemComponent>();
         if (itemComponent.canCollect)
         {
-            spdlog::info("Collecting item");
-            ItemData itemData(itemComponent.type);
+            ItemEventData itemData(itemComponent.itemType, itemComponent.amount);
             // trigger an event for inventory system to register the item
-            EventManager::GetInstance().Notify<ItemData>(EventType::OnItemCollected, itemData);
+            EventManager::GetInstance().Notify<ItemEventData>(EventType::OnItemCollected, itemData);
 
             // set the item on scene to be inactive
             e.Destroy();

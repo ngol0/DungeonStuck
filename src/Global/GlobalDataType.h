@@ -16,6 +16,7 @@ enum class EnemyType
 
 enum class ItemType
 {
+    NONE,
     HEALTH_PORTION,
     STRENTH_PORTION,
     WEAPON

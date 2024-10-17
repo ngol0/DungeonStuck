@@ -15,10 +15,10 @@ public:
     void Update(float dt) override;
 
     void CollectItem(int& data);
-    void OnNearItem(CollisionData& data);
-    void OnExitItem(CollisionData& data);
+    void OnNearItem(CollisionEventData& data);
+    void OnExitItem(CollisionEventData& data);
 
-    Entity FindItem(CollisionData& data);
+    Entity FindItem(CollisionEventData& data);
 };
 
 #endif

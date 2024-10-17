@@ -7,38 +7,39 @@
 #include "../Global/Interface.h"
 #include "../Global/GlobalDataType.h"
 
-struct CollisionData : public IData
+struct CollisionEventData : public IData
 {
     std::pair<int, int> collisionPair;
     SDL_Rect overlap;
     float dt;
 
-    virtual ~CollisionData() = default;
-    CollisionData(std::pair<int,int> pair, SDL_Rect rect, float d) : collisionPair(pair), overlap(rect), dt(d) {}
+    virtual ~CollisionEventData() = default;
+    CollisionEventData(std::pair<int,int> pair, SDL_Rect rect, float d) : collisionPair(pair), overlap(rect), dt(d) {}
 };
 
 
-// struct AttackData : public IData
+// struct AttackEventData : public IData
 // {
 //     WeaponType weaponType;
 
-//     virtual ~AttackData() = default;
-//     AttackData(WeaponType type) : weaponType(type) {}
+//     virtual ~AttackEventData() = default;
+//     AttackEventData(WeaponType type) : weaponType(type) {}
 // };
 
-struct ItemData : public IData
+struct ItemEventData : public IData
 {
     ItemType itemType;
+    int amount;
 
-    virtual ~ItemData() = default;
-    ItemData(ItemType type) : itemType(type) {}
+    virtual ~ItemEventData() = default;
+    ItemEventData(ItemType type = ItemType::NONE, int amount = 0) : itemType(type), amount(amount) {}
 };
 
-class KeyPressedData : public IData
+class KeyPressedEventData : public IData
 {
 public:
     SDL_Keycode key;
-    KeyPressedData(SDL_Keycode key) : key(key) {}
+    KeyPressedEventData(SDL_Keycode key) : key(key) {}
 };
 
 #endif

@@ -117,14 +117,14 @@ void Game::ProcessInput()
             {
                 // emit key pressed event
                 InputManager::GetInstance().OnKeyDown(e.key.keysym.sym);
-                EventManager::GetInstance().Notify<KeyPressedData>(EventType::OnKeyPressed, KeyPressedData(e.key.keysym.sym));
+                EventManager::GetInstance().Notify<KeyPressedEventData>(EventType::OnKeyPressed, KeyPressedEventData(e.key.keysym.sym));
             }
             break;
         case SDL_KEYUP:
             if (e.key.repeat ==0) 
             {
                 InputManager::GetInstance().OnKeyUp(e.key.keysym.sym);
-                EventManager::GetInstance().Notify<KeyPressedData>(EventType::OnKeyUp, KeyPressedData(e.key.keysym.sym));
+                EventManager::GetInstance().Notify<KeyPressedEventData>(EventType::OnKeyUp, KeyPressedEventData(e.key.keysym.sym));
             }
             break;
         }

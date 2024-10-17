@@ -10,6 +10,7 @@
 #include "../Components/WeaponComponent.h"
 #include "../Components/EnemyComponent.h"
 #include "../Components/ItemComponent.h"
+#include "../Components/InventoryComponent.h"
 
 namespace EntityFactory
 {
@@ -34,6 +35,7 @@ namespace EntityFactory
         e.AddComponent<HealthComponent>(100.f);
         e.AddComponent<PlayerInputComponent>();
         e.AddComponent<CameraFollowComponent>();
+        e.AddComponent<InventoryComponent>();
 
         return e;
     }
@@ -84,21 +86,25 @@ namespace EntityFactory
         return e;
     }
 
-    Entity CreateItem(glm::vec2 pos, ItemType type)
+    Entity CreateItem(glm::vec2 pos, ItemType type, bool isUI)
     {
         Entity e = Registry::GetInstance().CreateEntity();
         e.AddComponent<TransformComponent>(pos, glm::vec2{1.f}, 0.f);
 
         //TODO: SPLIT INTO DIFFERENT TYPES
         auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::HEALTH_ITEM);
-        e.AddComponent<ItemComponent>();
-        e.AddComponent<BoxColliderComponent>
-        (
-            Tag::ITEM, 
-            sprite.srcRect.w,
-            sprite.srcRect.h,
-            glm::vec2{0.f}
-        );
+        
+        if (!isUI)
+        {
+            e.AddComponent<ItemComponent>(type);
+            e.AddComponent<BoxColliderComponent>
+            (
+                Tag::ITEM,
+                sprite.srcRect.w,
+                sprite.srcRect.h,
+                glm::vec2{0.f}
+            );
+        }
 
         return e;
     }

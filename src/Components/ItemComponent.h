@@ -6,11 +6,12 @@
 
 struct ItemComponent
 {    
-    ItemType type;
+    ItemType itemType;
+    int amount;
 
     bool canCollect = false;
     bool hasBeenCollected = false;
-    ItemComponent() = default;
+    ItemComponent(ItemType type = ItemType::NONE, int num = 1) : itemType(type), amount(num) {} 
 };
 
 #endif

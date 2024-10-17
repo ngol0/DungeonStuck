@@ -15,9 +15,10 @@ public:
     void Init() override;
     void Update(float dt) override;
 
-    void OnItemCollected(ItemData& data);
+    void OnItemCollected(ItemEventData& data);
+    void OnKeyPressed(KeyPressedEventData& data);
 
-    void OnKeyPressed(KeyPressedData& data);
+    void UseItem(ItemType type);
 };
 
 #endif

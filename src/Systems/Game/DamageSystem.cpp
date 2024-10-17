@@ -13,10 +13,10 @@ DamageSystem::DamageSystem()
 
 void DamageSystem::Init()
 {
-    EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionEnter, this, &DamageSystem::OnCollisionHappen);
+    EventManager::GetInstance().Register<CollisionEventData>(EventType::OnCollisionEnter, this, &DamageSystem::OnCollisionHappen);
 }
 
-void DamageSystem::DamageTakenBy(Entity& victim, float damageAmount, CollisionData& data)
+void DamageSystem::DamageTakenBy(Entity& victim, float damageAmount, CollisionEventData& data)
 {
     auto& health = victim.GetComponent<HealthComponent>();
     health.healthAmount -= damageAmount;
@@ -27,7 +27,7 @@ void DamageSystem::DamageTakenBy(Entity& victim, float damageAmount, CollisionDa
     }
 }
 
-void DamageSystem::OnCollisionHappen(CollisionData& data)
+void DamageSystem::OnCollisionHappen(CollisionEventData& data)
 {
     auto& collider1 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.first);
     auto& collider2 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.second);

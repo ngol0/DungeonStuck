@@ -17,7 +17,7 @@ public:
     void Init() override;
     void Update(float dt) override;
 
-    void OnEntityDestroy(CollisionData& data);
+    void OnEntityDestroy(CollisionEventData& data);
 };
 
 #endif

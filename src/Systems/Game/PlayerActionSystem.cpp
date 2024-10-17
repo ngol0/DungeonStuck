@@ -24,9 +24,9 @@ PlayerActionSystem::PlayerActionSystem()
 void PlayerActionSystem::Init()
 {
     //for collision with wall
-    EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionEnter, this, &PlayerActionSystem::OnStartHitWall);
-    EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionStay, this, &PlayerActionSystem::OnKeepHittingWall);
-    EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionExit, this, &PlayerActionSystem::OnDoneHittingWall);
+    EventManager::GetInstance().Register<CollisionEventData>(EventType::OnCollisionEnter, this, &PlayerActionSystem::OnStartHitWall);
+    EventManager::GetInstance().Register<CollisionEventData>(EventType::OnCollisionStay, this, &PlayerActionSystem::OnKeepHittingWall);
+    EventManager::GetInstance().Register<CollisionEventData>(EventType::OnCollisionExit, this, &PlayerActionSystem::OnDoneHittingWall);
 
     //for attack anim and other anims
     EventManager::GetInstance().Register<Entity>(EventType::OnBeginAnim, this, &PlayerActionSystem::OnStartAttack);
@@ -118,7 +118,7 @@ void PlayerActionSystem::OnPlayerDie(Entity& victim)
     }
 }
 
-void PlayerActionSystem::OnStartHitWall(CollisionData &data)
+void PlayerActionSystem::OnStartHitWall(CollisionEventData &data)
 {
     auto &collider1 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.first);
     auto &collider2 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.second);
@@ -131,7 +131,7 @@ void PlayerActionSystem::OnStartHitWall(CollisionData &data)
     m_force = m_initialForce/m_forceCount;
 }
 
-void PlayerActionSystem::OnKeepHittingWall(CollisionData &data)
+void PlayerActionSystem::OnKeepHittingWall(CollisionEventData &data)
 {
     auto &collider1 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.first);
     auto &collider2 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.second);
@@ -192,7 +192,7 @@ void PlayerActionSystem::OnKeepHittingWall(CollisionData &data)
     m_moveVariable = 0.f;
 }
 
-void PlayerActionSystem::OnDoneHittingWall(CollisionData &data)
+void PlayerActionSystem::OnDoneHittingWall(CollisionEventData &data)
 {
     auto &collider1 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.first);
     auto &collider2 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.second);

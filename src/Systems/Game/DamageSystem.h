@@ -14,10 +14,10 @@ public:
 
     void Init() override;
     void Update(float dt) override {};
-    void OnCollisionHappen(CollisionData& data);
+    void OnCollisionHappen(CollisionEventData& data);
 
     //collision response
-    void DamageTakenBy(Entity& victim, float damageAmount, CollisionData& data);
+    void DamageTakenBy(Entity& victim, float damageAmount, CollisionEventData& data);
 };
 
 #endif

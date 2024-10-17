@@ -8,9 +8,9 @@
 class PlayerActionSystem : public System
 {
 private:
-    void OnStartHitWall(CollisionData& data);
-    void OnKeepHittingWall(CollisionData& data);
-    void OnDoneHittingWall(CollisionData& data);
+    void OnStartHitWall(CollisionEventData& data);
+    void OnKeepHittingWall(CollisionEventData& data);
+    void OnDoneHittingWall(CollisionEventData& data);
 
     void OnStartAttack(Entity& attacker);
     void OnEndAttack(Entity& attacker);

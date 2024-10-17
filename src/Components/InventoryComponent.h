@@ -8,7 +8,7 @@
 struct InventoryComponent
 {
     //an array of slots
-    ItemData inventory[2];
+    ItemEventData inventory[2];
     
     InventoryComponent() = default;
 };

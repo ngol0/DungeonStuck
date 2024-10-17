@@ -10,6 +10,7 @@
 #include "../Systems/Game/AttackSpawningSystem.h"
 #include "../Systems/Game/WeaponActionSystem.h"
 #include "../Systems/Game/ItemCollectSystem.h"
+#include "../Systems/Game/InventorySystem.h"
 #include "../Systems/Game/EnemyAISystem.h"
 #include "../Systems/Editor/InputEditorSystem.h"
 #include "../Systems/Editor/EnemySpawnEditor.h"
@@ -46,6 +47,7 @@ void Scene::Init(SDL_Renderer* renderer)
     Registry::GetInstance().AddSystem<WeaponActionSystem>();
     Registry::GetInstance().AddSystem<EnemyAISystem>();
     Registry::GetInstance().AddSystem<ItemCollectSystem>();
+    Registry::GetInstance().AddSystem<InventorySystem>();
 
     //input system
     Registry::GetInstance().AddSystem<PlayerInputSystem>(); //system to bind all the input -- should be added last
@@ -55,7 +57,8 @@ void Scene::Init(SDL_Renderer* renderer)
 
 
     // //----------------------------------------Create entity----------------------------------------
-    EntityFactory::CreateItem(glm::vec2(100.f, 100.f), ItemType::HEALTH_PORTION);
+    EntityFactory::CreateItem(glm::vec2(100.f, 100.f), ItemType::HEALTH_PORTION, false);
+    EntityFactory::CreateItem(glm::vec2(100.f, 300.f), ItemType::HEALTH_PORTION, false);
 
     // create player
     EntityFactory::CreatePlayer(glm::vec2(0.f, 1.f));

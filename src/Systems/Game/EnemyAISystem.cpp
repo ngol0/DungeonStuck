@@ -19,8 +19,8 @@ EnemyAISystem::EnemyAISystem()
 
 void EnemyAISystem::Init()
 {
-    EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionEnter, this, &EnemyAISystem::OnHitWall);
-    EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionExit, this, &EnemyAISystem::OnAwayFromWall);
+    EventManager::GetInstance().Register<CollisionEventData>(EventType::OnCollisionEnter, this, &EnemyAISystem::OnHitWall);
+    EventManager::GetInstance().Register<CollisionEventData>(EventType::OnCollisionExit, this, &EnemyAISystem::OnAwayFromWall);
 
     EventManager::GetInstance().Register<Entity>(EventType::OnEntityDestroy, this, &EnemyAISystem::OnEnemyDieAnim);
     EventManager::GetInstance().Register<Entity>(EventType::OnDoneAnim, this, &EnemyAISystem::OnEnemyDestroy);
@@ -85,7 +85,7 @@ void EnemyAISystem::OnEnemyDestroy(Entity& victim)
         victim.Destroy();
 }
 
-void EnemyAISystem::OnAwayFromWall(CollisionData& data)
+void EnemyAISystem::OnAwayFromWall(CollisionEventData& data)
 {
     auto &collider1 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.first);
     auto &collider2 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.second);
@@ -111,7 +111,7 @@ void EnemyAISystem::OnAwayFromWall(CollisionData& data)
     movement.speed = 80.f;
 }
 
-void EnemyAISystem::OnHitWall(CollisionData& data)
+void EnemyAISystem::OnHitWall(CollisionEventData& data)
 {
     auto &collider1 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.first);
     auto &collider2 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.second);
