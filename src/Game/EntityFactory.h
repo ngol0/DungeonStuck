@@ -16,6 +16,10 @@ namespace EntityFactory
 
     //---------------------------------------------Tile-----------------------------------------------------------------------
     Entity CreateTile(glm::vec2 size, glm::vec2 srcRect, glm::vec2 transform, float rot, glm::vec2 boxSize);
+
+    //---------------------------------------------Game UI---------------------------------------------------------------------
+    Entity CreateInventorySlotUI(glm::vec2 pos);
+    Entity CreateInventoryItemUI(glm::vec2 pos, ItemType type, int idx);
 }
 
 #endif

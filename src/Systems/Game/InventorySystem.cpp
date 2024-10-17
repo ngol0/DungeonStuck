@@ -6,8 +6,6 @@
 #include "../../Events/EventManager.h"
 #include "../../Events/EventType.h"
 
-#include "../../Game/EntityFactory.h"
-
 InventorySystem::InventorySystem()
 {
     RequireComponent<InventoryComponent>();
@@ -27,24 +25,41 @@ void InventorySystem::OnItemCollected(ItemEventData &data)
         auto &inventoryComp = e.GetComponent<InventoryComponent>();
 
         // check inventory to see if item already exists
-        for (auto& item : inventoryComp.inventory)
+        for (int i = 0; i < InventoryComponent::NUM_OF_SLOT; ++i)
         {
-            if (item.itemType == data.itemType)
+            if (inventoryComp.inventory[i].itemType == data.itemType)
             {
-                item.amount += data.amount;
+                inventoryComp.inventory[i].amount += data.amount;
                 data.amount = 0;
-                spdlog::info("Added more item into existing one, current amount: " + std::to_string(item.amount));
+                spdlog::info("Added more item into existing one, current amount: " + std::to_string(inventoryComp.inventory[i].amount));
+
+                //event to update ui
+                EventManager::GetInstance().Notify<InventoryItemEventData>
+                (
+                    EventType::OnInventoryChanged, 
+                    InventoryItemEventData(inventoryComp.inventory[i].itemType, inventoryComp.inventory[i].amount, i)
+                );
+
                 break;
             }
         }
         //if not, add item into an empty slot
         if (data.amount > 0)
         {
-            for (auto &item : inventoryComp.inventory)
+            spdlog::info("Adding item to new slot");
+            for (int i = 0; i < InventoryComponent::NUM_OF_SLOT; ++i)
             {
-                if (item.itemType == ItemType::NONE)
+                if (inventoryComp.inventory[i].itemType == ItemType::NONE)
                 {
-                    item = data;
+                    inventoryComp.inventory[i] = data;
+
+                    //event to update ui
+                    EventManager::GetInstance().Notify<InventoryItemEventData>
+                    (
+                        EventType::OnNewItemAdded,
+                        InventoryItemEventData(inventoryComp.inventory[i].itemType, inventoryComp.inventory[i].amount, i)
+                    );
+
                     break;
                 }
             }
@@ -64,6 +79,10 @@ void InventorySystem::OnKeyPressed(KeyPressedEventData &data)
             auto& inventoryComp = e.GetComponent<InventoryComponent>();
             if (inventoryComp.inventory[0].amount == 0) return;
             UseItem(inventoryComp.inventory[0].itemType);
+            inventoryComp.inventory[0].amount -= 1;
+
+            //event to update ui
+
         }
     }
     // if press 2 > use second item
@@ -74,6 +93,10 @@ void InventorySystem::OnKeyPressed(KeyPressedEventData &data)
             auto &inventoryComp = e.GetComponent<InventoryComponent>();
             if (inventoryComp.inventory[1].amount == 0) return;
             UseItem(inventoryComp.inventory[1].itemType);
+            inventoryComp.inventory[1].amount -= 1;
+
+            //event to update ui
+
         }
     }
 }

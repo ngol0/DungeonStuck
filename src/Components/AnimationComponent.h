@@ -1,8 +1,6 @@
 #ifndef ANIMATIONCOMPONENT_H
 #define ANIMATIONCOMPONENT_H
 
-#include <glm/glm.hpp>
-
 struct AnimationComponent
 {
     size_t numOfFrame, numOfAnims, currentFrame, frameSpeed;

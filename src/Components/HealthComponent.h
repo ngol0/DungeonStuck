@@ -1,8 +1,6 @@
 #ifndef HEALTHCOMPONENT_H
 #define HEALTHCOMPONENT_H
 
-#include <glm/glm.hpp>
-
 struct HealthComponent
 {
     float healthAmount;

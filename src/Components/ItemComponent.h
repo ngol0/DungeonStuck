@@ -1,7 +1,6 @@
 #ifndef ITEMCOMPONENT_H
 #define ITEMCOMPONENT_H
 
-#include <glm/glm.hpp>
 #include "../Global/GlobalDataType.h"
 
 struct ItemComponent

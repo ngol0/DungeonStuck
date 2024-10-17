@@ -35,6 +35,17 @@ struct ItemEventData : public IData
     ItemEventData(ItemType type = ItemType::NONE, int amount = 0) : itemType(type), amount(amount) {}
 };
 
+struct InventoryItemEventData : public IData
+{
+    ItemType itemType;
+    int amount;
+    int slot;
+
+    virtual ~InventoryItemEventData() = default;
+    InventoryItemEventData(ItemType type = ItemType::NONE, int amount = 0, int slot = 0) 
+        : itemType(type), amount(amount), slot(slot) {}
+};
+
 class KeyPressedEventData : public IData
 {
 public:

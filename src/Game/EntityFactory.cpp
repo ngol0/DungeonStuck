@@ -11,6 +11,7 @@
 #include "../Components/EnemyComponent.h"
 #include "../Components/ItemComponent.h"
 #include "../Components/InventoryComponent.h"
+#include "../Components/InventorySlotComponent.h"
 
 namespace EntityFactory
 {
@@ -92,10 +93,9 @@ namespace EntityFactory
         e.AddComponent<TransformComponent>(pos, glm::vec2{1.f}, 0.f);
 
         //TODO: SPLIT INTO DIFFERENT TYPES
-        auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::HEALTH_ITEM);
-        
         if (!isUI)
         {
+            auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::HEALTH_ITEM);
             e.AddComponent<ItemComponent>(type);
             e.AddComponent<BoxColliderComponent>
             (
@@ -104,6 +104,10 @@ namespace EntityFactory
                 sprite.srcRect.h,
                 glm::vec2{0.f}
             );
+        }
+        else
+        {
+            auto& sprite = e.AddComponent<UIComponent>(SpriteId::HEALTH_ITEM);
         }
 
         return e;
@@ -126,6 +130,38 @@ namespace EntityFactory
         if (boxSize.x != 0)
         {
             e.AddComponent<BoxColliderComponent>(Tag::BLOCK, boxSize.x * scale, boxSize.y * scale, glm::vec2{0.f});
+        }
+
+        return e;
+    }
+
+    //---------------------------------------------Game UI---------------------------------------------------------------------
+    Entity CreateInventorySlotUI(glm::vec2 pos)
+    {
+        Entity e = Registry::GetInstance().CreateEntity();
+        e.AddComponent<UIComponent>(SpriteId::UI_SLOT_INVENTORY);
+        e.AddComponent<TransformComponent>(pos, glm::vec2{1.f}, 0.f);
+
+        return e;
+    }
+
+    Entity CreateInventoryItemUI(glm::vec2 pos, ItemType type, int idx)
+    {
+        Entity e = Registry::GetInstance().CreateEntity();
+        e.AddComponent<TransformComponent>(pos, glm::vec2{1.f}, 0.f);
+        e.AddComponent<InventorySlotComponent>(idx);
+
+        if (type == ItemType::HEALTH_PORTION) 
+        {
+            e.AddComponent<UIComponent>(SpriteId::HEALTH_ITEM);
+        }
+        else if (type == ItemType::STRENTH_PORTION) 
+        {
+            e.AddComponent<UIComponent>(SpriteId::STRENGTH_ITEM);
+        }
+        else
+        {
+            e.AddComponent<UIComponent>(SpriteId::NONE);
         }
 
         return e;

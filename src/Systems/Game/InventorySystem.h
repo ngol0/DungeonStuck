@@ -6,9 +6,6 @@
 
 class InventorySystem : public System
 {
-private:
-    
-
 public:
     InventorySystem();
 

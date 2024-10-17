@@ -1,14 +1,13 @@
 #ifndef INVENTORYCOMPONENT_H
 #define INVENTORYCOMPONENT_H
 
-#include <glm/glm.hpp>
-
 #include "../Events/EventData.h"
 
 struct InventoryComponent
 {
+    const static int NUM_OF_SLOT = 2;
     //an array of slots
-    ItemEventData inventory[2];
+    ItemEventData inventory[NUM_OF_SLOT];
     
     InventoryComponent() = default;
 };

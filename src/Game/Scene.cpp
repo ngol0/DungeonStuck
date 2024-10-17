@@ -4,6 +4,7 @@
 #include "../Systems/AnimationSystem.h"
 #include "../Systems/CameraMovementSystem.h"
 #include "../Systems/CollisionSystem.h"
+#include "../Systems/HUDSystem.h"
 #include "../Systems/Game/DamageSystem.h"
 #include "../Systems/Game/PlayerInputSystem.h"
 #include "../Systems/Game/PlayerActionSystem.h"
@@ -11,6 +12,7 @@
 #include "../Systems/Game/WeaponActionSystem.h"
 #include "../Systems/Game/ItemCollectSystem.h"
 #include "../Systems/Game/InventorySystem.h"
+#include "../Systems/Game/InventoryUISystem.h"
 #include "../Systems/Game/EnemyAISystem.h"
 #include "../Systems/Editor/InputEditorSystem.h"
 #include "../Systems/Editor/EnemySpawnEditor.h"
@@ -38,6 +40,7 @@ void Scene::Init(SDL_Renderer* renderer)
     Registry::GetInstance().AddSystem<CameraMovementSystem>();
     Registry::GetInstance().AddSystem<AnimationSystem>();
     Registry::GetInstance().AddSystem<RenderSystem>();
+    Registry::GetInstance().AddSystem<HUDSystem>();
     Registry::GetInstance().AddSystem<CollisionSystem>();
 
     //game
@@ -48,6 +51,7 @@ void Scene::Init(SDL_Renderer* renderer)
     Registry::GetInstance().AddSystem<EnemyAISystem>();
     Registry::GetInstance().AddSystem<ItemCollectSystem>();
     Registry::GetInstance().AddSystem<InventorySystem>();
+    Registry::GetInstance().AddSystem<InventoryUISystem>();
 
     //input system
     Registry::GetInstance().AddSystem<PlayerInputSystem>(); //system to bind all the input -- should be added last
@@ -65,6 +69,13 @@ void Scene::Init(SDL_Renderer* renderer)
 
     // create slime enemy for testing the combat
     EntityFactory::CreateEnemy(glm::vec2(1.f, 200.f), glm::vec2(1.f, 0.f), EnemyType::SLIME);
+
+    // game UI - TODO: refactor to call this somewhere else
+    for (int i = 0; i < 2; ++i)
+    {
+        EntityFactory::CreateInventorySlotUI(glm::vec2{0.f + i * 50.f, 0.f});
+        EntityFactory::CreateInventoryItemUI(glm::vec2{0.f + i * 20.f, 8.f}, ItemType::NONE, i);
+    }
 }
 
 void Scene::Update(float deltaTime)
@@ -84,10 +95,14 @@ void Scene::Clear()
 
 void Scene::LoadTextureAsset()
 {
+    //--map
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::MAP, "./assets/tilemaps/tilemap_packed.png");
 
+    //--game
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::PLAYER, "./assets/images/player.png");
-    //AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::BASIC_WEAPON, "./assets/images/basic_weapon.png");
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::SLIME, "./assets/images/slime.png");
-    AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::HEALTH_ITEM, "./assets/images/basic_weapon.png");
+    AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::HEALTH_ITEM, "./assets/images/basic_weapon.png"); //todo: change sprite
+
+    //--UI
+    AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::UI_SLOT_INVENTORY, "./assets/images/ui-slot.png");
 }
