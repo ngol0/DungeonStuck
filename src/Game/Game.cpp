@@ -5,6 +5,7 @@
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_sdl2.h>
 #include <imgui/imgui_impl_sdlrenderer2.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "../Input/InputManager.h"
 #include "../Events/EventManager.h"
@@ -29,6 +30,12 @@ void Game::InitWindow()
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
     {
         spdlog::error("Error Init SDL");
+        return;
+    }
+
+    if (TTF_Init() != 0)
+    {
+        spdlog::error("Error Init SDL_TTF");
         return;
     }
 
@@ -171,4 +178,5 @@ void Game::Destroy()
     SDL_DestroyRenderer(m_renderer);
     SDL_DestroyWindow(m_window);
     SDL_Quit();
+    //TTF_Quit();
 }

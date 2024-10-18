@@ -12,7 +12,7 @@ namespace EntityFactory
 
     Entity CreateEnemy(glm::vec2 pos, glm::vec2 moveDir, EnemyType type);
 
-    Entity CreateItem(glm::vec2 pos, ItemType type, bool isUI);
+    Entity CreateItem(glm::vec2 pos, ItemType type);
 
     //---------------------------------------------Tile-----------------------------------------------------------------------
     Entity CreateTile(glm::vec2 size, glm::vec2 srcRect, glm::vec2 transform, float rot, glm::vec2 boxSize);

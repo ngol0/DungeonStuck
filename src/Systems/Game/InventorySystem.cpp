@@ -36,7 +36,7 @@ void InventorySystem::OnItemCollected(ItemEventData &data)
                 //event to update ui
                 EventManager::GetInstance().Notify<InventoryItemEventData>
                 (
-                    EventType::OnInventoryChanged, 
+                    EventType::OnItemAmountChanged, 
                     InventoryItemEventData(inventoryComp.inventory[i].itemType, inventoryComp.inventory[i].amount, i)
                 );
 
@@ -81,8 +81,10 @@ void InventorySystem::OnKeyPressed(KeyPressedEventData &data)
             UseItem(inventoryComp.inventory[0].itemType);
             inventoryComp.inventory[0].amount -= 1;
 
-            //event to update ui
-
+            // event to update ui
+            EventManager::GetInstance().Notify<InventoryItemEventData>(
+                EventType::OnItemAmountChanged,
+                InventoryItemEventData(inventoryComp.inventory[0].itemType, inventoryComp.inventory[0].amount, 0));
         }
     }
     // if press 2 > use second item
@@ -96,7 +98,9 @@ void InventorySystem::OnKeyPressed(KeyPressedEventData &data)
             inventoryComp.inventory[1].amount -= 1;
 
             //event to update ui
-
+            EventManager::GetInstance().Notify<InventoryItemEventData>(
+                EventType::OnItemAmountChanged,
+                InventoryItemEventData(inventoryComp.inventory[1].itemType, inventoryComp.inventory[1].amount, 1));
         }
     }
 }
@@ -106,16 +110,27 @@ void InventorySystem::UseItem(ItemType itemType)
     // use the item
     for (auto &e : GetSystemEntities())
     {
-        if (itemType == ItemType::HEALTH_PORTION)
+        switch (itemType)
         {
-            // get player's health
+        case ItemType::HEALTH_PORTION:
+        {
+            // Get player's health
             auto &healthComp = e.GetComponent<HealthComponent>();
             healthComp.healthAmount += 1;
             spdlog::info("Player health: " + std::to_string(healthComp.healthAmount));
+            break;
         }
-        if (itemType == ItemType::STRENTH_PORTION)
-        {
 
+        case ItemType::STRENTH_PORTION:
+        {
+            // TODO: Strength portion logic
+            // 
+            break;
+        }
+
+        default:
+            // Handle unexpected item types if necessary
+            break;
         }
     }
 }

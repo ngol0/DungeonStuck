@@ -23,7 +23,7 @@ enum class EventType
 
     // collect item
     OnItemCollected,
-    OnInventoryChanged,
+    OnItemAmountChanged,
     OnNewItemAdded,
 };
 

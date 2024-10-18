@@ -5,6 +5,7 @@
 #include "../Systems/CameraMovementSystem.h"
 #include "../Systems/CollisionSystem.h"
 #include "../Systems/HUDSystem.h"
+#include "../Systems/RenderTextSystem.h"
 #include "../Systems/Game/DamageSystem.h"
 #include "../Systems/Game/PlayerInputSystem.h"
 #include "../Systems/Game/PlayerActionSystem.h"
@@ -41,6 +42,7 @@ void Scene::Init(SDL_Renderer* renderer)
     Registry::GetInstance().AddSystem<AnimationSystem>();
     Registry::GetInstance().AddSystem<RenderSystem>();
     Registry::GetInstance().AddSystem<HUDSystem>();
+    Registry::GetInstance().AddSystem<RenderTextSystem>();
     Registry::GetInstance().AddSystem<CollisionSystem>();
 
     //game
@@ -61,8 +63,8 @@ void Scene::Init(SDL_Renderer* renderer)
 
 
     // //----------------------------------------Create entity----------------------------------------
-    EntityFactory::CreateItem(glm::vec2(100.f, 100.f), ItemType::HEALTH_PORTION, false);
-    EntityFactory::CreateItem(glm::vec2(100.f, 300.f), ItemType::HEALTH_PORTION, false);
+    EntityFactory::CreateItem(glm::vec2(100.f, 100.f), ItemType::HEALTH_PORTION);
+    EntityFactory::CreateItem(glm::vec2(100.f, 300.f), ItemType::HEALTH_PORTION);
 
     // create player
     EntityFactory::CreatePlayer(glm::vec2(0.f, 1.f));
@@ -73,8 +75,8 @@ void Scene::Init(SDL_Renderer* renderer)
     // game UI - TODO: refactor to call this somewhere else
     for (int i = 0; i < 2; ++i)
     {
-        EntityFactory::CreateInventorySlotUI(glm::vec2{0.f + i * 50.f, 0.f});
-        EntityFactory::CreateInventoryItemUI(glm::vec2{0.f + i * 20.f, 8.f}, ItemType::NONE, i);
+        EntityFactory::CreateInventorySlotUI(glm::vec2{750.f - i * 50.f, 10.f});
+        EntityFactory::CreateInventoryItemUI(glm::vec2{760.f - i * 50.f, 18.f}, ItemType::NONE, i);
     }
 }
 
@@ -85,7 +87,11 @@ void Scene::Update(float deltaTime)
 
 void Scene::Render()
 {
-    Registry::GetInstance().Render(m_renderer);
+    //Registry::GetInstance().Render(m_renderer);
+
+    Registry::GetInstance().GetSystem<RenderSystem>().Render(m_renderer);
+    Registry::GetInstance().GetSystem<HUDSystem>().Render(m_renderer);
+    Registry::GetInstance().GetSystem<RenderTextSystem>().Render(m_renderer);
 }
 
 void Scene::Clear()
@@ -95,14 +101,20 @@ void Scene::Clear()
 
 void Scene::LoadTextureAsset()
 {
+    //-------------------------------Sprite-------------------------------//
     //--map
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::MAP, "./assets/tilemaps/tilemap_packed.png");
 
     //--game
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::PLAYER, "./assets/images/player.png");
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::SLIME, "./assets/images/slime.png");
-    AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::HEALTH_ITEM, "./assets/images/basic_weapon.png"); //todo: change sprite
+    AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::CHEST, "./assets/images/chest.png");
+    AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::HEALTH_ITEM, "./assets/images/health-portion.png");
 
     //--UI
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::UI_SLOT_INVENTORY, "./assets/images/ui-slot.png");
+
+    //-------------------------------Font-------------------------------//
+    AssetManager::GetInstance().AddFont(SpriteId::STANDARD_TEXT, "./assets/fonts/futura.ttf", 15);
+
 }

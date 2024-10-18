@@ -12,6 +12,8 @@
 #include "../Components/ItemComponent.h"
 #include "../Components/InventoryComponent.h"
 #include "../Components/InventorySlotComponent.h"
+#include "../Components/TextComponent.h"
+
 
 namespace EntityFactory
 {
@@ -87,28 +89,19 @@ namespace EntityFactory
         return e;
     }
 
-    Entity CreateItem(glm::vec2 pos, ItemType type, bool isUI)
+    Entity CreateItem(glm::vec2 pos, ItemType type)
     {
         Entity e = Registry::GetInstance().CreateEntity();
-        e.AddComponent<TransformComponent>(pos, glm::vec2{1.f}, 0.f);
-
-        //TODO: SPLIT INTO DIFFERENT TYPES
-        if (!isUI)
-        {
-            auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::HEALTH_ITEM);
-            e.AddComponent<ItemComponent>(type);
-            e.AddComponent<BoxColliderComponent>
-            (
-                Tag::ITEM,
-                sprite.srcRect.w,
-                sprite.srcRect.h,
-                glm::vec2{0.f}
-            );
-        }
-        else
-        {
-            auto& sprite = e.AddComponent<UIComponent>(SpriteId::HEALTH_ITEM);
-        }
+        e.AddComponent<TransformComponent>(pos, glm::vec2{2.f}, 0.f);
+        e.AddComponent<ItemComponent>(type);
+        auto &sprite = e.AddComponent<SpriteComponent>(SpriteId::CHEST);
+        e.AddComponent<BoxColliderComponent>
+        (
+            Tag::ITEM,
+            sprite.srcRect.w,
+            sprite.srcRect.h,
+            glm::vec2{0.f}
+        );
 
         return e;
     }
@@ -140,7 +133,7 @@ namespace EntityFactory
     {
         Entity e = Registry::GetInstance().CreateEntity();
         e.AddComponent<UIComponent>(SpriteId::UI_SLOT_INVENTORY);
-        e.AddComponent<TransformComponent>(pos, glm::vec2{1.f}, 0.f);
+        e.AddComponent<TransformComponent>(pos, glm::vec2{1.5f}, 0.f);
 
         return e;
     }
@@ -148,20 +141,24 @@ namespace EntityFactory
     Entity CreateInventoryItemUI(glm::vec2 pos, ItemType type, int idx)
     {
         Entity e = Registry::GetInstance().CreateEntity();
-        e.AddComponent<TransformComponent>(pos, glm::vec2{1.f}, 0.f);
+        e.AddComponent<TransformComponent>(pos, glm::vec2{2.f}, 0.f);
         e.AddComponent<InventorySlotComponent>(idx);
+        SDL_Color white = { 255, 255, 255, 255 };
+        e.AddComponent<TextComponent>(glm::vec2{pos.x + 3.f, pos.y}, "", SpriteId::STANDARD_TEXT, white, true);
 
-        if (type == ItemType::HEALTH_PORTION) 
+        switch (type)
         {
+        case ItemType::HEALTH_PORTION:
             e.AddComponent<UIComponent>(SpriteId::HEALTH_ITEM);
-        }
-        else if (type == ItemType::STRENTH_PORTION) 
-        {
+            break;
+
+        case ItemType::STRENTH_PORTION:
             e.AddComponent<UIComponent>(SpriteId::STRENGTH_ITEM);
-        }
-        else
-        {
+            break;
+
+        default:
             e.AddComponent<UIComponent>(SpriteId::NONE);
+            break;
         }
 
         return e;
