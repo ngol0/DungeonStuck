@@ -13,10 +13,10 @@ DamageSystem::DamageSystem()
 
 void DamageSystem::Init()
 {
-    EventManager::GetInstance().Register<CollisionData>(EventType::OnCollisionEnter, this, &DamageSystem::OnCollisionHappen);
+    EventManager::GetInstance().Register<CollisionEventData>(EventType::OnCollisionEnter, this, &DamageSystem::OnCollisionHappen);
 }
 
-void DamageSystem::DamageTakenBy(Entity& victim, float damageAmount, CollisionData& data)
+void DamageSystem::DamageTakenBy(Entity& victim, float damageAmount, CollisionEventData& data)
 {
     auto& health = victim.GetComponent<HealthComponent>();
     health.healthAmount -= damageAmount;
@@ -27,7 +27,7 @@ void DamageSystem::DamageTakenBy(Entity& victim, float damageAmount, CollisionDa
     }
 }
 
-void DamageSystem::OnCollisionHappen(CollisionData& data)
+void DamageSystem::OnCollisionHappen(CollisionEventData& data)
 {
     auto& collider1 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.first);
     auto& collider2 = Registry::GetInstance().GetComponent<BoxColliderComponent>(data.collisionPair.second);
@@ -35,17 +35,15 @@ void DamageSystem::OnCollisionHappen(CollisionData& data)
     //player: collide with enemy or enemy bullet
     //enemy : collide with player bullet
 
-    //todo: have a component that holds the data of damage inflicted
-
     //if first is player, second is enemy/enemy bullet > player is victim
     if (collider1.tag == Tag::PLAYER)
     {
         if (collider2.tag == Tag::ENEMY_BULLET || collider2.tag == Tag::ENEMY)
         {
             Entity player(data.collisionPair.first);
-
-            //todo, get the damage inflicted component and get the data for the damage
             DamageTakenBy(player, 100, data);
+            auto& health = player.GetComponent<HealthComponent>();
+            EventManager::GetInstance().Notify<HealthData>(EventType::OnHealthChanged, HealthData(health.healthAmount));
         }
     }
     //if second is player, first is enemy/enemy bullet > player is victim
@@ -55,9 +53,12 @@ void DamageSystem::OnCollisionHappen(CollisionData& data)
         {
             Entity player(data.collisionPair.second);
             DamageTakenBy(player, 100, data);
+            auto& health = player.GetComponent<HealthComponent>();
+            EventManager::GetInstance().Notify<HealthData>(EventType::OnHealthChanged, HealthData(health.healthAmount));
         }
     }
     //if first is enemy, second is player bullet
+    //todo: have a component that holds the data of damage inflicted
     else if (collider1.tag == Tag::ENEMY && collider2.tag == Tag::PLAYER_BULLET)
     {
         Entity enemy(data.collisionPair.first);

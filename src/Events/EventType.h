@@ -13,11 +13,22 @@ enum class EventType
 
     //input event
     OnKeyPressed,
+    OnKeyUp,
     OnMousePressed,
+    OnMouseUp,
 
     // on attack
     OnBeginAnim,
     OnDoneAnim,
+
+    // collect item
+    OnItemCollected,
+    OnItemAmountChanged,
+    OnNewItemAdded,
+
+    // item used
+    OnHealthChanged,
+    OnStronger,
 };
 
 #endif

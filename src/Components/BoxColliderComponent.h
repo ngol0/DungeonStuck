@@ -12,6 +12,8 @@ namespace Tag
     const static std::string ENEMY_BULLET = "enemy_bullet";
 
     const static std::string BLOCK = "block";
+
+    const static std::string ITEM = "item";
 }
 
 struct BoxColliderComponent

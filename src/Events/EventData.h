@@ -7,23 +7,58 @@
 #include "../Global/Interface.h"
 #include "../Global/GlobalDataType.h"
 
-struct CollisionData : public IData
+struct CollisionEventData : public IData
 {
     std::pair<int, int> collisionPair;
     SDL_Rect overlap;
     float dt;
 
-    virtual ~CollisionData() = default;
-    CollisionData(std::pair<int,int> pair, SDL_Rect rect, float d) : collisionPair(pair), overlap(rect), dt(d) {}
+    virtual ~CollisionEventData() = default;
+    CollisionEventData(std::pair<int,int> pair, SDL_Rect rect, float d) : collisionPair(pair), overlap(rect), dt(d) {}
 };
 
 
-struct AttackData : public IData
-{
-    WeaponType weaponType;
+// struct AttackEventData : public IData
+// {
+//     WeaponType weaponType;
 
-    virtual ~AttackData() = default;
-    AttackData(WeaponType type) : weaponType(type) {}
+//     virtual ~AttackEventData() = default;
+//     AttackEventData(WeaponType type) : weaponType(type) {}
+// };
+
+struct ItemEventData : public IData
+{
+    ItemType itemType;
+    int amount;
+
+    virtual ~ItemEventData() = default;
+    ItemEventData(ItemType type = ItemType::NONE, int amount = 0) : itemType(type), amount(amount) {}
+};
+
+struct InventoryItemEventData : public IData
+{
+    ItemType itemType;
+    int amount;
+    int slot;
+
+    virtual ~InventoryItemEventData() = default;
+    InventoryItemEventData(ItemType type = ItemType::NONE, int amount = 0, int slot = 0) 
+        : itemType(type), amount(amount), slot(slot) {}
+};
+
+struct HealthData : public IData
+{
+    int curData;
+
+    virtual ~HealthData() = default;
+    HealthData(int cur = 0) : curData(cur) {}
+};
+
+class KeyPressedEventData : public IData
+{
+public:
+    SDL_Keycode key;
+    KeyPressedEventData(SDL_Keycode key) : key(key) {}
 };
 
 #endif

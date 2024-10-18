@@ -2,7 +2,7 @@
 CXX := g++
 LANGUAGE_FLAG := -std=c++20 
 COMPILER_FLAG := -Wall -Wextra -Wno-deprecated-volatile -Wno-unused-parameter
-LINKER_FLAG := `sdl2-config --libs --cflags` -lSDL2_image -llua
+LINKER_FLAG := `sdl2-config --libs --cflags` -lSDL2_image -llua -lSDL2_ttf
 INCLUDE_FLAG := -I./libs
 
 # Define your source files here

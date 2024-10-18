@@ -13,10 +13,10 @@ CollisionSystem::CollisionSystem()
 
 void CollisionSystem::Init()
 {
-    EventManager::GetInstance().Register<CollisionData>(EventType::OnEntityDestroy, this, &CollisionSystem::OnEntityDestroy);
+    EventManager::GetInstance().Register<CollisionEventData>(EventType::OnEntityDestroy, this, &CollisionSystem::OnEntityDestroy);
 }
 
-void CollisionSystem::OnEntityDestroy(CollisionData& data)
+void CollisionSystem::OnEntityDestroy(CollisionEventData& data)
 {
     auto iter = m_collisionMap.find(data.collisionPair);
     if (iter != m_collisionMap.end())
@@ -60,7 +60,7 @@ void CollisionSystem::Update(float dt)
             bool currentCollisionStatus = SDL_IntersectRect(&firstBox.rect, &secondBox.rect, &overlap);
     
             auto key = std::make_pair(first.GetId(), second.GetId());
-            CollisionData data(key, overlap, dt);
+            CollisionEventData data(key, overlap, dt);
 
             if (currentCollisionStatus != m_collisionMap[key])
 			{

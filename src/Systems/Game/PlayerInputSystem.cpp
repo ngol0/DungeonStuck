@@ -1,6 +1,7 @@
 #include "PlayerInputSystem.h"
 #include "PlayerActionSystem.h"
 #include "AttackSpawningSystem.h"
+#include "ItemCollectSystem.h"
 #include "../RenderSystem.h"
 #include "../../Global/GlobalDataType.h"
 
@@ -39,11 +40,13 @@ void PlayerInputSystem::ConfigDefaultInputBindings()
     }
 
     //------------------------Interact Input---------------------------//
-
+    InputData<int> collectItemData("CollectItem", SDLK_z, 0);
+    auto& itemCollectSystem = Registry::GetInstance().GetSystem<ItemCollectSystem>();
+    inputManager.BindKeyDown(collectItemData, &itemCollectSystem, &ItemCollectSystem::CollectItem);
 
     //------------------------Fight Input------------------------------//
-    //todo: get the inventory system > get the weapon type and pass the weapon type to here
-    InputData<int> fightData("Fight", SDLK_x, 1);
+    //***todo: get the inventory system > get the weapon type and pass the weapon type to here
+    InputData<int> fightData("Fight", SDLK_x, 0);
     auto& combatSystem = Registry::GetInstance().GetSystem<AttackSpawningSystem>();
     inputManager.BindKeyDown(fightData, &combatSystem, &AttackSpawningSystem::Attack);
     

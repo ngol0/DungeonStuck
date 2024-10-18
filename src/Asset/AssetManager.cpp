@@ -1,5 +1,6 @@
 #include "AssetManager.h"
 #include <SDL2/SDL_image.h>
+
 #include <string>
 #include <sstream>
 #include <spdlog/spdlog.h>
@@ -20,6 +21,12 @@ void AssetManager::ClearAsset()
         SDL_DestroyTexture(pair.second);
     }
     spriteMap.clear();
+
+    for (auto& pair : fontMap)
+    {
+        TTF_CloseFont(pair.second);
+    }
+    fontMap.clear();
 }
 
 void AssetManager::OpenMapFile(const char* filename)
@@ -101,6 +108,24 @@ void AssetManager::AddSprite(SDL_Renderer* renderer, const std::string& id, cons
 
     //put it in the map
     spriteMap.emplace(id, texture); //insert only, constructs element in-place
+}
+
+void AssetManager::AddFont(const std::string& id, const std::string& filePath, int fontSize)
+{
+    TTF_Font *font = TTF_OpenFont(filePath.c_str(), fontSize);
+    if (!font)
+    {
+        spdlog::error("Error loading font: " + filePath);
+        return;
+    }
+
+    fontMap.emplace(id, font);
+    //spdlog::info("Font loaded: " + filePath);
+}
+
+TTF_Font* AssetManager::GetFont(const std::string& id)
+{
+    return fontMap[id];
 }
 
 AssetManager& AssetManager::GetInstance()

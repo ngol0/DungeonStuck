@@ -15,8 +15,8 @@ public:
     void Init() override;
     void Update(float dt) override;
 
-    void OnHitWall(CollisionData& data);
-    void OnAwayFromWall(CollisionData& data);
+    void OnHitWall(CollisionEventData& data);
+    void OnAwayFromWall(CollisionEventData& data);
 
     void OnEnemyDieAnim(Entity& victim);
     void OnEnemyDestroy(Entity& victim);

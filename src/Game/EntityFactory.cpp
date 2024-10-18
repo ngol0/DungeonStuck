@@ -5,10 +5,16 @@
 #include "../Components/AnimationComponent.h"
 #include "../Components/BoxColliderComponent.h"
 #include "../Components/HealthComponent.h"
+#include "../Components/HealthUIComponent.h"
 #include "../Components/PlayerInputComponent.h"
 #include "../Components/CameraFollowComponent.h"
 #include "../Components/WeaponComponent.h"
 #include "../Components/EnemyComponent.h"
+#include "../Components/ItemComponent.h"
+#include "../Components/InventoryComponent.h"
+#include "../Components/InventoryUIComponent.h"
+#include "../Components/TextComponent.h"
+
 
 namespace EntityFactory
 {
@@ -30,9 +36,10 @@ namespace EntityFactory
         );
         e.AddComponent<MovementComponent>(200.f);
         e.AddComponent<AnimationComponent>(6, 14, 7);
-        e.AddComponent<HealthComponent>(100.f);
+        e.AddComponent<HealthComponent>(300);
         e.AddComponent<PlayerInputComponent>();
         e.AddComponent<CameraFollowComponent>();
+        e.AddComponent<InventoryComponent>();
 
         return e;
     }
@@ -83,6 +90,23 @@ namespace EntityFactory
         return e;
     }
 
+    Entity CreateItem(glm::vec2 pos, ItemType type)
+    {
+        Entity e = Registry::GetInstance().CreateEntity();
+        e.AddComponent<TransformComponent>(pos, glm::vec2{2.f}, 0.f);
+        e.AddComponent<ItemComponent>(type);
+        auto &sprite = e.AddComponent<SpriteComponent>(SpriteId::CHEST);
+        e.AddComponent<BoxColliderComponent>
+        (
+            Tag::ITEM,
+            sprite.srcRect.w,
+            sprite.srcRect.h,
+            glm::vec2{0.f}
+        );
+
+        return e;
+    }
+
     //---------------------------------------------Tile------------------------------------------------------------------------
     Entity CreateTile(glm::vec2 size, glm::vec2 srcRect, glm::vec2 pos, float rot, glm::vec2 boxSize)
     {
@@ -101,6 +125,55 @@ namespace EntityFactory
         {
             e.AddComponent<BoxColliderComponent>(Tag::BLOCK, boxSize.x * scale, boxSize.y * scale, glm::vec2{0.f});
         }
+
+        return e;
+    }
+
+    //---------------------------------------------Game UI---------------------------------------------------------------------
+    Entity CreateInventorySlotUI(glm::vec2 pos)
+    {
+        Entity e = Registry::GetInstance().CreateEntity();
+        e.AddComponent<UIComponent>(SpriteId::UI_SLOT_INVENTORY);
+        e.AddComponent<TransformComponent>(pos, glm::vec2{1.5f}, 0.f);
+
+        return e;
+    }
+
+    Entity CreateInventoryItemUI(glm::vec2 pos, ItemType type, int idx)
+    {
+        Entity e = Registry::GetInstance().CreateEntity();
+        e.AddComponent<TransformComponent>(pos, glm::vec2{2.f}, 0.f);
+        e.AddComponent<InventoryUIComponent>(idx);
+        SDL_Color black = { 0, 0, 0, 255 };
+        e.AddComponent<TextComponent>(glm::vec2{pos.x - 5.f, pos.y}, "", SpriteId::STANDARD_TEXT, black, true);
+
+        switch (type)
+        {
+        case ItemType::HEALTH_PORTION:
+            e.AddComponent<UIComponent>(SpriteId::HEALTH_ITEM);
+            break;
+
+        case ItemType::STRENTH_PORTION:
+            e.AddComponent<UIComponent>(SpriteId::STRENGTH_ITEM);
+            break;
+
+        default:
+            e.AddComponent<UIComponent>(SpriteId::NONE);
+            break;
+        }
+
+        return e;
+    }
+
+    Entity CreateHealthUI(glm::vec2 pos)
+    {
+        Entity e = Registry::GetInstance().CreateEntity();
+        e.AddComponent<TransformComponent>(pos, glm::vec2{1.f}, 0.f);
+        e.AddComponent<UIComponent>(SpriteId::UI_HEALTH);
+        e.AddComponent<HealthUIComponent>();
+
+        SDL_Color black = { 0, 0, 0, 255 };
+        e.AddComponent<TextComponent>(glm::vec2{pos.x + 40.f, pos.y}, "3/3", SpriteId::OTHER_TEXT, black, true);
 
         return e;
     }
