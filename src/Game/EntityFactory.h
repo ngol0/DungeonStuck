@@ -20,6 +20,8 @@ namespace EntityFactory
     //---------------------------------------------Game UI---------------------------------------------------------------------
     Entity CreateInventorySlotUI(glm::vec2 pos);
     Entity CreateInventoryItemUI(glm::vec2 pos, ItemType type, int idx);
+
+    Entity CreateHealthUI(glm::vec2 pos);
 }
 
 #endif

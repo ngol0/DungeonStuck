@@ -46,6 +46,14 @@ struct InventoryItemEventData : public IData
         : itemType(type), amount(amount), slot(slot) {}
 };
 
+struct HealthData : public IData
+{
+    int curData;
+
+    virtual ~HealthData() = default;
+    HealthData(int cur = 0) : curData(cur) {}
+};
+
 class KeyPressedEventData : public IData
 {
 public:

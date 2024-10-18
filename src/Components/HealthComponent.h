@@ -3,8 +3,8 @@
 
 struct HealthComponent
 {
-    float healthAmount;
-    HealthComponent(float amt = 1) : healthAmount(amt) {}
+    int healthAmount;
+    HealthComponent(int amt = 1) : healthAmount(amt) {}
 };
 
 #endif

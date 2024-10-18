@@ -1,6 +1,6 @@
 #include "InventoryUISystem.h"
 
-#include "../../Components/InventorySlotComponent.h"
+#include "../../Components/InventoryUIComponent.h"
 #include "../../Components/SpriteComponent.h"
 #include "../../Components/TextComponent.h"
 
@@ -11,7 +11,7 @@
 
 InventoryUISystem::InventoryUISystem()
 {
-    RequireComponent<InventorySlotComponent>();
+    RequireComponent<InventoryUIComponent>();
 }
 
 void InventoryUISystem::Init()
@@ -27,7 +27,7 @@ void InventoryUISystem::OnNewItemAdded(InventoryItemEventData &data)
 {
     for (auto &e : GetSystemEntities())
     {
-        auto &inventoryUI = e.GetComponent<InventorySlotComponent>();
+        auto &inventoryUI = e.GetComponent<InventoryUIComponent>();
         if (inventoryUI.slotIndex == data.slot)
         {
             // update item ui
@@ -54,7 +54,6 @@ void InventoryUISystem::OnNewItemAdded(InventoryItemEventData &data)
             SDL_QueryTexture(ui.texture, NULL, NULL, &w, &h);
             ui.srcRect = {0, 0, w, h};
 
-            // TODO: update amount ui
             std::string amountText = std::to_string(data.amount);
             amtlabel.text = amountText;
         }
@@ -63,10 +62,9 @@ void InventoryUISystem::OnNewItemAdded(InventoryItemEventData &data)
 
 void InventoryUISystem::OnInventoryChanged(InventoryItemEventData &data)
 {
-    // TODO: update amount ui
     for (auto &e : GetSystemEntities())
     {
-        auto &inventoryUI = e.GetComponent<InventorySlotComponent>();
+        auto &inventoryUI = e.GetComponent<InventoryUIComponent>();
         if (inventoryUI.slotIndex == data.slot)
         {
             // update item ui

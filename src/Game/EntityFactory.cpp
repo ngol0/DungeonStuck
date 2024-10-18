@@ -5,13 +5,14 @@
 #include "../Components/AnimationComponent.h"
 #include "../Components/BoxColliderComponent.h"
 #include "../Components/HealthComponent.h"
+#include "../Components/HealthUIComponent.h"
 #include "../Components/PlayerInputComponent.h"
 #include "../Components/CameraFollowComponent.h"
 #include "../Components/WeaponComponent.h"
 #include "../Components/EnemyComponent.h"
 #include "../Components/ItemComponent.h"
 #include "../Components/InventoryComponent.h"
-#include "../Components/InventorySlotComponent.h"
+#include "../Components/InventoryUIComponent.h"
 #include "../Components/TextComponent.h"
 
 
@@ -35,7 +36,7 @@ namespace EntityFactory
         );
         e.AddComponent<MovementComponent>(200.f);
         e.AddComponent<AnimationComponent>(6, 14, 7);
-        e.AddComponent<HealthComponent>(100.f);
+        e.AddComponent<HealthComponent>(300);
         e.AddComponent<PlayerInputComponent>();
         e.AddComponent<CameraFollowComponent>();
         e.AddComponent<InventoryComponent>();
@@ -142,9 +143,9 @@ namespace EntityFactory
     {
         Entity e = Registry::GetInstance().CreateEntity();
         e.AddComponent<TransformComponent>(pos, glm::vec2{2.f}, 0.f);
-        e.AddComponent<InventorySlotComponent>(idx);
-        SDL_Color white = { 255, 255, 255, 255 };
-        e.AddComponent<TextComponent>(glm::vec2{pos.x + 3.f, pos.y}, "", SpriteId::STANDARD_TEXT, white, true);
+        e.AddComponent<InventoryUIComponent>(idx);
+        SDL_Color black = { 0, 0, 0, 255 };
+        e.AddComponent<TextComponent>(glm::vec2{pos.x - 5.f, pos.y}, "", SpriteId::STANDARD_TEXT, black, true);
 
         switch (type)
         {
@@ -160,6 +161,19 @@ namespace EntityFactory
             e.AddComponent<UIComponent>(SpriteId::NONE);
             break;
         }
+
+        return e;
+    }
+
+    Entity CreateHealthUI(glm::vec2 pos)
+    {
+        Entity e = Registry::GetInstance().CreateEntity();
+        e.AddComponent<TransformComponent>(pos, glm::vec2{1.f}, 0.f);
+        e.AddComponent<UIComponent>(SpriteId::UI_HEALTH);
+        e.AddComponent<HealthUIComponent>();
+
+        SDL_Color black = { 0, 0, 0, 255 };
+        e.AddComponent<TextComponent>(glm::vec2{pos.x + 40.f, pos.y}, "3/3", SpriteId::OTHER_TEXT, black, true);
 
         return e;
     }

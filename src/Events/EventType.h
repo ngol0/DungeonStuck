@@ -25,6 +25,10 @@ enum class EventType
     OnItemCollected,
     OnItemAmountChanged,
     OnNewItemAdded,
+
+    // item used
+    OnHealthChanged,
+    OnStronger,
 };
 
 #endif

@@ -120,7 +120,7 @@ void AssetManager::AddFont(const std::string& id, const std::string& filePath, i
     }
 
     fontMap.emplace(id, font);
-    spdlog::info("Font loaded: " + filePath);
+    //spdlog::info("Font loaded: " + filePath);
 }
 
 TTF_Font* AssetManager::GetFont(const std::string& id)

@@ -85,6 +85,9 @@ void InventorySystem::OnKeyPressed(KeyPressedEventData &data)
             EventManager::GetInstance().Notify<InventoryItemEventData>(
                 EventType::OnItemAmountChanged,
                 InventoryItemEventData(inventoryComp.inventory[0].itemType, inventoryComp.inventory[0].amount, 0));
+
+            if (inventoryComp.inventory[0].amount == 0) 
+                inventoryComp.inventory[0].itemType = ItemType::NONE;
         }
     }
     // if press 2 > use second item
@@ -101,6 +104,9 @@ void InventorySystem::OnKeyPressed(KeyPressedEventData &data)
             EventManager::GetInstance().Notify<InventoryItemEventData>(
                 EventType::OnItemAmountChanged,
                 InventoryItemEventData(inventoryComp.inventory[1].itemType, inventoryComp.inventory[1].amount, 1));
+
+            if (inventoryComp.inventory[1].amount == 0) 
+                inventoryComp.inventory[1].itemType = ItemType::NONE;
         }
     }
 }
@@ -116,8 +122,11 @@ void InventorySystem::UseItem(ItemType itemType)
         {
             // Get player's health
             auto &healthComp = e.GetComponent<HealthComponent>();
-            healthComp.healthAmount += 1;
-            spdlog::info("Player health: " + std::to_string(healthComp.healthAmount));
+
+            if (healthComp.healthAmount >= 300) return;
+            healthComp.healthAmount += 100;
+
+            EventManager::GetInstance().Notify<HealthData>(EventType::OnHealthChanged, HealthData(healthComp.healthAmount));
             break;
         }
 

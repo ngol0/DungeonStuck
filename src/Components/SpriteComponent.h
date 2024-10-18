@@ -18,9 +18,11 @@ namespace SpriteId
 
     //ui
     const static std::string UI_SLOT_INVENTORY = "ui_slot_inventory";
+    const static std::string UI_HEALTH = "health";
 
     //text
     const static std::string STANDARD_TEXT = "standard";
+    const static std::string OTHER_TEXT = "other";
 }
 
 struct SpriteComponent
