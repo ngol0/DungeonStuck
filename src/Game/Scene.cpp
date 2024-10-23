@@ -65,10 +65,10 @@ void Scene::Init(SDL_Renderer* renderer)
 
 
     // //----------------------------------------Create entity----------------------------------------
-    EntityFactory::CreateItem(glm::vec2(100.f, 100.f), ItemType::HEALTH_PORTION);
+    EntityFactory::CreateItem(glm::vec2(1200.f, 100.f), ItemType::HEALTH_PORTION);
     EntityFactory::CreateItem(glm::vec2(200.f, 300.f), ItemType::HEALTH_PORTION);
 
-    EntityFactory::CreateItem(glm::vec2(100.f, 500.f), ItemType::STRENTH_PORTION);
+    EntityFactory::CreateItem(glm::vec2(600.f, 500.f), ItemType::STRENTH_PORTION);
     EntityFactory::CreateItem(glm::vec2(300.f, 750.f), ItemType::STRENTH_PORTION);
 
     // create player
@@ -76,6 +76,8 @@ void Scene::Init(SDL_Renderer* renderer)
 
     // create slime enemy for testing the combat
     EntityFactory::CreateEnemy(glm::vec2(1.f, 200.f), glm::vec2(1.f, 0.f), EnemyType::SLIME);
+    EntityFactory::CreateEnemy(glm::vec2(550.f, 500.f), glm::vec2(0.f, 1.f), EnemyType::SLIME);
+    EntityFactory::CreateEnemy(glm::vec2(0.f, 800.f), glm::vec2(1.f, 0.f), EnemyType::SLIME);
 
     // ***-----TODO: refactor to call this somewhere else
     // game UI - inventory UI
@@ -96,10 +98,14 @@ void Scene::Update(float deltaTime)
 void Scene::Render()
 {
     //Registry::GetInstance().Render(m_renderer);
-
+    // draw
     Registry::GetInstance().GetSystem<RenderSystem>().Render(m_renderer);
     Registry::GetInstance().GetSystem<HUDSystem>().Render(m_renderer);
     Registry::GetInstance().GetSystem<RenderTextSystem>().Render(m_renderer);
+
+    // editor
+    Registry::GetInstance().GetSystem<InputEditorSystem>().Render(m_renderer);
+    Registry::GetInstance().GetSystem<EnemySpawnEditor>().Render(m_renderer);
 }
 
 void Scene::Clear()

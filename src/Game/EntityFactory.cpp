@@ -92,15 +92,16 @@ namespace EntityFactory
 
     Entity CreateItem(glm::vec2 pos, ItemType type)
     {
+        float scale = 2.f;
         Entity e = Registry::GetInstance().CreateEntity();
-        e.AddComponent<TransformComponent>(pos, glm::vec2{2.f}, 0.f);
+        e.AddComponent<TransformComponent>(pos, glm::vec2{scale}, 0.f);
         e.AddComponent<ItemComponent>(type);
         auto &sprite = e.AddComponent<SpriteComponent>(SpriteId::CHEST);
         e.AddComponent<BoxColliderComponent>
         (
             Tag::ITEM,
-            sprite.srcRect.w,
-            sprite.srcRect.h,
+            sprite.srcRect.w * scale,
+            sprite.srcRect.h * scale,
             glm::vec2{0.f}
         );
 
