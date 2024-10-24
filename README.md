@@ -27,9 +27,10 @@ A 2D dungeon crawler game made with a simple custom 2D game engine. This game an
 - [x] Combat System
 - [x] Collect Item System
 - [x] Inventory System
-- [ ] Some other useful tools such as Level Editor, etc.
 - [ ] UI System
+- [ ] Completed map and level layout
 - [ ] Scripting with Lua
+- [ ] Some other useful tools such as Level Editor, etc.
 
 ## Build
 The game is currently only run in Mac & Linux. Download the project and type `make run` in the terminal to run the game.
