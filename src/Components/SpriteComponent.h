@@ -57,12 +57,13 @@ struct UIComponent
 {
     SDL_Texture* texture{nullptr};
     SDL_Rect srcRect;
+    bool isActive;
 
     std::string assetId;
     int width;
     int height;
 
-    UIComponent(const std::string& id = "", int srcRectX = -1, int srcRectY = -1, int w = 0, int h = 0) : assetId(id)
+    UIComponent(const std::string& id = "", int srcRectX = -1, int srcRectY = -1, int w = 0, int h = 0, bool active = false) : assetId(id)
     {
         if (id != "")
         {

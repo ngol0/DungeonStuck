@@ -13,6 +13,7 @@ struct TextComponent
     SDL_Color color;
 
     bool isFixed;
+    bool isActive;
 
     TextComponent
     (
@@ -20,7 +21,8 @@ struct TextComponent
         const std::string& text = "", 
         const std::string& id = "", 
         const SDL_Color& color = {0,0,0,1}, 
-        bool fixed = false
+        bool fixed = false,
+        bool active = false
     )
         : position(pos), text(text), id(id), color(color), isFixed(fixed) {}
 };

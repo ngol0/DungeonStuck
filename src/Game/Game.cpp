@@ -9,6 +9,7 @@
 
 #include "../Input/InputManager.h"
 #include "../Events/EventManager.h"
+#include "../UI/WindowManager.h"
 
 int Game::window_height = 600;
 int Game::window_width = 800;
@@ -91,6 +92,7 @@ void Game::InitWindow()
 void Game::Setup()
 {
     m_scene.Init(m_renderer);
+    WindowManager::GetInstance().Init(m_renderer);
 }
 
 void Game::Run()
@@ -146,6 +148,9 @@ void Game::Update()
     m_last_update_frame = currentTime;
 
     // Update System
+     WindowManager::GetInstance().Update(deltaTime);
+     
+    if (!WindowManager::GetInstance().GetCurrentWindow()->IsInGame()) return;
     m_scene.Update(deltaTime);
     InputManager::GetInstance().Update(deltaTime);
 }
@@ -160,7 +165,10 @@ void Game::Render()
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 
-    m_scene.Render();
+    if (WindowManager::GetInstance().GetCurrentWindow()->IsInGame())
+        m_scene.Render();
+
+    WindowManager::GetInstance().Render();
     
     ImGui::Render();
     ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), m_renderer);

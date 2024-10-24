@@ -4,8 +4,6 @@
 #include "../Systems/AnimationSystem.h"
 #include "../Systems/CameraMovementSystem.h"
 #include "../Systems/CollisionSystem.h"
-#include "../Systems/HUDSystem.h"
-#include "../Systems/RenderTextSystem.h"
 #include "../Systems/Game/DamageSystem.h"
 #include "../Systems/Game/PlayerInputSystem.h"
 #include "../Systems/Game/PlayerActionSystem.h"
@@ -42,8 +40,6 @@ void Scene::Init(SDL_Renderer* renderer)
     Registry::GetInstance().AddSystem<CameraMovementSystem>();
     Registry::GetInstance().AddSystem<AnimationSystem>();
     Registry::GetInstance().AddSystem<RenderSystem>();
-    Registry::GetInstance().AddSystem<HUDSystem>();
-    Registry::GetInstance().AddSystem<RenderTextSystem>();
     Registry::GetInstance().AddSystem<CollisionSystem>();
 
     //game
@@ -78,21 +74,6 @@ void Scene::Init(SDL_Renderer* renderer)
     EntityFactory::CreateEnemy(glm::vec2(1.f, 200.f), glm::vec2(1.f, 0.f), EnemyType::SLIME);
     EntityFactory::CreateEnemy(glm::vec2(550.f, 500.f), glm::vec2(0.f, 1.f), EnemyType::SLIME);
     EntityFactory::CreateEnemy(glm::vec2(0.f, 800.f), glm::vec2(1.f, 0.f), EnemyType::SLIME);
-
-    // ***-----TODO: refactor to call this somewhere else
-    // game UI - inventory UI
-    for (int i = 0; i < 2; ++i)
-    {
-        //---top right corner
-        // EntityFactory::CreateInventorySlotUI(glm::vec2{750.f - i * 50.f, 10.f});
-        // EntityFactory::CreateInventoryItemUI(glm::vec2{760.f - i * 50.f, 18.f}, ItemType::NONE, i);
-
-        //--bottom left corner
-        EntityFactory::CreateInventorySlotUI(glm::vec2{20 + i * 50.f, 533.f});
-        EntityFactory::CreateInventoryItemUI(glm::vec2{30.f + i * 50.f, 540.f}, ItemType::NONE, i);
-    }
-    // player health ui
-    EntityFactory::CreateHealthUI(glm::vec2{5.f, 5.f});
 }
 
 void Scene::Update(float deltaTime)
@@ -105,8 +86,6 @@ void Scene::Render()
     //Registry::GetInstance().Render(m_renderer);
     // draw
     Registry::GetInstance().GetSystem<RenderSystem>().Render(m_renderer);
-    Registry::GetInstance().GetSystem<HUDSystem>().Render(m_renderer);
-    Registry::GetInstance().GetSystem<RenderTextSystem>().Render(m_renderer);
 
     // editor
     Registry::GetInstance().GetSystem<InputEditorSystem>().Render(m_renderer);

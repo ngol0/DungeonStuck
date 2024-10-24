@@ -11,7 +11,6 @@
 RenderTextSystem::RenderTextSystem()
 {
     RequireComponent<TextComponent>();
-    RequireComponent<TransformComponent>();
 }
 
 void RenderTextSystem::Render(SDL_Renderer *renderer)
@@ -19,7 +18,7 @@ void RenderTextSystem::Render(SDL_Renderer *renderer)
     for (auto entity : GetSystemEntities())
     {
         auto& textLabel = entity.GetComponent<TextComponent>();
-        //auto& transform = entity.GetComponent<TransformComponent>();
+        if (!textLabel.isActive) continue;
 
         SDL_Surface *surface = TTF_RenderText_Blended
         (

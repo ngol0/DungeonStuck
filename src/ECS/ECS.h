@@ -36,7 +36,7 @@ private:
     int m_id;
 
 public:
-    Entity(int id);
+    Entity(int id = -1);
 
     void Destroy();
 

@@ -17,6 +17,8 @@ void HUDSystem::Render(SDL_Renderer *renderer)
         TransformComponent &transform = e.GetComponent<TransformComponent>();
         UIComponent &sprite = e.GetComponent<UIComponent>();
 
+        if (!sprite.isActive) continue;
+
         SDL_Rect srcRect = sprite.srcRect;
 
         SDL_Rect dsRect = {
