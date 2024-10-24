@@ -36,8 +36,43 @@ void PlayerActionSystem::Init()
     EventManager::GetInstance().Register<Entity>(EventType::OnEntityDestroy, this, &PlayerActionSystem::OnPlayerDie);
 }
 
+// void PlayerActionSystem::Move(glm::vec3 &value, float dt)
+// {
+//     for (auto &e : GetSystemEntities())
+//     {
+//         auto &movement = e.GetComponent<MovementComponent>();
+//         auto &sprite = e.GetComponent<SpriteComponent>();
+//         auto &transform = e.GetComponent<TransformComponent>();
+//         auto &anim = e.GetComponent<AnimationComponent>();
+//         // Movement
+//         glm::vec2 dir = glm::vec2{value.x, value.y};
+//         movement.moveDirection += dir; 
+//         if (glm::length(movement.moveDirection) != 0)
+//         {
+//             movement.moveDirection = glm::normalize(movement.moveDirection);
+//             movement.lastDirection = movement.moveDirection;
+//         } 
+//         //log to test
+//         //spdlog::info("Move x: " + std::to_string(movement.moveDirection.x));
+//         //spdlog::info("Move y: " + std::to_string(movement.moveDirection.y));
+//         //old way: not correct but leave here in case of useful to test around
+//         //glm::vec2 moveDir = glm::vec2{value.x, value.y};
+//         //if (value.x != 0) movement.moveDirection.x = value.x;
+//         //movement.moveDirection = moveDir;
+//         if (m_isAttacking) return;
+//         anim.isLooping = true;
+//         sprite.srcRect.y = sprite.srcRect.h * value.z;
+//         //
+//         if (movement.moveDirection.x == 0 || movement.moveDirection.y == 0) return;
+//         transform.position += movement.moveDirection * movement.speed * dt * m_moveVariable;
+//     }
+// }
+
 void PlayerActionSystem::Move(glm::vec3 &value, float dt)
 {
+    // Initialize a combined direction vector for all input actions
+    glm::vec2 combinedDirection = glm::vec2(0.0f, 0.0f);
+
     for (auto &e : GetSystemEntities())
     {
         auto &movement = e.GetComponent<MovementComponent>();
@@ -45,33 +80,37 @@ void PlayerActionSystem::Move(glm::vec3 &value, float dt)
         auto &transform = e.GetComponent<TransformComponent>();
         auto &anim = e.GetComponent<AnimationComponent>();
 
-        // Movement
-        glm::vec2 dir = glm::vec2{value.x, value.y};
-        movement.moveDirection += dir;
-        
-        if (glm::length(movement.moveDirection) != 0)
-        {
-            movement.moveDirection = glm::normalize(movement.moveDirection);
-            movement.lastDirection = movement.moveDirection;
-        } 
+        // Accumulate the movement direction based on the current input
+        glm::vec2 inputDirection = glm::vec2{value.x, value.y};
+        combinedDirection += inputDirection;
 
-        //log to test
-        //spdlog::info("Move x: " + std::to_string(movement.moveDirection.x));
-        //spdlog::info("Move y: " + std::to_string(movement.moveDirection.y));
-
-        //old way: not correct but leave here in case of useful to test around
-        //glm::vec2 moveDir = glm::vec2{value.x, value.y};
-        //if (value.x != 0) movement.moveDirection.x = value.x;
-        //movement.moveDirection = moveDir;
-        
+        // Only proceed if not attacking
         if (m_isAttacking) return;
+
+        // Set up animation based on input (if necessary)
         anim.isLooping = true;
         sprite.srcRect.y = sprite.srcRect.h * value.z;
+    }
 
-        //
-        transform.position += (movement.moveDirection * movement.speed) * dt * m_moveVariable;
+    // Now process the accumulated movement after gathering input directions
+    if (glm::length(combinedDirection) > 0)
+    {
+        combinedDirection = glm::normalize(combinedDirection);
+
+        for (auto &e : GetSystemEntities())
+        {
+            auto &movement = e.GetComponent<MovementComponent>();
+            auto &transform = e.GetComponent<TransformComponent>();
+
+            // Apply the movement only once per frame, based on combined input
+            movement.moveDirection = combinedDirection;
+            movement.lastDirection = movement.moveDirection;
+
+            transform.position += movement.moveDirection * movement.speed * dt * m_moveVariable;
+        }
     }
 }
+
 
 void PlayerActionSystem::Update(float dt)
 {
@@ -88,9 +127,11 @@ void PlayerActionSystem::Update(float dt)
         anim.isLooping = true;
 
         if (movement.lastDirection.x < 0) sprite.srcRect.y = sprite.srcRect.h * 0; // left
-        if (movement.lastDirection.x > 0) sprite.srcRect.y = sprite.srcRect.h * 2; // right
-        if (movement.lastDirection.y < 0) sprite.srcRect.y = sprite.srcRect.h * 3; // up
-        if (movement.lastDirection.y > 0) sprite.srcRect.y = sprite.srcRect.h * 1; // down
+        else if (movement.lastDirection.x > 0) sprite.srcRect.y = sprite.srcRect.h * 2; // right
+        else if (movement.lastDirection.y < 0) sprite.srcRect.y = sprite.srcRect.h * 3; // up
+        else if (movement.lastDirection.y > 0) sprite.srcRect.y = sprite.srcRect.h * 1; // down
+        
+        else sprite.srcRect.y = sprite.srcRect.h * 1;
     }
 }
 

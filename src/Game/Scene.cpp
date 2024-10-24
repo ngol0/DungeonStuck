@@ -83,8 +83,13 @@ void Scene::Init(SDL_Renderer* renderer)
     // game UI - inventory UI
     for (int i = 0; i < 2; ++i)
     {
-        EntityFactory::CreateInventorySlotUI(glm::vec2{750.f - i * 50.f, 10.f});
-        EntityFactory::CreateInventoryItemUI(glm::vec2{760.f - i * 50.f, 18.f}, ItemType::NONE, i);
+        //---top right corner
+        // EntityFactory::CreateInventorySlotUI(glm::vec2{750.f - i * 50.f, 10.f});
+        // EntityFactory::CreateInventoryItemUI(glm::vec2{760.f - i * 50.f, 18.f}, ItemType::NONE, i);
+
+        //--bottom left corner
+        EntityFactory::CreateInventorySlotUI(glm::vec2{20 + i * 50.f, 533.f});
+        EntityFactory::CreateInventoryItemUI(glm::vec2{30.f + i * 50.f, 540.f}, ItemType::NONE, i);
     }
     // player health ui
     EntityFactory::CreateHealthUI(glm::vec2{5.f, 5.f});
