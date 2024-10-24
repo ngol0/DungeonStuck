@@ -3,7 +3,6 @@
 #define GAMEWINDOW_H
 
 #include "WindowManager.h"
-#include "../Events/EventData.h"
 
 class GameWindow : public Window
 {
@@ -16,7 +15,7 @@ public:
 	virtual void OnExit() override;
 	virtual bool IsInGame() override { return true; }
 
-    void OnKeyPressed(KeyPressedEventData &data);
+    void OnKeyPressed(KeyPressedEventData &data) override;
 };
 
 #endif

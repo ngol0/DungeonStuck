@@ -7,6 +7,7 @@
 #define WINDOWMANAGER_H
 
 #include "../ECS/ECS.h"
+#include "../Events/EventData.h"
 
 /* An interface for all windows
 Inherits by all the specific windows in game */
@@ -24,7 +25,7 @@ public:
 	virtual void OnEnter();
 	virtual void OnExit();
 
-	// void* m_FONT = GLUT_BITMAP_9_BY_15;
+	virtual void OnKeyPressed(KeyPressedEventData &data) {};
 
 protected:
 	std::vector<Entity> m_entitites;
@@ -56,6 +57,8 @@ public:
 	void SetWindow(Window &window);
 	void Update(float deltaTime);
 	void Render();
+
+	void OnKeyPressed(KeyPressedEventData &data);
 
 	Window *GetCurrentWindow() { return m_current_window; }
 	void Restart();

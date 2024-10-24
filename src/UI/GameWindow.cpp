@@ -3,9 +3,6 @@
 #include "../Game/EntityFactory.h"
 #include "../Components/InventoryComponent.h"
 
-#include "../Events/EventManager.h"
-#include "../Events/EventType.h"
-
 void GameWindow::Init()
 {
     // player health ui
@@ -26,9 +23,6 @@ void GameWindow::Init()
         m_entitites.push_back(inven);
         m_entitites.push_back(item);
     }
-
-    // listen to input event
-    EventManager::GetInstance().Register<KeyPressedEventData>(EventType::OnKeyPressed, this, &GameWindow::OnKeyPressed);
 }
 
 void GameWindow::OnEnter()

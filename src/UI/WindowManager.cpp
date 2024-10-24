@@ -8,6 +8,9 @@
 #include "../Components/SpriteComponent.h"
 #include "../Components/TextComponent.h"
 
+#include "../Events/EventManager.h"
+#include "../Events/EventType.h"
+
 //----------------------------------------------------------------------------------------------------------//
 //----------------------------------------------Window State------------------------------------------------//
 //----------------------------------------------------------------------------------------------------------//
@@ -56,6 +59,9 @@ void WindowManager::Init(SDL_Renderer* renderer)
     // add hud system
     Registry::GetInstance().AddSystem<HUDSystem>();
     Registry::GetInstance().AddSystem<RenderTextSystem>();
+
+    // listen to input event
+    EventManager::GetInstance().Register<KeyPressedEventData>(EventType::OnKeyPressed, this, &WindowManager::OnKeyPressed);
 }
 
 void WindowManager::SetWindow(Window& window)
@@ -79,6 +85,12 @@ void WindowManager::Render()
     //call hud render system and text render system
     Registry::GetInstance().GetSystem<HUDSystem>().Render(m_renderer);
     Registry::GetInstance().GetSystem<RenderTextSystem>().Render(m_renderer);
+}
+
+void WindowManager::OnKeyPressed(KeyPressedEventData &data)
+{
+    if (m_current_window == nullptr) return;
+    m_current_window->OnKeyPressed(data);
 }
 
 // called when R is pressed
