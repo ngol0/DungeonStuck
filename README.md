@@ -24,13 +24,14 @@ A 2D dungeon crawler game made with a simple custom 2D game engine. This game an
 
 ## Future Plans
 - [ ] AI System with different enemy types and Pathfinding
-- [ ] Combat System (more weapons/fix bugs/etc.)
+- [x] Combat System
 - [x] Collect Item System
 - [x] Inventory System
 - [x] UI System
 - [ ] Map Culling
 - [ ] Scripting with Lua
 - [ ] Completed map and level layout
+- [ ] Refinement: collision btw player/enemy
 - [ ] (Optional) Different weapon types
 - [ ] (Optional) Some other useful tools such as Level Editor, etc.
 
