@@ -23,7 +23,8 @@ A 2D dungeon crawler game made with a simple custom 2D game engine. This game an
    A .map file with data about tile, transform, colliders is read to create the level layout
 
 ## Future Plans
-- [ ] AI System with different enemy types and Pathfinding
+- [ ] AI System with different enemy types
+- [x] Pathfinding
 - [x] Combat System
 - [x] Collect Item System
 - [x] Inventory System
