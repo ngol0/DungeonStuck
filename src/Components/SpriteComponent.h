@@ -9,6 +9,7 @@ namespace SpriteId
     const static std::string NONE = "none";
     //game
 	const static std::string SLIME = "slime";
+    const static std::string ZOMBIE = "zombie";
     const static std::string PLAYER = "player";
     const static std::string MAP = "map";
     const static std::string BASIC_WEAPON = "basic_weapon";

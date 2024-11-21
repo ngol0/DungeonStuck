@@ -67,7 +67,7 @@ void CollisionSystem::Update(float dt)
 				// If two are collided -> on collision enter
 				if (currentCollisionStatus)
 				{
-					spdlog::info("On Collision Enter");
+					//spdlog::info("On Collision Enter");
 
                     // Update the collision map with the current status & emit event
 				    m_collisionMap[key] = currentCollisionStatus;
@@ -77,7 +77,7 @@ void CollisionSystem::Update(float dt)
 				// If two are not collided -> on collision exit
 				else
 				{
-					spdlog::info("On Collision Exit");
+					//spdlog::info("On Collision Exit");
 
                     // Update the collision map with the current status & emit event
 				    m_collisionMap[key] = currentCollisionStatus;

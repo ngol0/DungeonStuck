@@ -8,6 +8,8 @@
 
 #include "../ECS/ECS.h"
 #include "../Game/EntityFactory.h"
+#include "../Game/AStarPathfinding.h"
+#include "../Global/Utils.h"
 
 AssetManager::~AssetManager()
 {
@@ -55,7 +57,7 @@ void AssetManager::ReadMapFile()
         //skip the first 2 strings
         iss >> first >> second;
 
-        //----FIST IS POSITION AND TILE INFO
+        //----FIRST IS POSITION AND TILE INFO
         //first 2 numbers is size
         glm::vec2 size;
         iss >> size.x >> size.y;
@@ -94,7 +96,9 @@ void AssetManager::ReadMapFile()
         }
 
         //Create Entity and Component
-        EntityFactory::CreateTile(size, srcRect, pos, rotation, colliderSize);
+        Entity e = EntityFactory::CreateTile(size, srcRect, pos, rotation, colliderSize);
+        auto& node = e.GetComponent<PathNodeComponent>();
+        AStarPathfinding::GetInstance().SetGridPos(e, node.gridPos);
     }
 }
 

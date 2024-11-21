@@ -11,7 +11,7 @@ enum class WeaponType
 enum class EnemyType
 {
     SLIME,
-    RED_SLIME,
+    ZOMBIE,
 };
 
 enum class ItemType

@@ -9,11 +9,10 @@
 #include "../ECS/ECS.h"
 #include "../Events/EventData.h"
 
-/* An interface for all windows
-Inherits by all the specific windows in game */
-
 //----------------------------------------------------------------------------------------------------------//
 //----------------------------------------------Window State------------------------------------------------//
+/* An interface for all windows
+Inherits by all the specific windows in game */
 //----------------------------------------------------------------------------------------------------------//
 class Window
 {

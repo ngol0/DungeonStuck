@@ -16,6 +16,7 @@
 #include "../Systems/Game/EnemyAISystem.h"
 #include "../Systems/Editor/InputEditorSystem.h"
 #include "../Systems/Editor/EnemySpawnEditor.h"
+#include "../Systems/Editor/PathfindingDebugEditor.h"
 
 #include "../Asset/AssetManager.h"
 
@@ -58,6 +59,7 @@ void Scene::Init(SDL_Renderer* renderer)
     //input editor
     Registry::GetInstance().AddSystem<InputEditorSystem>();
     Registry::GetInstance().AddSystem<EnemySpawnEditor>();
+    Registry::GetInstance().AddSystem<PathfindingDebugEditor>();
 
 
     // //----------------------------------------Create entity----------------------------------------
@@ -90,6 +92,7 @@ void Scene::Render()
     // editor
     Registry::GetInstance().GetSystem<InputEditorSystem>().Render(m_renderer);
     Registry::GetInstance().GetSystem<EnemySpawnEditor>().Render(m_renderer);
+    Registry::GetInstance().GetSystem<PathfindingDebugEditor>().Render(m_renderer);
 }
 
 void Scene::Clear()
@@ -106,6 +109,7 @@ void Scene::LoadTextureAsset()
     //--game
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::PLAYER, "./assets/images/player.png");
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::SLIME, "./assets/images/slime.png");
+    AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::ZOMBIE, "./assets/images/zombie-full.png");
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::CHEST, "./assets/images/chest.png");
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::HEALTH_ITEM, "./assets/images/health-portion.png");
     AssetManager::GetInstance().AddSprite(m_renderer, SpriteId::STRENGTH_ITEM, "./assets/images/strength-portion.png");

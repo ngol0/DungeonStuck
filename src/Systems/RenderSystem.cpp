@@ -2,6 +2,7 @@
 #include "../Components/TransformComponent.h"
 #include "../Components/SpriteComponent.h"
 #include "../Components/BoxColliderComponent.h"
+#include "../Components/PathNodeComponent.h"
 #include "../Input/InputManager.h"
 #include "../Input/InputData.h"
 
@@ -44,21 +45,36 @@ void RenderSystem::Render(SDL_Renderer *renderer)
             NULL,
             SDL_FLIP_NONE);
 
-        //----------------------RENDER DEBUG COLLIDER--------------------------------//
+        //------------------------------------RENDER DEBUG COLLIDER--------------------------------//
         if (Scene::isDebugging)
         {
             BoxColliderComponent *collider = e.GetComponentPtr<BoxColliderComponent>();
 
-            if (collider == nullptr)
-                continue;
-            SDL_Rect boxRect = {
+            if (collider != nullptr)
+            {
+                SDL_Rect boxRect = {
                 static_cast<int>(transform.position.x + collider->offset.x - Scene::camera.x),
                 static_cast<int>(transform.position.y + collider->offset.y - Scene::camera.y),
                 static_cast<int>(collider->width),
                 static_cast<int>(collider->height)};
 
-            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-            SDL_RenderDrawRect(renderer, &boxRect);
+                SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+                SDL_RenderDrawRect(renderer, &boxRect);
+            }
+
+        //------------------------------------RENDER DEBUG GRID POS--------------------------------//
+            PathNodeComponent *pathNode = e.GetComponentPtr<PathNodeComponent>();
+
+            if (pathNode == nullptr) continue;
+
+            SDL_Rect pathNodeRect = {
+                static_cast<int>(Utils::GridToWordPos(pathNode->gridPos).x - Scene::camera.x),
+                static_cast<int>(Utils::GridToWordPos(pathNode->gridPos).y - Scene::camera.y),
+                static_cast<int>(10),
+                static_cast<int>(10)};
+
+            SDL_SetRenderDrawColor(renderer, pathNode->r, pathNode->g, pathNode->b, 255);
+            SDL_RenderDrawRect(renderer, &pathNodeRect);
         }
     }
 }

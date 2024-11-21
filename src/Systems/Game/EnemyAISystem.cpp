@@ -51,7 +51,7 @@ void EnemyAISystem::Update(float dt)
                 movement.moveDirection *= -1;
             }
         }
-        else if (enem.enemType == EnemyType::RED_SLIME)
+        else if (enem.enemType == EnemyType::ZOMBIE)
         {
             // if advanced - move towards player
             // todo: pathfinding here

@@ -14,7 +14,7 @@
 #include "../Components/InventoryComponent.h"
 #include "../Components/InventoryUIComponent.h"
 #include "../Components/TextComponent.h"
-
+#include "../Components/PathNodeComponent.h"
 
 namespace EntityFactory
 {
@@ -119,13 +119,30 @@ namespace EntityFactory
             static_cast<int>(srcRect.x), static_cast<int>(srcRect.y),
             static_cast<int>(size.x), static_cast<int>(size.y));
 
-        e.AddComponent<TransformComponent>(glm::vec2(pos.x * scale, pos.y * scale), glm::vec2{scale}, rot);
+        float tilePosX = pos.x * scale;
+        float tilePosY = pos.y * scale;
+        GridPosition gridPosition = Utils::TileToGridPos(glm::vec2(tilePosX, tilePosY));
+        e.AddComponent<TransformComponent>(glm::vec2(tilePosX, tilePosY), glm::vec2{scale}, rot);
+        auto& pathNode = e.AddComponent<PathNodeComponent>(gridPosition);
 
-        //check to see if tile has box collider
+        //check to see if tile has box collider -- which means war and obstacles
         if (boxSize.x != 0)
         {
             e.AddComponent<BoxColliderComponent>(Tag::BLOCK, boxSize.x * scale, boxSize.y * scale, glm::vec2{0.f});
+            pathNode.isWalkable = false;
         }
+        //if not it means walkable path
+        else
+        {
+            pathNode.isWalkable = true;
+        }
+
+        //SDL_Color black = { 0, 0, 0, 255 };
+        //GridPosition gridPos = Utils::TileToGridPos(glm::vec2(tilePosX, tilePosY));
+        // e.AddComponent<TextComponent>(
+        //     glm::vec2(tilePosX, tilePosY), 
+        //     "(" + std::to_string(gridPos.x) + ", " + std::to_string(gridPos.y) + ")", 
+        //     SpriteId::OTHER_TEXT, black, true);
 
         return e;
     }
