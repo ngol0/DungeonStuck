@@ -29,7 +29,7 @@ A 2D dungeon crawler game made with a simple custom 2D game engine. This game an
 - [x] Collect Item System
 - [x] Inventory System
 - [x] UI System
-- [ ] Map Culling
+- [x] Map Culling
 - [ ] Scripting with Lua
 - [ ] Completed map and level layout
 - [ ] Refinement: collision btw player/enemy
