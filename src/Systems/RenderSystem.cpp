@@ -54,14 +54,6 @@ void RenderSystem::Render(SDL_Renderer *renderer)
             renderableEntity.transformComponent.position.y > Scene::camera.y + Scene::camera.h
         );
 
-        // bool outsideCameraView = 
-        // (
-        //     renderableEntity.transformComponent.position.x < Scene::camera.x ||
-        //     renderableEntity.transformComponent.position.x > Scene::camera.x + Scene::camera.w ||
-        //     renderableEntity.transformComponent.position.y < Scene::camera.y ||
-        //     renderableEntity.transformComponent.position.y > Scene::camera.y + Scene::camera.h
-        // );
-
         if (outsideCameraView)
         {
             continue;
