@@ -32,7 +32,7 @@ A 2D dungeon crawler game made with a simple custom 2D game engine. This game an
 - [x] Map Culling
 - [ ] Scripting with Lua
 - [ ] Completed map and level layout
-- [ ] Refinement: collision btw player/enemy
+- [ ] Refinement: collision btw player/enemy, rendering order
 - [ ] (Optional) Different weapon types
 - [ ] (Optional) Some other useful tools such as Level Editor, etc.
 
