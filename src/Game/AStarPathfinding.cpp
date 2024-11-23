@@ -59,19 +59,25 @@ std::vector<GridPosition> AStarPathfinding::FindPath(GridPosition startPos, Grid
     while (!openSet.empty()) 
     {
         PathNodeComponent* current = openSet.top();
-        openSet.pop();
-        openSetTracker.erase(current);
         
         if (current->gridPos == endPos) 
         {
             return reconstructPath(current);
         }
+        if (closedSet.count(current->gridPos) > 0) continue;
 
         closedSet.insert(current->gridPos);
+        openSet.pop();
+        openSetTracker.erase(current);
 
         for (const auto& neighborPos : GetNeighborList(current->gridPos))
         {
-            if (!IsValidGridPos(neighborPos) || closedSet.count(neighborPos) > 0) continue;
+            if (closedSet.count(neighborPos) > 0) continue;
+            if (!GetEntityAtGridPos(neighborPos).GetComponent<PathNodeComponent>().isWalkable)
+            {
+                closedSet.insert(neighborPos);
+                continue;
+            }
             
             int currentGCost = current->gCost + CalculateDistance(current->gridPos, neighborPos);
 

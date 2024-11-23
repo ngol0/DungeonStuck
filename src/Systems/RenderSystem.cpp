@@ -23,10 +23,60 @@ void RenderSystem::OnDebug(int& num)
 
 void RenderSystem::Render(SDL_Renderer *renderer)
 {
-    for (auto &e : GetSystemEntities())
+    struct RenderableEntity
     {
-        TransformComponent &transform = e.GetComponent<TransformComponent>();
-        SpriteComponent &sprite = e.GetComponent<SpriteComponent>();
+        TransformComponent transformComponent;
+        SpriteComponent spriteComponent;
+        BoxColliderComponent* boxColliderComponent = nullptr;
+        PathNodeComponent* pathNodeComponent = nullptr;
+    };
+
+    std::vector<RenderableEntity> renderableEntities;
+
+    for (auto& entity : GetSystemEntities())
+    {
+        RenderableEntity renderableEntity;
+        renderableEntity.transformComponent = entity.GetComponent<TransformComponent>();
+        renderableEntity.spriteComponent = entity.GetComponent<SpriteComponent>();
+
+        if (entity.HasComponent<BoxColliderComponent>())
+            renderableEntity.boxColliderComponent = entity.GetComponentPtr<BoxColliderComponent>();
+
+        if (entity.HasComponent<PathNodeComponent>())
+            renderableEntity.pathNodeComponent = entity.GetComponentPtr<PathNodeComponent>();
+
+        // only render entities that are in the camera view
+        bool outsideCameraView = 
+        (
+            renderableEntity.transformComponent.position.x + renderableEntity.spriteComponent.width * renderableEntity.transformComponent.scale.x < Scene::camera.x ||
+            renderableEntity.transformComponent.position.x > Scene::camera.x + Scene::camera.w ||
+            renderableEntity.transformComponent.position.y + renderableEntity.spriteComponent.height * renderableEntity.transformComponent.scale.y < Scene::camera.y ||
+            renderableEntity.transformComponent.position.y > Scene::camera.y + Scene::camera.h
+        );
+
+        // bool outsideCameraView = 
+        // (
+        //     renderableEntity.transformComponent.position.x < Scene::camera.x ||
+        //     renderableEntity.transformComponent.position.x > Scene::camera.x + Scene::camera.w ||
+        //     renderableEntity.transformComponent.position.y < Scene::camera.y ||
+        //     renderableEntity.transformComponent.position.y > Scene::camera.y + Scene::camera.h
+        // );
+
+        if (outsideCameraView)
+        {
+            continue;
+        }
+
+        renderableEntities.emplace_back(renderableEntity);
+    }
+
+    std::sort(renderableEntities.begin(), renderableEntities.end(), [](const RenderableEntity &a, const RenderableEntity &b)
+              { return a.spriteComponent.zIndex < b.spriteComponent.zIndex; });
+            
+    for (auto &e : renderableEntities)
+    {
+        TransformComponent &transform = e.transformComponent;
+        SpriteComponent &sprite = e.spriteComponent;
 
         SDL_Rect srcRect = sprite.srcRect;
 
@@ -48,7 +98,7 @@ void RenderSystem::Render(SDL_Renderer *renderer)
         //------------------------------------RENDER DEBUG COLLIDER--------------------------------//
         if (Scene::isDebugging)
         {
-            BoxColliderComponent *collider = e.GetComponentPtr<BoxColliderComponent>();
+            BoxColliderComponent *collider = e.boxColliderComponent;
 
             if (collider != nullptr)
             {
@@ -63,7 +113,7 @@ void RenderSystem::Render(SDL_Renderer *renderer)
             }
 
         //------------------------------------RENDER DEBUG GRID POS--------------------------------//
-            PathNodeComponent *pathNode = e.GetComponentPtr<PathNodeComponent>();
+            PathNodeComponent *pathNode = e.pathNodeComponent;
 
             if (pathNode == nullptr) continue;
 

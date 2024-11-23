@@ -20,6 +20,8 @@ public:
 
     static SDL_Rect camera;
     static bool isDebugging;
+    const static int MAP_WIDTH = 640*2;
+    const static int MAP_HEIGHT = 480*2;
 };
 
 #endif

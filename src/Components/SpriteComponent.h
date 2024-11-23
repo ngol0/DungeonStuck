@@ -34,8 +34,9 @@ struct SpriteComponent
     std::string assetId;
     int width;
     int height;
+    int zIndex;
 
-    SpriteComponent(const std::string& id = "", int srcRectX = -1, int srcRectY = -1, int w = 0, int h = 0) : assetId(id)
+    SpriteComponent(const std::string& id = "", int z = 0, int srcRectX = -1, int srcRectY = -1, int w = 0, int h = 0) : assetId(id), zIndex(z)
     {
         if (id != "")
         {

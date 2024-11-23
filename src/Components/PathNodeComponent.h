@@ -21,7 +21,7 @@ struct PathNodeComponent
 
     bool isWalkable = false;
     
-    PathNodeComponent(GridPosition pos) : gridPos(pos)
+    PathNodeComponent(GridPosition pos = GridPosition(0.f,0.f)) : gridPos(pos)
     {
        
     }

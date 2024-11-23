@@ -20,13 +20,13 @@ namespace EntityFactory
 {
     Entity CreatePlayer(glm::vec2 pos)
     {
-        glm::vec2 scale = glm::vec2{3.f};
+        glm::vec2 scale = glm::vec2{2.7f};
         float rot = 0.f;
 
         Entity e = Registry::GetInstance().CreateEntity();
         e.AddComponent<TransformComponent>(pos, scale, rot);
 
-        auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::PLAYER);
+        auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::PLAYER, 1);
         e.AddComponent<BoxColliderComponent>
         (
             Tag::PLAYER, 
@@ -34,7 +34,7 @@ namespace EntityFactory
             sprite.srcRect.h/13 * scale.y - 40.f, 
             glm::vec2(54.f, 16.f)
         );
-        e.AddComponent<MovementComponent>(200.f);
+        e.AddComponent<MovementComponent>(250.f);
         e.AddComponent<AnimationComponent>(6, 14, 7);
         e.AddComponent<HealthComponent>(300);
         e.AddComponent<PlayerInputComponent>();
@@ -51,7 +51,7 @@ namespace EntityFactory
 
         if (type == WeaponType::BASIC)
         {
-            e.AddComponent<SpriteComponent>(SpriteId::BASIC_WEAPON);
+            //e.AddComponent<SpriteComponent>(SpriteId::BASIC_WEAPON);
             e.AddComponent<WeaponComponent>(20.f, 0.3f);
             e.AddComponent<MovementComponent>(300.f, moveDir);
             e.AddComponent<BoxColliderComponent>(Tag::PLAYER_BULLET, 32.f, 16.f, glm::vec2(0.f, 0.f));
@@ -86,6 +86,26 @@ namespace EntityFactory
             e.AddComponent<HealthComponent>(100.f);
             e.AddComponent<EnemyComponent>(type);
         }
+        else if (type == EnemyType::ZOMBIE)
+        {
+            glm::vec2 scale = glm::vec2{2.f};
+
+            e.AddComponent<TransformComponent>(pos, scale, 0.f);
+            auto& anim = e.AddComponent<AnimationComponent>(4, 4, 8);
+            auto& sprite = e.AddComponent<SpriteComponent>(SpriteId::ZOMBIE);
+            anim.isLooping = true;
+            e.AddComponent<BoxColliderComponent>
+            (
+                Tag::ENEMY, 
+                sprite.srcRect.w/7 * scale.x - 26.f, 
+                sprite.srcRect.h/5 * scale.y - 30.f, 
+                glm::vec2(16.f, 16.f)
+            );
+            //auto& movement = e.AddComponent<MovementComponent>(80.f);
+            //movement.moveDirection = moveDir;
+            e.AddComponent<HealthComponent>(100.f);
+            e.AddComponent<EnemyComponent>(type);
+        }
 
         return e;
     }
@@ -115,7 +135,7 @@ namespace EntityFactory
         float scale = 2.f;
 
         e.AddComponent<SpriteComponent>(
-            SpriteId::MAP, 
+            SpriteId::MAP, -1,
             static_cast<int>(srcRect.x), static_cast<int>(srcRect.y),
             static_cast<int>(size.x), static_cast<int>(size.y));
 

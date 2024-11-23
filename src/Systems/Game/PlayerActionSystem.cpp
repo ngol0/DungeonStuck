@@ -10,6 +10,8 @@
 #include "../../Events/EventManager.h"
 #include "../../Events/EventType.h"
 
+#include "../../Game/Scene.h"
+
 #include <SDL2/SDL.h>
 
 PlayerActionSystem::PlayerActionSystem()
@@ -100,11 +102,20 @@ void PlayerActionSystem::Move(glm::vec3 &value, float dt)
             auto &movement = e.GetComponent<MovementComponent>();
             auto &transform = e.GetComponent<TransformComponent>();
 
+            int paddingLeft = 1;
+            int paddingTop = 1;
+            int paddingRight = 10;
+            int paddingBottom = 10;
+
             // Apply the movement only once per frame, based on combined input
             movement.moveDirection = combinedDirection;
             movement.lastDirection = movement.moveDirection;
 
             transform.position += movement.moveDirection * movement.speed * dt * m_moveVariable;
+            transform.position.x = transform.position.x < paddingLeft ? paddingLeft : transform.position.x;
+            transform.position.x = transform.position.x >  Scene::MAP_WIDTH - paddingRight ? Scene::MAP_WIDTH - paddingRight : transform.position.x;
+            transform.position.y = transform.position.y < paddingTop ? paddingTop : transform.position.y;
+            transform.position.y = transform.position.y > Scene::MAP_HEIGHT - paddingBottom ? Scene::MAP_HEIGHT - paddingBottom : transform.position.y;
         }
     }
 }

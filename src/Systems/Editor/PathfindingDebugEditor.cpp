@@ -42,20 +42,20 @@ void PathfindingDebugEditor::Render(SDL_Renderer *renderer)
 
         for (auto& step : path)
         {
-            spdlog::info("(" + std::to_string(step.x) + ", " + std::to_string(step.y) + ") -> ");
+            //spdlog::info("(" + std::to_string(step.x) + ", " + std::to_string(step.y) + ") -> ");
             auto& node = AStarPathfinding::GetInstance().GetEntityAtGridPos(step).GetComponent<PathNodeComponent>();
             node.r = 0;
         }
     }
-    if (ImGui::Button("Change Color"))
-    {
-        GridPosition startPos(startPosX, startPosY);
-        GridPosition endPos(endPosX, endPosY);
+    // if (ImGui::Button("Change Color"))
+    // {
+    //     GridPosition startPos(startPosX, startPosY);
+    //     GridPosition endPos(endPosX, endPosY);
 
-        auto& start = AStarPathfinding::GetInstance().GetEntityAtGridPos(startPos).GetComponent<PathNodeComponent>();
-        auto& end = AStarPathfinding::GetInstance().GetEntityAtGridPos(endPos).GetComponent<PathNodeComponent>();
-        start.r = 0;
-        end.g = 0;
-    }
+    //     auto& start = AStarPathfinding::GetInstance().GetEntityAtGridPos(startPos).GetComponent<PathNodeComponent>();
+    //     auto& end = AStarPathfinding::GetInstance().GetEntityAtGridPos(endPos).GetComponent<PathNodeComponent>();
+    //     start.r = 0;
+    //     end.g = 0;
+    // }
     ImGui::End();
 }

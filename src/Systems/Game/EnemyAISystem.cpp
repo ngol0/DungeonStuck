@@ -10,6 +10,8 @@
 #include "../../Events/EventManager.h"
 #include "../../Events/EventType.h"
 
+#include "../../Game/AStarPathfinding.h"
+
 EnemyAISystem::EnemyAISystem()
 {
     RequireComponent<TransformComponent>();
@@ -54,7 +56,7 @@ void EnemyAISystem::Update(float dt)
         else if (enem.enemType == EnemyType::ZOMBIE)
         {
             // if advanced - move towards player
-            // todo: pathfinding here
+            // check distance to player
             
         }
     }

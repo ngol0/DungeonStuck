@@ -75,7 +75,7 @@ void Scene::Init(SDL_Renderer* renderer)
     // create slime enemy for testing the combat
     EntityFactory::CreateEnemy(glm::vec2(1.f, 200.f), glm::vec2(1.f, 0.f), EnemyType::SLIME);
     EntityFactory::CreateEnemy(glm::vec2(550.f, 500.f), glm::vec2(0.f, 1.f), EnemyType::SLIME);
-    EntityFactory::CreateEnemy(glm::vec2(0.f, 800.f), glm::vec2(1.f, 0.f), EnemyType::SLIME);
+    EntityFactory::CreateEnemy(glm::vec2(0.f, 800.f), glm::vec2(1.f, 0.f), EnemyType::ZOMBIE);
 }
 
 void Scene::Update(float deltaTime)
